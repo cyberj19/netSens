@@ -1,2 +1,1 @@
-rm -rf */*.pyc
-rm -rf */*/*.pyc
+find . -name "*.pyc" -exec rm -f {} \;

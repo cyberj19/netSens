@@ -58,3 +58,12 @@
 2019-04-15 01:37:26,141 sensor       {packetParser.py:8} DEBUG    parsing arp packet
 2019-04-15 01:37:26,142 sensor       {packetParser.py:8} DEBUG    parsing arp packet
 2019-04-15 01:37:29,214 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:40:26,377 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:40:26,378 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:42:32,329 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:42:32,330 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:42:33,341 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:42:33,342 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:42:35,397 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:42:37,464 sensor       {packetParser.py:8} DEBUG    parsing arp packet
+2019-04-15 01:42:38,461 sensor       {packetParser.py:8} DEBUG    parsing arp packet
