@@ -1,0 +1,182 @@
+<h1 style="background-color: green">
+    Network {{network.id}}
+    <a href="#" ng-click="exitNetwork();">X</a>
+</h1>
+<!-- <button ng-click='clearNetwork();'>
+    Clear Network
+</button> -->
+<div id="entities" style="float: left bottom; width: 50%; height: 50%;">
+    <button ng-click="setCurrentTab('listeners');">
+        Listeners ({{network.listeners.length}})
+    </button>
+    <button ng-click="setCurrentTab('devices');">
+        Devices ({{network.devices.length}})
+    </button>
+    <button ng-click="setCurrentTab('links');">
+        Links ({{network.links.length}})
+    </button>
+    <div id="listeners" ng-show="currentTab == 'listeners'">
+        <table style="float: top; overflow-x: auto;" cellspacing="0" border="1">
+            <thead style="background-color:darkgray; border: 1;">
+                <tr>
+                    <th>MAC</th>
+                    <th>Interface</th>
+                    <th>#Packets</th>
+                    <th>Last Packet Time</th>
+                    <th>Error</th>
+                    <th>Connected</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="listener in network.listeners" 
+                    ng-style="{'background-color': listener.agentActive ? 'white':'pink'}">
+                    <td>{{listener.mac}}</td>
+                    <td>{{listener.interface}}</td>
+                    <td>{{listener.numPackets}}</td>
+                    <td>{{timeConverter(listener.lastPacketTime)}}</td>
+                    <td>{{listener.lastError}}</td>
+                    <td ng-style="{'background-color': listener.agentActive ? (listener.connected ? 'green':'red') : 'pink'}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="devices" ng-show="currentTab == 'devices'">
+        <table style="float: top; overflow-x: auto;" cellspacing="0" border="1">
+            <thead style="background-color:darkgray; border: 1;">
+                <tr>
+                    <th colspan="10">Devices ({{network.devices.length}})</th>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <th>Closed</th>
+                    <th>IP</th>
+                    <th>MAC</th>
+                    <th>Vendor</th>
+                    <th>#Hits</th>
+                    <th>#ARPS</th>
+                    <th>#DHCPS</th>
+                    <th>LTS</th>
+                    <th>FTS</th>
+                    <th>Extra Data</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="device in network.devices" ng-style="device.id == trackIds[1] && {'background-color': 'blue'} ||
+                              device.id == trackIds[2] && {'background-color': 'red'}">
+                    <td>{{device.id}}</td>
+                    <td>{{device.isClosed}}</td>
+                    <td>{{device.ip || 'Unknown'}}</td>
+                    <td>{{device.mac || 'Unknown'}}</td>
+                    <td>{{device.vendor || 'Unknown'}}</td>
+                    <td>{{device.hits}}</td>
+                    <td>{{device.arpHits}}</td>
+                    <td>{{device.dhcpHits}}</td>
+                    <td>{{timeConverter(device.lastTimeSeen)}}</td>
+                    <td>{{timeConverter(device.firstTimeSeen)}}</td>
+                    <td>
+                        <table>
+                            <tr ng-repeat='(key,value) in device.extraData'>
+                                <td>{{key}}</td>
+                                <td>{{value}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <button ng-click="addComment(device.id,device.comment);">
+                            Comment
+                        </button>
+                        <button ng-click="closeDevice(device.id);">
+                            Close
+                        </button>
+                        <button ng-click="fingerBankAnalyze(device.id)">
+                            FingerBank
+                        </button>
+                        <!-- <button
+                            ng-click="getAnalysisData(device.id);">
+                            A
+                        </button> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="deviceAnalysis" ng-show="analysisId >= 0">
+            <table cellspacing="0" border="1">
+                <thead style="background-color: darkgrey;">
+                    <tr>
+                        <th colspan="5">Device ARP Analysis</th>
+                    </tr>
+                    <tr>
+                        <th>ArpId</th>
+                        <th>Timestamp</th>
+                        <th>Direction</th>
+                        <th>Source</th>
+                        <th>Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="arp in analysisDevice.arps">
+                        <td>{{arp.eventId}}</td>
+                        <td>{{arp.time}}</td>
+                        <td>{{arp.sourceDeviceId === analysisId ? 'From':'To'}}</td>
+                        <td>{{arp.sourceIP + ';' + arp.sourceMAC}}</td>
+                        <td>{{arp.targetIP}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="links" ng-show="currentTab == 'links'">
+        <table style="float:bottom;" cellspacing="0" border="1">
+            <thead style="background-color:darkgrey;">
+                <tr>
+                    <th colspan="7">
+                        Links ({{network.links.length}})
+                    </th>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <th>S. Id</th>
+                    <th>T. Id</th>
+                    <th>#Hits</th>
+                    <th>LTS</th>
+                    <th>FTS</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="link in network.links">
+                    <td>{{link.id}}</td>
+                    <td ng-style="trackIds[0] === link.id && {'background-color': 'blue'}">
+                        {{link.sourceDeviceId}}
+                    </td>
+                    <td ng-style="trackIds[0] === link.id && {'background-color': 'red'}">
+                        {{link.targetDeviceId}}
+                    </td>
+                    <td>{{link.numHits}}</td>
+                    <td>{{timeConverter(link.lastTimeSeen)}}</td>
+                    <td>{{timeConverter(link.firstTimeSeen)}}</td>
+                    <td>
+                        <span ng-show="trackIds[0] === link.id">
+                            <a href="#" ng-click="untrack()">Untrack</a>
+                        </span>
+                        <span ng-show="trackIds[0] !== link.id">
+                            <a href="#" ng-click="track(link.id, link.sourceDeviceId, link.targetDeviceId);">
+                                Track
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="log" style="float: right bottom; width: 50%; height:50%;">
+    <h2>Log</h2>
+    <div ng-repeat='for item in network.log'>
+        {{timeConverter(item.time): item.msg}}
+        <br>
+    </div>
+</div>

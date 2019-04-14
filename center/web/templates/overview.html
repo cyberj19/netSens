@@ -1,0 +1,69 @@
+<h1>Networks</h1>
+<div ng-show='networks.length > 0'>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Default GTW MAC</th>
+                <th>#Listeners</th>
+                <th>#Devices</th>
+                <th>#Links</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='network in networks'>
+                <td>{{network.id}}</td>
+                <td>{{network.defaultGTWMAC}}</td>
+                <td>{{network.listenerCount}}</td>
+                <td>{{network.deviceCount}}</td>
+                <td>{{network.linkCount}}</td>
+                <td>
+                    <button ng-click='loadNetwork(network);'>
+                        View
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-show='networks.length==0'>
+    No networks to show
+</div>
+
+<h1>
+    Agents
+</h1>
+
+<div ng-show='listeners.length > 0'>
+    <table>
+        <thead>
+            <tr>
+                <th>Agent MAC</th>
+                <th>Agent Port</th>
+                <th>Interface</th>
+                <th>Network Id</th>
+                <th>Last Packet Time</th>
+                <th>Connected</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='lstr in listeners'>
+                    <td>{{lstr.agentMAC}}</td>
+                    <td>{{lstr.agentPort}}</td>
+                    <td>{{lstr.interface}}</td>
+                    <td>{{lstr.networkId}}</td>
+                    <td>{{lstr.lastPacketTime}}</td>
+                    <td ng-style="{'background-color': lstr.connected ? 'green':'red'}"></td>
+                    <td>
+                        <button ng-click="connectListener(lstr.agentMAC, lstr.interface)" ng-show="!lstr.connected">Connect</button>
+                        <button ng-click="disconnectListener(lstr.agentMAC, lstr.interface)" ng-show="lstr.connected">Disconnect</button>
+                    </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-show='listeners.length===0'>
+    No agents to show
+</div>
