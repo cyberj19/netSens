@@ -1196,3 +1196,184 @@
 2019-04-15 01:36:03,449 processor    {main_processor.py:78} INFO     Matched listener to network 1
 2019-04-15 01:36:08,515 processor    {main_processor.py:78} INFO     Matched listener to network 0
 2019-04-15 01:36:08,519 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:13,599 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:13,601 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:18,661 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:18,669 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:23,726 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:23,726 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:25,769 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:25,769 processor    {main_processor.py:88} DEBUG    Matching packet arp
+2019-04-15 01:36:25,770 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:25,774 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 0
+2019-04-15 01:36:25,779 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 1
+2019-04-15 01:36:25,783 processor    {main_processor.py:92} INFO     Processing arp packet in network 1
+2019-04-15 01:36:25,784 processor    {network_processor.py:103} DEBUG    [NET-1] Handling arp packet 52
+2019-04-15 01:36:25,786 processor    {device_processor.py:113} DEBUG    [ADF] Matched packet 52  target to device 13
+2019-04-15 01:36:25,787 processor    {device_processor.py:120} DEBUG    [ADF] Matched packet 52  source to device 1. Updating...
+2019-04-15 01:36:25,788 processor    {network_processor.py:114} DEBUG    naga src_m: 10.100.102.1 tar_m: 10.100.102.17
+2019-04-15 01:36:25,788 processor    {network_processor.py:116} DEBUG    naga source match 1 1555281384
+2019-04-15 01:36:25,788 processor    {device_processor.py:30} DEBUG    naga [Device] Device 1 has mac 8C:59:C3:F0:BF:2D, ip 10.100.102.1
+2019-04-15 01:36:25,788 processor    {network_processor.py:126} DEBUG    naga TARGET MATCH 13
+2019-04-15 01:36:25,794 processor    {device_processor.py:30} DEBUG    naga [Device] Device 13 has mac None, ip 10.100.102.17
+2019-04-15 01:36:25,795 processor    {main_processor.py:88} DEBUG    Matching packet arp
+2019-04-15 01:36:25,796 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 0
+2019-04-15 01:36:25,799 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 1
+2019-04-15 01:36:25,801 processor    {main_processor.py:92} INFO     Processing arp packet in network 1
+2019-04-15 01:36:25,803 processor    {network_processor.py:103} DEBUG    [NET-1] Handling arp packet 53
+2019-04-15 01:36:25,804 processor    {device_processor.py:113} DEBUG    [ADF] Matched packet 53  target to device 1
+2019-04-15 01:36:25,804 processor    {device_processor.py:120} DEBUG    [ADF] Matched packet 53  source to device 13. Updating...
+2019-04-15 01:36:25,804 processor    {network_processor.py:114} DEBUG    naga src_m: 10.100.102.17 tar_m: 10.100.102.1
+2019-04-15 01:36:25,804 processor    {network_processor.py:116} DEBUG    naga source match 13 1555281384
+2019-04-15 01:36:25,805 processor    {device_processor.py:30} DEBUG    naga [Device] Device 13 has mac 00:21:6A:C0:38:F2, ip 10.100.102.17
+2019-04-15 01:36:25,805 processor    {network_processor.py:126} DEBUG    naga TARGET MATCH 1
+2019-04-15 01:36:25,805 processor    {device_processor.py:30} DEBUG    naga [Device] Device 1 has mac None, ip 10.100.102.1
+2019-04-15 01:36:28,769 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:28,776 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:33,809 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:33,810 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:38,844 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:38,845 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:43,879 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:43,892 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:48,967 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:48,969 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:54,030 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:54,031 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:36:59,081 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:36:59,081 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:04,100 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:04,103 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:06,730 processor    {main_processor.py:88} DEBUG    Matching packet arp
+2019-04-15 01:37:06,731 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:06,732 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 0
+2019-04-15 01:37:06,734 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:06,736 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 1
+2019-04-15 01:37:06,740 processor    {main_processor.py:92} INFO     Processing arp packet in network 1
+2019-04-15 01:37:06,743 processor    {network_processor.py:103} DEBUG    [NET-1] Handling arp packet 54
+2019-04-15 01:37:06,746 processor    {device_processor.py:113} DEBUG    [ADF] Matched packet 54  target to device 1
+2019-04-15 01:37:06,746 processor    {device_processor.py:120} DEBUG    [ADF] Matched packet 54  source to device 13. Updating...
+2019-04-15 01:37:06,748 processor    {network_processor.py:114} DEBUG    naga src_m: 10.100.102.17 tar_m: 10.100.102.1
+2019-04-15 01:37:06,748 processor    {network_processor.py:116} DEBUG    naga source match 13 1555281425
+2019-04-15 01:37:06,751 processor    {device_processor.py:30} DEBUG    naga [Device] Device 13 has mac 00:21:6A:C0:38:F2, ip 10.100.102.17
+2019-04-15 01:37:06,752 processor    {network_processor.py:126} DEBUG    naga TARGET MATCH 1
+2019-04-15 01:37:06,753 processor    {device_processor.py:30} DEBUG    naga [Device] Device 1 has mac None, ip 10.100.102.1
+2019-04-15 01:37:06,754 processor    {main_processor.py:88} DEBUG    Matching packet arp
+2019-04-15 01:37:06,757 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 0
+2019-04-15 01:37:06,758 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 1
+2019-04-15 01:37:06,759 processor    {main_processor.py:92} INFO     Processing arp packet in network 1
+2019-04-15 01:37:06,761 processor    {network_processor.py:103} DEBUG    [NET-1] Handling arp packet 55
+2019-04-15 01:37:06,764 processor    {device_processor.py:113} DEBUG    [ADF] Matched packet 55  target to device 13
+2019-04-15 01:37:06,765 processor    {device_processor.py:120} DEBUG    [ADF] Matched packet 55  source to device 1. Updating...
+2019-04-15 01:37:06,766 processor    {network_processor.py:114} DEBUG    naga src_m: 10.100.102.1 tar_m: 10.100.102.17
+2019-04-15 01:37:06,767 processor    {network_processor.py:116} DEBUG    naga source match 1 1555281425
+2019-04-15 01:37:06,769 processor    {device_processor.py:30} DEBUG    naga [Device] Device 1 has mac 8C:59:C3:F0:BF:2D, ip 10.100.102.1
+2019-04-15 01:37:06,769 processor    {network_processor.py:126} DEBUG    naga TARGET MATCH 13
+2019-04-15 01:37:06,772 processor    {device_processor.py:30} DEBUG    naga [Device] Device 13 has mac None, ip 10.100.102.17
+2019-04-15 01:37:09,137 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:09,138 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:14,189 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:14,196 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:19,234 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:19,235 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:24,307 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:24,315 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:26,172 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:26,175 processor    {main_processor.py:88} DEBUG    Matching packet arp
+2019-04-15 01:37:26,176 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:26,178 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 0
+2019-04-15 01:37:26,179 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 1
+2019-04-15 01:37:26,180 processor    {main_processor.py:92} INFO     Processing arp packet in network 1
+2019-04-15 01:37:26,181 processor    {network_processor.py:103} DEBUG    [NET-1] Handling arp packet 56
+2019-04-15 01:37:26,184 processor    {device_processor.py:113} DEBUG    [ADF] Matched packet 56  target to device 13
+2019-04-15 01:37:26,184 processor    {device_processor.py:120} DEBUG    [ADF] Matched packet 56  source to device 1. Updating...
+2019-04-15 01:37:26,185 processor    {network_processor.py:114} DEBUG    naga src_m: 10.100.102.1 tar_m: 10.100.102.17
+2019-04-15 01:37:26,185 processor    {network_processor.py:116} DEBUG    naga source match 1 1555281445
+2019-04-15 01:37:26,188 processor    {device_processor.py:30} DEBUG    naga [Device] Device 1 has mac 8C:59:C3:F0:BF:2D, ip 10.100.102.1
+2019-04-15 01:37:26,189 processor    {network_processor.py:126} DEBUG    naga TARGET MATCH 13
+2019-04-15 01:37:26,190 processor    {device_processor.py:30} DEBUG    naga [Device] Device 13 has mac None, ip 10.100.102.17
+2019-04-15 01:37:26,191 processor    {main_processor.py:88} DEBUG    Matching packet arp
+2019-04-15 01:37:26,191 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 0
+2019-04-15 01:37:26,192 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 1
+2019-04-15 01:37:26,193 processor    {main_processor.py:92} INFO     Processing arp packet in network 1
+2019-04-15 01:37:26,193 processor    {network_processor.py:103} DEBUG    [NET-1] Handling arp packet 57
+2019-04-15 01:37:26,197 processor    {device_processor.py:113} DEBUG    [ADF] Matched packet 57  target to device 1
+2019-04-15 01:37:26,200 processor    {device_processor.py:120} DEBUG    [ADF] Matched packet 57  source to device 13. Updating...
+2019-04-15 01:37:26,200 processor    {network_processor.py:114} DEBUG    naga src_m: 10.100.102.17 tar_m: 10.100.102.1
+2019-04-15 01:37:26,201 processor    {network_processor.py:116} DEBUG    naga source match 13 1555281445
+2019-04-15 01:37:26,203 processor    {device_processor.py:30} DEBUG    naga [Device] Device 13 has mac 00:21:6A:C0:38:F2, ip 10.100.102.17
+2019-04-15 01:37:26,204 processor    {network_processor.py:126} DEBUG    naga TARGET MATCH 1
+2019-04-15 01:37:26,205 processor    {device_processor.py:30} DEBUG    naga [Device] Device 1 has mac None, ip 10.100.102.1
+2019-04-15 01:37:29,225 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:29,226 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:29,229 processor    {main_processor.py:88} DEBUG    Matching packet arp
+2019-04-15 01:37:29,235 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 0
+2019-04-15 01:37:29,236 processor    {main_processor.py:90} DEBUG    Matching packet arp to network 1
+2019-04-15 01:37:29,236 processor    {main_processor.py:92} INFO     Processing arp packet in network 1
+2019-04-15 01:37:29,237 processor    {network_processor.py:103} DEBUG    [NET-1] Handling arp packet 58
+2019-04-15 01:37:29,237 processor    {device_processor.py:115} DEBUG    [ADF] packet 58 target unmatched
+2019-04-15 01:37:29,247 processor    {device_processor.py:120} DEBUG    [ADF] Matched packet 58  source to device 1. Updating...
+2019-04-15 01:37:29,249 processor    {network_processor.py:114} DEBUG    naga src_m: 10.100.102.1 tar_m: 10.100.102.11
+2019-04-15 01:37:29,249 processor    {network_processor.py:116} DEBUG    naga source match 1 1555281449
+2019-04-15 01:37:29,252 processor    {device_processor.py:30} DEBUG    naga [Device] Device 1 has mac 8C:59:C3:F0:BF:2D, ip 10.100.102.1
+2019-04-15 01:37:29,252 processor    {network_processor.py:130} DEBUG    naga ELSE TARGET MATCH 22
+2019-04-15 01:37:29,341 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:29,343 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:34,388 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:34,399 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:39,412 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:39,416 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:44,456 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:44,457 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:49,500 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:49,511 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:54,545 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:54,545 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:37:59,577 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:37:59,577 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:04,647 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:04,649 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:09,704 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:09,706 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:14,755 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:14,758 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:19,841 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:19,843 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:24,891 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:24,892 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:29,935 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:29,939 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:34,992 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:34,992 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:40,029 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:40,033 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:45,105 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:45,109 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:50,138 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:50,139 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:38:55,202 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:38:55,215 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:00,299 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:00,301 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:05,359 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:05,360 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:10,425 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:10,425 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:15,465 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:15,466 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:20,510 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:20,512 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:25,567 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:25,568 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:30,640 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:30,641 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:35,703 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:35,707 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:40,793 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:40,794 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:45,837 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:45,839 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:50,884 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:50,884 processor    {main_processor.py:78} INFO     Matched listener to network 1
+2019-04-15 01:39:55,932 processor    {main_processor.py:78} INFO     Matched listener to network 0
+2019-04-15 01:39:55,934 processor    {main_processor.py:78} INFO     Matched listener to network 1

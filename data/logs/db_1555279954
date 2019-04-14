@@ -44,3 +44,10 @@
 2019-04-15 01:32:25,157 db           {link_db.py:23} INFO     Writing link 5 to db
 2019-04-15 01:32:27,174 db           {link_db.py:23} INFO     Writing link 9 to db
 2019-04-15 01:32:28,207 db           {link_db.py:23} INFO     Writing link 9 to db
+2019-04-15 01:36:25,796 db           {link_db.py:23} INFO     Writing link 6 to db
+2019-04-15 01:36:25,817 db           {link_db.py:23} INFO     Writing link 5 to db
+2019-04-15 01:37:06,753 db           {link_db.py:23} INFO     Writing link 5 to db
+2019-04-15 01:37:06,777 db           {link_db.py:23} INFO     Writing link 6 to db
+2019-04-15 01:37:26,191 db           {link_db.py:23} INFO     Writing link 6 to db
+2019-04-15 01:37:26,216 db           {link_db.py:23} INFO     Writing link 5 to db
+2019-04-15 01:37:29,253 db           {link_db.py:23} INFO     Writing link 12 to db

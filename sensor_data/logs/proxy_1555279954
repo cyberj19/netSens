@@ -397,3 +397,63 @@
 2019-04-15 01:35:58,377 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
 2019-04-15 01:36:03,425 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
 2019-04-15 01:36:08,485 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:13,562 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:18,640 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:23,677 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:25,732 proxy        {proxy.py:87} INFO     Queueing new packet
+2019-04-15 01:36:25,733 proxy        {proxy.py:87} INFO     Queueing new packet
+2019-04-15 01:36:25,744 proxy        {proxy.py:96} INFO     Sending 2 new captured packets
+2019-04-15 01:36:25,745 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/packets
+2019-04-15 01:36:28,749 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:33,785 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:38,821 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:43,858 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:48,925 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:53,992 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:36:59,041 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:04,085 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:06,689 proxy        {proxy.py:87} INFO     Queueing new packet
+2019-04-15 01:37:06,690 proxy        {proxy.py:87} INFO     Queueing new packet
+2019-04-15 01:37:06,701 proxy        {proxy.py:96} INFO     Sending 2 new captured packets
+2019-04-15 01:37:06,708 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/packets
+2019-04-15 01:37:09,117 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:14,157 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:19,213 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:24,253 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:26,142 proxy        {proxy.py:87} INFO     Queueing new packet
+2019-04-15 01:37:26,142 proxy        {proxy.py:87} INFO     Queueing new packet
+2019-04-15 01:37:26,149 proxy        {proxy.py:96} INFO     Sending 2 new captured packets
+2019-04-15 01:37:26,149 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/packets
+2019-04-15 01:37:29,214 proxy        {proxy.py:87} INFO     Queueing new packet
+2019-04-15 01:37:29,223 proxy        {proxy.py:96} INFO     Sending 1 new captured packets
+2019-04-15 01:37:29,223 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/packets
+2019-04-15 01:37:29,333 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:34,346 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:39,389 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:44,436 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:49,475 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:54,513 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:37:59,549 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:04,596 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:09,669 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:14,729 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:19,820 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:24,861 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:29,920 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:34,945 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:39,996 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:45,060 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:50,094 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:38:55,157 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:00,261 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:05,337 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:10,392 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:15,445 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:20,469 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:25,538 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:30,613 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:35,663 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:40,729 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:45,804 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:50,857 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
+2019-04-15 01:39:55,906 proxy        {proxy.py:16} DEBUG    Sending data to 127.0.0.1:7000/status
