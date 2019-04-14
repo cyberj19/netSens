@@ -1,12 +1,13 @@
 import logging
 import time
 import env
-
+import os
 
 def createLogger(name):
     logger = logging.getLogger(name)
     filename = '%s/%s_%d' % (env.logs_folder,name.lower(),time.time())
-
+    if not os.path.exists(env.logs_folder):
+        os.makedirs(env.logs_folder)
     debugFormatter = logging.Formatter(
             '%(asctime)s %(name)-12s {%(filename)s:%(lineno)d} %(levelname)-8s %(message)s'
 

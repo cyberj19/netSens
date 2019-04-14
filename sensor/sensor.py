@@ -4,6 +4,7 @@ import env
 import proxy
 import sys
 import signal
+import os
 
 logger = logging.getLogger('sensor')
 
@@ -15,6 +16,8 @@ signal.signal(signal.SIGINT, handleKill)
 if env.sim_mode:
 	logger.info('RUNNING IN SIMULATION MODE')
 
+if not os.path.exists(env.recs_folder):
+	os.makedirs(env.recs_folder)
 prx = proxy.Proxy(env.id, 
 				env.comm_iface, env.local_port,
 				env.center_ip, env.center_port)
