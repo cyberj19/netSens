@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
 if [[ ! -z `pgrep python` ]]; then
 sudo kill -9 $(pgrep python)
 echo "killing python"
