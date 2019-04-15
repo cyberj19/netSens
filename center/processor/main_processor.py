@@ -67,6 +67,10 @@ class MainProcessor:
 			logger.debug('fingerBankAnalysis')
 			dev = ntw.findDevice(oper['deviceId'])
 			self.broker.emit('fingerBankAnalysis', dev)
+		elif oper['type'] == 'macVendorsRequest':
+			logger.debug('macVendorsLookup')
+			dev = ntw.findDevice(oper['deviceId'])
+			self.broker.emit('macVendorsLookup', dev)
 			
 	def processAgentStatus(self, agent):
 		for lstr in agent.listeners:
@@ -86,6 +90,8 @@ class MainProcessor:
 
 	def processPacket(self, packet):
 		logger.debug('Matching packet %s', packet.type)
+		if packet.type =='dhcp':
+			logger.debug('paga DHCP: %s', packet.dhcp_fp)
 		for ntwProcessor in self.networkProcs:
 			logger.debug('Matching packet %s to network %d', packet.type, ntwProcessor.network.id)
 			if ntwProcessor.matchPacket(packet):

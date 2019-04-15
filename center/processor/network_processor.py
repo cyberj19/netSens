@@ -86,13 +86,13 @@ class NetworkProcessor:
 			
 	def processDHCPPacket(self, packet):
 		source_match = self.devProc.findDHCPMatch(packet)
-		
+		logger.debug("paga packet ntwproc %s",packet.dhcp_fp)
 		if source_match:
 			source_dev_id = source_match.id
-			self.devProc.updateDevice(source_match, 'dhcp', packet.time, packet.source_ip, packet.source_mac)
+			self.devProc.updateDevice(source_match, 'dhcp', packet.time, None, packet.source_mac, packet.dhcp_fp)
 		else:
 			source_dev_id = self.getDeviceId()
-			dev = self.devProc.createDevice(source_dev_id, self.network.id, 'dhcp', packet.time, packet.source_ip, packet.source_mac)
+			dev = self.devProc.createDevice(source_dev_id, self.network.id, 'dhcp', packet.time, None, packet.source_mac, packet.dhcp_fp)
 			self.network.devices.append(dev)
 
 		packet.update_match(self.network.id, source_dev_id)
@@ -115,10 +115,9 @@ class NetworkProcessor:
 		if source_match:
 			logger.debug('naga source match %s %d',source_match.id, packet.time)
 			source_dev_id = source_match.id
-			dev=self.devProc.updateDevice(source_match, 'arp', packet.time, packet.source_ip, packet.source_mac)
-			self.network.devices.append(dev)
+			self.devProc.updateDevice(source_match, 'arp', packet.time, packet.source_ip, packet.source_mac)
 		else:
-			logger.debug("naga ELSE SOURCE MATCH sdi %s",self.getDeviceId())
+			logger.debug("naga ELSE SOURCE MATCH sdi")
 			source_dev_id = self.getDeviceId()
 			dev = self.devProc.createDevice(source_dev_id, self.network.id, 'arp', packet.time, packet.source_ip, packet.source_mac)
 			self.network.devices.append(dev)
@@ -127,8 +126,8 @@ class NetworkProcessor:
 			target_dev_id = target_match.id
 			self.devProc.updateDevice(target_match, 'arp', packet.time, packet.target_ip)
 		else:
-			logger.debug("naga ELSE TARGET MATCH %s",self.getDeviceId())
-			target_dev_id = self.getDeviceId()
+			logger.debug("naga ELSE TARGET MATCH")
+			target_dev_id =  None #self.getDeviceId()
 			#dev = self.devProc.createDevice(target_dev_id, self.network.id, 'arp', packet.time, packet.target_ip)
 			#self.network.devices.append(dev)
 		

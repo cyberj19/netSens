@@ -5,9 +5,15 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-apt-get install python-pip
+if [ -n "$(which apt-get 2>/dev/null)" ]
+  then apt-get install python-pip libpcap-dev -y
+else if [ -n "$(which yum 2>/dev/null)" ]
+  then yum install python-pip libpcap-devel.$(arch) -y
+fi
+fi
+
 pip install flask
-apt-get install libpcap0.8-dev
-cd sensor/sources
+cd $(pwd)/sensor/sources
 make
 cd -
+mkdir -p /var/log/netsens

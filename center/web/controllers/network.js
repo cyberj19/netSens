@@ -79,6 +79,7 @@ oraApp.controller('networkController', [
                 'closeDevice': '/api/networks/' + networkId + '/devices/<devId>/close',
                 'clearNetwork': '/api/networks/' + networkId + '/clear',
                 'fingerBank': '/api/networks/' + networkId + '/devices/<devId>/fingerBank',
+		'macVendors': '/api/networks/' + networkId + '/devices/<devId>/macVendors',
                 // 'devAnalysis': '/api/networks/' + networkId + '/devices/<devId>/analyze'
             };
             console.log('network loaded');
@@ -102,6 +103,15 @@ oraApp.controller('networkController', [
 
         $scope.fingerBankAnalyze = function(devId) {
             let url = $scope.apis['fingerBank']
+            url = url.replace('<devId>', devId.toString())
+            axios.post(url).then(
+                function(response) {
+                }
+            )
+
+        }
+	$scope.macVendors = function(devId) {
+            let url = $scope.apis['macVendors']
             url = url.replace('<devId>', devId.toString())
             axios.post(url).then(
                 function(response) {

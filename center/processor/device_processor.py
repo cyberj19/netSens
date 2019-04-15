@@ -13,7 +13,7 @@ class DeviceProcessor:
 		self.broker = broker
 		self.network = network
 
-	def createDevice(self, device_id, network_id, ptype, ts, ip=None, mac=None):
+	def createDevice(self, device_id, network_id, ptype, ts, ip=None, mac=None, dhcp_fp=None):
 		vendor = vendors.getVendor(mac)
 		if ptype == 'arp':
 			arp = 1
@@ -21,13 +21,13 @@ class DeviceProcessor:
 		elif ptype == 'dhcp':
 			arp = 0
 			dhcp = 1
-		device = Device(device_id, False, network_id, ts, ts, ip, mac, vendor, 1, arp, dhcp)
-		print "%s %s %s !!!" %(ip,mac,vendor)
+		device = Device(device_id, False, network_id, ts, ts, ip, mac, vendor, 1, arp, dhcp, dhcp_fp=dhcp_fp)
+		logger.debug("paga devproc %s",dhcp_fp)
 		self.broker.emit('deviceUpdate', device)
 		return device
 		
-	def updateDevice(self, device, ptype, time, ip=None, mac=None):
-		logger.debug('naga [Device] Device %d has mac %s, ip %s', device.id, mac, ip)
+	def updateDevice(self, device, ptype, time, ip=None, mac=None, dhcp_fp=None):
+		logger.debug('naga [Device] Device %d has mac %s, ip %s paga %s', device.id, mac, ip, dhcp_fp)
 		if time > device.last_time:
 			device.last_time = time
 		device.hits += 1
@@ -53,8 +53,9 @@ class DeviceProcessor:
 			device.ip = ip
 			
 		self.broker.emit('deviceUpdate', device)
-		print "%s %s !!!" %(ip,mac)
-		return device
+		if dhcp_fp:
+			logger.debug("paga decproc up %s",dhcp_fp)
+			device.dhcp_fp=dhcp_fp
 	
 	def matchDevice(self, device, time, cand_ip=None, cand_mac=None):
 		if device.is_closed:

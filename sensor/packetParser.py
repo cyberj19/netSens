@@ -27,4 +27,5 @@ def dhcpParse(line):
     pkt['type'] = 'dhcp'
     pkt['time'] = float(line[1])
     pkt['sourceMAC'] = line[2]
+    pkt['dhcpFingerPrint'] = line[-1].replace(';',',')
     return pkt

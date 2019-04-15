@@ -31,13 +31,14 @@ class ARPPacket(Packet):
 	target_ip			= ''
 	
 	def __init__(self, id, time, listener_mac, listener_iface, network_id, source_device_id,
-				source_ip, source_mac, target_device_id, target_ip):
+				source_ip, source_mac, target_device_id, target_ip, dhcp_finger_print=None):
 		super(ARPPacket, self).__init__(id, time, 'arp', listener_mac, listener_iface, network_id)
 		self.source_device_id = source_device_id
 		self.source_ip = source_ip
 		self.source_mac = source_mac
 		self.target_device_id = target_device_id
 		self.target_ip = target_ip
+		self.dhcp_fp = dhcp_finger_print
 	
 	def update_match(self, network_id, source_device_id, target_device_id):
 		self.network_id = network_id
@@ -58,10 +59,11 @@ class DHCPPacket(Packet):
 	source_device_id	= -1
 	source_mac			= ''
 		
-	def __init__(self, id, time, listener_mac, listener_iface, network_id, source_device_id, source_mac):
+	def __init__(self, id, time, listener_mac, listener_iface, network_id, source_device_id, source_mac, dhcp_fp=None):
 		super(DHCPPacket, self).__init__(id, time, 'dhcp', listener_mac, listener_iface, network_id)
 		self.source_device_id = source_device_id
 		self.source_mac = source_mac
+		self.dhcp_fp=dhcp_fp
 		
 	def update_match(self, network_id, source_device_id):
 		self.network_id = network_id
@@ -82,7 +84,7 @@ def loadARPPacket(packet):
 						
 def loadDHCPPacket(packet):
 	return DHCPPacket(packet['id'],packet['time'],packet['listenerMAC'],packet['listenerInterface'],
-						packet['networkId'], packet['sourceDeviceId'], packet['sourceMAC'])
+						packet['networkId'], packet['sourceDeviceId'], packet['sourceMAC'], packet['dhcpFingerPrint'])
 		
 def loadPacket(packet):
 	# set defaults

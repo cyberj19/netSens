@@ -24,3 +24,10 @@ typedef struct {
 
 int is_arp(const u_char *packet);
 int is_dhcp(const u_char *packet);
+
+
+#define ETHER_HEADER_LEN 14
+#define IP_HEADER_LEN 20
+#define UDP_HEADER_LEN 8
+#define BOOTP_TILL_OPTIONS_LEN 240
+#define DHCP_OPTIONS ETHER_HEADER_LEN+IP_HEADER_LEN+UDP_HEADER_LEN+BOOTP_TILL_OPTIONS_LEN

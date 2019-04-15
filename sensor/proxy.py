@@ -15,6 +15,7 @@ logger = logging.getLogger('proxy')
 def sendJson(ip, port, url, data):
 	logger.debug('Sending data to %s:%d%s', ip, port, url)
 	encoded_data = json.dumps(data).encode('utf-8')
+	logger.error("paga fp: %s",encoded_data)
 	headers = {"Content-type": "application/json", "Accept": "text/plain"}
 	conn = httplib.HTTPConnection(ip, port=port)
 	conn.request("POST",url,encoded_data,headers)

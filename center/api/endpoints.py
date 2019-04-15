@@ -48,6 +48,18 @@ def create_blue_print(broker, db, gtw):
             }
         )
         return json.dumps({'success': True}), 200
+
+    @app.route('/api/networks/<netId>/devices/<devId>/macVendors', methods=['POST'])
+    def macVendors(netId, devId):
+        broker.emit(
+            'manualOper',
+            {
+                'type': 'macVendorsRequest',
+                'networkId': int(netId),
+                'deviceId': int(devId)
+            }
+        )
+        return json.dumps({'success': True}), 200
     
     @app.route('/api/networks/<netId>/devices/<devId>/comment', methods=['POST'])
     def commentDevice(netId, devId):

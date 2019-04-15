@@ -7,7 +7,7 @@ def loadDevice(dev):
 				dev['firstTimeSeen'], dev['lastTimeSeen'], 
 				dev['ip'], dev['mac'], dev['vendor'], 
 				dev['hits'], dev['arpHits'], dev['dhcpHits'], 
-				dev['extraData'])
+				dev['extraData'], dev['dhcpFingerPrint'])
 				
 class Device:
 	id			= -1
@@ -23,7 +23,7 @@ class Device:
 	dhcp_hits	= 0
 	comment		= ''
 	def __init__(self, id, is_closed, network_id, first_time, last_time, ip, mac, vendor, hits, arp_hits, dhcp_hits,
-					extra_data={}):
+					extra_data={}, dhcp_fp=None):
 		self.id = id
 		self.is_closed = is_closed
 		self.network_id = network_id
@@ -36,6 +36,7 @@ class Device:
 		self.arp_hits = arp_hits
 		self.dhcp_hits = dhcp_hits
 		self.extra_data = extra_data
+		self.dhcp_fp = dhcp_fp
 	def serialize(self):
 		return {
 			'id': self.id,
@@ -49,5 +50,6 @@ class Device:
 			'hits': self.hits,
 			'arpHits': self.arp_hits,
 			'dhcpHits': self.dhcp_hits,
-			'extraData': self.extra_data
+			'extraData': self.extra_data,
+			'dhcpFingerPrint': self.dhcp_fp
 		}

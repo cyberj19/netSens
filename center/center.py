@@ -9,6 +9,7 @@ from gtw import GTW
 from database import DB
 from api import WebServer
 from services import fingerbank as fbank
+from services import macvendors as macv
 
 import logging
 import traceback
@@ -17,6 +18,7 @@ logger = logging.getLogger('main')
 try:
 	broker = Broker()
 	fbank.setup(broker)
+	macv.setup(broker)
 	db = DB(broker)
 	gtw = GTW(env, broker)
 	networkFile = db.getNetworks()

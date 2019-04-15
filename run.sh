@@ -16,6 +16,6 @@ fi
 cd  $(pwd)/center
 python center.py >> /var/log/netsens/center.log 2>&1 &
 echo "run center"
-cd $(pwd)/sensor
+cd ../sensor
 python sensor.py >> /var/log/netsens/sensor.log 2>&1 &
 echo "run sensor"

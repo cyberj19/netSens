@@ -1,17 +1,19 @@
 from infra import ProcessQueue
 import client
+import logging
 
 _broker = None
+logger=logging.getLogger('main')
 
 def setup(broker):
     global _broker
     _broker = broker
     ProcessQueue(
-        'FingerBankQueue',
+        'MacVandorsQueue',
         processDevice,
         errorFunc=lambda e: printError(e),
         broker=broker,
-        topic='fingerBankAnalysis'
+        topic='macVendorsLookup'
     )
 def printError(err):
     print str(err)
@@ -19,16 +21,15 @@ def processDevice(device):
     global _broker
     if not device:
         return
-    if not device.dhcp_fp:
+    if not device.mac:
         return
-    device_data = client.interrogate(device.dhcp_fp)
-    if 'errors' in device_data:
-        return
+    device_vendor = client.interrogate(device.mac)
+    logger.debug("macvendors: %s is %s",device.mac, device_vendor)
     _broker.emit('manualOper', {
         'type': 'addDeviceData',
         'networkId': device.network_id,
         'deviceId': device.id,
         'data': {
-            'OS': device_data['device']['name']
+            'Vendor': device_vendor
         }
     })
