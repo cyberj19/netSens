@@ -8,6 +8,8 @@ def createLogger(name):
     filename = '%s/%s_%d' % (env.logs_folder,name.lower(),time.time())
     if not os.path.exists(env.logs_folder):
         os.makedirs(env.logs_folder)
+    if not os.path.exists(env.stdout_log_dir):
+	os.makedirs(env.stdout_log_dir)
     debugFormatter = logging.Formatter(
             '%(asctime)s %(name)-12s {%(filename)s:%(lineno)d} %(levelname)-8s %(message)s'
 
