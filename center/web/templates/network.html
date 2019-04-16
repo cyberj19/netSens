@@ -68,7 +68,11 @@
                     <td>{{device.isClosed}}</td>
                     <td>{{device.ip || 'Unknown'}}</td>
                     <td>{{device.mac || 'Unknown'}}</td>
-                    <td>{{device.vendor || 'Unknown'}}</td>
+                    <td>{{device.vendor || 'Unknown'}}
+			<button ng-click="macVendors(device.id)" ng-show="isNoVendorPresent(device.vendor)">
+                            MacVendors
+                        </button>
+			</td>
                     <td>{{device.hits}}</td>
                     <td>{{device.arpHits}}</td>
                     <td>{{device.dhcpHits}}</td>
@@ -89,11 +93,8 @@
                         <button ng-click="closeDevice(device.id);">
                             Close
                         </button>
-                        <button ng-click="fingerBankAnalyze(device.id)">
+                        <button ng-click="fingerBankAnalyze(device.id)" ng-show="dhcpFpPresent(device.dhcpFingerPrint)">
                             FingerBank
-                        </button>
-			<button ng-click="macVendors(device.id)">
-                            MacVendors
                         </button>
                         <!-- <button
                             ng-click="getAnalysisData(device.id);">

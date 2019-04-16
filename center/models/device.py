@@ -3,6 +3,8 @@ def loadDevice(dev):
 		dev['isClosed'] = False
 	if not 'extraData' in dev:
 		dev['extraData'] = {}
+	if not 'dhcpFingerPrint' in dev:
+		dev['dhcpFingerPrint'] = None
 	return Device(dev['id'], dev['isClosed'], dev['networkId'], 
 				dev['firstTimeSeen'], dev['lastTimeSeen'], 
 				dev['ip'], dev['mac'], dev['vendor'], 
@@ -37,6 +39,8 @@ class Device:
 		self.dhcp_hits = dhcp_hits
 		self.extra_data = extra_data
 		self.dhcp_fp = dhcp_fp
+		if dhcp_fp:
+			self.extra_data.update({"VCI": dhcp_fp[1], "Hostname": dhcp_fp[2]})
 	def serialize(self):
 		return {
 			'id': self.id,

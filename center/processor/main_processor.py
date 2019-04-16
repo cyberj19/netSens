@@ -61,7 +61,7 @@ class MainProcessor:
 		elif oper['type'] == 'clearNetwork':
 			ntw.clearNetwork()
 		elif oper['type'] == 'addDeviceData':
-			logger.debug('add data: %s', str(oper['data']))
+			logger.debug('add data: %s to device %s', str(oper['data']), str(oper['deviceId']))
 			ntw.addDeviceData(oper['deviceId'], oper['data'])
 		elif oper['type'] == 'fingerBankRequest':
 			logger.debug('fingerBankAnalysis')

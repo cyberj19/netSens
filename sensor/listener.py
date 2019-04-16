@@ -85,7 +85,7 @@ class Listener:
 					break
 				elif parts[0] == 'PACKET':
 					try:
-						packet = packetParser.parse(parts[1])
+						packet = packetParser.parse(" ".join(parts[1:]))
 						packet['id'] = self.numPackets
 						packet['listenerInterface'] = self.iface
 						packet['listenerMAC'] = self.mac

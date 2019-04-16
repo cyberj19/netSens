@@ -3,7 +3,7 @@ import logging
 logger = logging.getLogger('sensor')
 
 def parse(line):
-    line = line.split(',')
+    line = line.split('|*|')
     if line[0] == 'eth:ethertype:arp':
         logger.debug('parsing arp packet')
         return arpParse(line)
@@ -27,5 +27,6 @@ def dhcpParse(line):
     pkt['type'] = 'dhcp'
     pkt['time'] = float(line[1])
     pkt['sourceMAC'] = line[2]
-    pkt['dhcpFingerPrint'] = line[-1].replace(';',',')
+    pkt['dhcpFingerPrint'] = ([ord(c) for c in line[-1]],line[-2],line[-3])
+    logger.debug("FKK %s",line)
     return pkt

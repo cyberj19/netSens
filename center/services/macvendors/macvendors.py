@@ -24,6 +24,8 @@ def processDevice(device):
     if not device.mac:
         return
     device_vendor = client.interrogate(device.mac)
+    if 'errors' in device_vendor:
+        return
     logger.debug("macvendors: %s is %s",device.mac, device_vendor)
     _broker.emit('manualOper', {
         'type': 'addDeviceData',

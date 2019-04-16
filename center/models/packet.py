@@ -83,8 +83,9 @@ def loadARPPacket(packet):
 						packet['targetDeviceId'],packet['targetIP'])
 						
 def loadDHCPPacket(packet):
+	dhcp_fp=packet['dhcpFingerPrint'] if 'dhcpFingerPrint' in packet else None
 	return DHCPPacket(packet['id'],packet['time'],packet['listenerMAC'],packet['listenerInterface'],
-						packet['networkId'], packet['sourceDeviceId'], packet['sourceMAC'], packet['dhcpFingerPrint'])
+						packet['networkId'], packet['sourceDeviceId'], packet['sourceMAC'], dhcp_fp)
 		
 def loadPacket(packet):
 	# set defaults

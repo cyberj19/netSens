@@ -52,11 +52,15 @@ class DeviceProcessor:
 				logger.info('[Device] Device %d has new ip %s', device.id, ip)
 			device.ip = ip
 			
-		self.broker.emit('deviceUpdate', device)
 		if dhcp_fp:
 			logger.debug("paga decproc up %s",dhcp_fp)
 			device.dhcp_fp=dhcp_fp
-	
+			temp=dict(device.extra_data)
+			temp.update({"VCI": dhcp_fp[1], "Hostname": dhcp_fp[2]})
+			device.extra_data=temp
+		logger.debug("dbg3 %s %s",device.vendor,device.extra_data)
+		self.broker.emit('deviceUpdate', device)
+
 	def matchDevice(self, device, time, cand_ip=None, cand_mac=None):
 		if device.is_closed:
 			return MATCH_IMPOSSIBLE
@@ -119,6 +123,7 @@ class DeviceProcessor:
 		if bestSourceMatch > MATCH_IMPOSSIBLE:
 			logger.debug('[ADF] Matched packet %d  source to device %d. Updating...', 
 						arpPacket.id, sourceMatch.id)
+			logger.debug('FYA %s %s', sourceMatch.vendor, sourceMatch.extra_data)
 		else:
 			logger.debug('[ADF] packet %d source unmatched', arpPacket.id)
 			sourceMatch = None

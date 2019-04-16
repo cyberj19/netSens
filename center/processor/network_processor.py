@@ -42,9 +42,20 @@ class NetworkProcessor:
 	
 	def addDeviceData(self, deviceId, data):
 		with self.lock:
+			for d in self.network.devices:
+				logger.debug("FYG %s:%s",d.id,d.extra_data)
 			for device in self.network.devices:
 				if device.id == deviceId:
-					device.extra_data.update(data)
+					if 'Vendor' in data:
+						device.vendor=data['Vendor']
+					else:
+						#device.extra_data.update(data)
+						temp_dict=dict(device.extra_data)
+						temp_dict.update(data)
+						device.extra_data=temp_dict
+						for d in self.network.devices:
+							logger.debug("FYG %s:%s",d.id,d.extra_data)
+					logger.debug("gaga %s to device %s", data, device.id)
 					self.broker.emit('deviceUpdate', device)
 					break
 
@@ -113,11 +124,11 @@ class NetworkProcessor:
 		source_match, target_match = self.devProc.findARPMatch(packet)
 		logger.debug('naga src_m: %s tar_m: %s', packet.source_ip, packet.target_ip)
 		if source_match:
-			logger.debug('naga source match %s %d',source_match.id, packet.time)
+			logger.debug('naga source match %s %s %s %d',source_match.id, source_match.vendor, source_match.extra_data,packet.time)
 			source_dev_id = source_match.id
 			self.devProc.updateDevice(source_match, 'arp', packet.time, packet.source_ip, packet.source_mac)
 		else:
-			logger.debug("naga ELSE SOURCE MATCH sdi")
+			logger.debug("naga arp ELSE SOURCE MATCH sdi")
 			source_dev_id = self.getDeviceId()
 			dev = self.devProc.createDevice(source_dev_id, self.network.id, 'arp', packet.time, packet.source_ip, packet.source_mac)
 			self.network.devices.append(dev)
@@ -127,7 +138,7 @@ class NetworkProcessor:
 			self.devProc.updateDevice(target_match, 'arp', packet.time, packet.target_ip)
 		else:
 			logger.debug("naga ELSE TARGET MATCH")
-			target_dev_id =  None #self.getDeviceId()
+			target_dev_id =  self.getDeviceId()
 			#dev = self.devProc.createDevice(target_dev_id, self.network.id, 'arp', packet.time, packet.target_ip)
 			#self.network.devices.append(dev)
 		

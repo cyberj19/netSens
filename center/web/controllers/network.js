@@ -119,6 +119,12 @@ oraApp.controller('networkController', [
             )
 
         }
+	$scope.isNoVendorPresent = function(vendor){
+		return (vendor == null)
+	}
+	$scope.dhcpFpPresent = function(dhcp_fp){
+		return ((dhcp_fp != null) && (dhcp_fp[0].length != 0))
+	}
         $scope.closeDevice = function(devId) {
             let url = $scope.apis['closeDevice']
             url = url.replace('<devId>', devId.toString())

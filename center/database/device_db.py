@@ -29,4 +29,6 @@ class DeviceDB:
         
     def writeDevice(self, device):
         filt = {'id': device['id'], 'networkId': device['networkId']}
+	if device['vendor'] == "ADB Italia":
+		logger.debug("FYA %s", str(device))
         self.db['devices'].upsert(filt,device)
