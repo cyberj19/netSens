@@ -111,9 +111,9 @@ var svg = d3.select("#devicesGraph")
                     .id(function(d) {return d.id; })                     // This provide  the id of a node
                     .links(links)                                    // and this the list of links
               )
-              .force("charge", d3.forceManyBody().strength(-5))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
+              .force("charge", d3.forceManyBody().strength(-400))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
               .force("center", d3.forceCenter((screen.width - 300) / 2, 100))     // This force attracts nodes to the center of the svg area
-              .force("Collide", d3.forceCollide(10))
+              .force("Collide", d3.forceCollide(30))
               .nodes(devices)
               .on("tick", ticked);
 
