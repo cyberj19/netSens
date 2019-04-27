@@ -63,16 +63,20 @@ class DeviceProcessor:
 
 	def matchDevice(self, device, time, cand_ip=None, cand_mac=None):
 		if device.is_closed:
+			logger.debug('device %d is closed', device.id)
 			return MATCH_IMPOSSIBLE
 		if not cand_ip and not cand_mac: # nothing is known about candidate
+			logger.debug('unknown ip & mac for candidate')
 			return MATCH_IMPOSSIBLE
 		elif cand_ip and not cand_mac: # only candidate ip is known
 			# TODO: add time test
+			logger.debug('cand ip: %s, device %d/%d ip: %s', cand_ip, device.id, device.network_id, device.ip)
 			if device.ip and device.ip == cand_ip:
 				return MATCH_POSSIBLE
 			else:
 				return MATCH_IMPOSSIBLE
 		elif cand_mac and not cand_ip: # only candidate mac is known
+			logger.debug('cand mac: %s, device %d/%d mac: %s', cand_mac, device.id, device.network_id, device.mac)
 			if device.mac:
 				if device.mac == cand_mac:
 					return MATCH_CERTAIN
@@ -81,6 +85,7 @@ class DeviceProcessor:
 			else:
 				return MATCH_IMPOSSIBLE
 		else: # ip and mac are known
+			logger.debug('cand mac: %s, ip:%s; device %d/%d mac:%s, ip: %s', cand_mac, cand_ip, device.id, device.network_id, device.mac, device.ip)
 			if device.mac:
 				if device.mac == cand_mac:
 					return MATCH_CERTAIN
@@ -114,18 +119,18 @@ class DeviceProcessor:
 				targetMatch = dev            
 		
 		if bestTargetMatch > MATCH_IMPOSSIBLE:
-			logger.debug('[ADF] Matched packet %d  target to device %d', 
+			logger.debug('[ADF] Matched arp packet %d target to device %d', 
 						arpPacket.id, targetMatch.id)
 		else:
-			logger.debug('[ADF] packet %d target unmatched', arpPacket.id)
+			logger.debug('[ADF] arp packet %d target unmatched', arpPacket.id)
 			targetMatch = None
 
 		if bestSourceMatch > MATCH_IMPOSSIBLE:
-			logger.debug('[ADF] Matched packet %d  source to device %d. Updating...', 
+			logger.debug('[ADF] Matched arp packet %d  source to device %d. Updating...', 
 						arpPacket.id, sourceMatch.id)
 			logger.debug('FYA %s %s', sourceMatch.vendor, sourceMatch.extra_data)
 		else:
-			logger.debug('[ADF] packet %d source unmatched', arpPacket.id)
+			logger.debug('[ADF] arp packet %d source unmatched', arpPacket.id)
 			sourceMatch = None
 			
 		return sourceMatch, targetMatch
@@ -138,4 +143,9 @@ class DeviceProcessor:
 			if score >= bestMatch:
 				match = dev
 				bestMatch = score
+		if bestMatch > MATCH_IMPOSSIBLE:
+			logger.debug('Matched dhcp packet %d source to device %d. Updating ....', dhcpPacket.id, match.id)
+		else:
+			logger.debug('dhcp packet %d source unmatched', dhcpPacket.id)
+			match = None
 		return match

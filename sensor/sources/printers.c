@@ -49,9 +49,9 @@ void print_param_req_list(FILE *file,
 			fprintf(file,"%c",packet[j]);
 		}
 	}
-	else{
-		fprintf(file,"|*|");
-	}
+	//else{
+		//fprintf(file,"|*|");
+	//}
 
 }
 void print_arp(FILE* file,

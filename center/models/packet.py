@@ -73,6 +73,7 @@ class DHCPPacket(Packet):
 		packet = super(DHCPPacket, self).serialize()
 		packet['sourceMAC'] = self.source_mac
 		packet['sourceDeviceId'] = self.source_device_id
+		packet['dhcpFingerPrint'] = self.dhcp_fp
 		return packet
 
 def loadARPPacket(packet):

@@ -138,7 +138,7 @@ class NetworkProcessor:
 			self.devProc.updateDevice(target_match, 'arp', packet.time, packet.target_ip)
 		else:
 			logger.debug("naga ELSE TARGET MATCH")
-			target_dev_id =  self.getDeviceId()
+			target_dev_id = None #  self.getDeviceId()
 			#dev = self.devProc.createDevice(target_dev_id, self.network.id, 'arp', packet.time, packet.target_ip)
 			#self.network.devices.append(dev)
 		

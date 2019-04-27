@@ -32,4 +32,5 @@ def interrogate(dhcp_fp):
     return json.loads(data)
 
 if __name__=="__main__":
-	interrogate("1,3,6,15,26,28,51,58,59,43")
+	#interrogate("1,3,6,15,26,28,51,58,59,43")
+	interrogate("252,3,42,15,6,1")
