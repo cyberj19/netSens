@@ -1,3 +1,4 @@
+from collections import OrderedDict
 class Packet(object):
 	id 				= -1
 	time			= 0
@@ -14,14 +15,15 @@ class Packet(object):
 		self.network_id = network_id
 		
 	def serialize(self):
-		return {
-			'id': self.id, 
-			'time': self.time, 
-			'type': self.type, 
-			'listenerMAC': self.listener_mac, 
-			'listenerInterface': self.listener_iface,
-			'networkId': self.network_id
-			}
+		dct = OrderedDict()
+		dct['id'] = self.id
+		dct['time'] = self.time
+		dct['type'] = self.type
+		dct['listenerMAC'] = self.listener_mac
+		dct['listenerInterface'] = self.listener_iface
+		dct['networkId'] = self.network_id
+		return dct
+
 		
 class ARPPacket(Packet):
 	source_device_id 	= -1

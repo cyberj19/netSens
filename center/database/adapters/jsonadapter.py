@@ -2,7 +2,7 @@ import json
 import threading
 import os
 import logging
-
+from collections import OrderedDict
 logger = logging.getLogger('db')
 
 class JsonAdapter:
@@ -97,8 +97,12 @@ class Table:
         if not os.path.exists(self.file):
             self.table = []
             return
-        with open(self.file,'r') as fp:
-            self.table = json.load(fp)
+	try:
+		with open(self.file,'r') as fp:
+    			self.table = json.load(fp, object_pairs_hook=OrderedDict)
+	except Exception, e:
+		logger.warn('unable to load db file: %s', str(e))
+		self.table = []
     
     def save(self):
         with open(self.file,'w') as fp:

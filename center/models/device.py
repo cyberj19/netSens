@@ -1,3 +1,4 @@
+from collections import OrderedDict
 def loadDevice(dev):
 	if not 'isClosed' in dev:
 		dev['isClosed'] = False
@@ -42,18 +43,18 @@ class Device:
 		if dhcp_fp:
 			self.extra_data.update({"VCI": dhcp_fp[1], "Hostname": dhcp_fp[2]})
 	def serialize(self):
-		return {
-			'id': self.id,
-			'isClosed': self.is_closed,
-			'networkId': self.network_id,
-			'firstTimeSeen': self.first_time,
-			'lastTimeSeen': self.last_time,
-			'ip': self.ip,
-			'mac': self.mac,
-			'vendor': self.vendor,
-			'hits': self.hits,
-			'arpHits': self.arp_hits,
-			'dhcpHits': self.dhcp_hits,
-			'extraData': self.extra_data,
-			'dhcpFingerPrint': self.dhcp_fp
-		}
+		dct = OrderedDict()
+		dct['id'] = self.id
+		dct['isClosed'] =  self.is_closed
+		dct['networkId'] =  self.network_id
+		dct['firstTimeSeen'] =  self.first_time
+		dct['lastTimeSeen'] =  self.last_time
+		dct['ip'] = self.ip
+		dct['mac'] = self.mac
+		dct['vendor'] = self.vendor
+		dct['hits'] = self.hits
+		dct['arpHits'] = self.arp_hits
+		dct['dhcpHits'] = self.dhcp_hits
+		dct['extraData'] = self.extra_data
+		dct['dhcpFingerPrint'] = self.dhcp_fp
+		return dct

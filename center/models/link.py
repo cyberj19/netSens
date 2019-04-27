@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 def loadLink(link):
 	return Link(link['id'],link['networkId'],link['firstTimeSeen'],link['lastTimeSeen'],
 				link['sourceDeviceId'],link['targetDeviceId'],link['hits'])
@@ -20,12 +22,12 @@ class Link:
 		self.hits = hits
 		
 	def serialize(self):
-		return {
-			'id': self.id,
-			'networkId': self.network_id,
-			'firstTimeSeen': self.first_time,
-			'lastTimeSeen': self.last_time,
-			'sourceDeviceId': self.source_device_id,
-			'targetDeviceId': self.target_device_id,
-			'hits': self.hits
-		}
+		dct = OrderedDict()
+		dct['id'] = self.id
+		dct['networkId'] = self.network_id
+		dct['firstTimeSeen'] = self.first_time
+		dct['lastTimeSeen'] = self.last_time
+		dct['source'] = self.source_device_id
+		dct['target'] = self.target_device_id
+		dct['hits'] = self.hits
+		return dct

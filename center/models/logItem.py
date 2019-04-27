@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 class LogItem:
     network_id  = -1
     time        = 0
@@ -14,14 +16,14 @@ class LogItem:
         self.priority = priority
     
     def serialize(self):
-        return {
-            'networkId': self.network_id,
-            'time': self.time,
-            'source': self.source,
-            'type': self.typ,
-            'msg': self.msg,
-            'priority': self.priority
-        }
+        dct = OrderedDict()
+        dct['networkId'] = self.network_id,
+        dct['time'] = self.time,
+        dct['source'] = self.source,
+        dct['type'] = self.typ,
+        dct['msg'] = self.msg,
+        dct['priority'] = self.priority
+        return dct
 
 def loadLogItem(item):
     return LogItem(item['networkId'], item['time'],

@@ -1,4 +1,5 @@
 from listener import loadListener
+from collections import OrderedDict
 
 class Agent:
 	time		= 0
@@ -17,14 +18,14 @@ class Agent:
 		self.listeners = listeners
 	
 	def serialize(self):
-		return {
-			'time': self.time,
-			'active': self.active,
-			'ip': self.ip,
-			'mac': self.mac,
-			'port': self.port,
-			'listeners': [lstr.serialize() for lstr in self.listeners]
-		}
+		dct = OrderedDict()
+		dct['time'] = self.time
+		dct['active'] = self.active
+		dct['ip'] = self.ip
+		dct['mac'] = self.mac
+		dct['port'] = self.port
+		dct['listeners'] = [lstr.serialize() for lstr in self.listeners]
+		return dct
 		
 def loadAgent(agnt):
 	listeners = []

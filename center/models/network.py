@@ -3,6 +3,7 @@ from device import loadDevice
 from link import loadLink
 from packet import loadPacket
 from logItem import loadLogItem
+from collections import OrderedDict
 class Network:
 	id 					= -1
 	create_time			= 0
@@ -41,22 +42,22 @@ class Network:
 		self.log = log
 		
 	def serialize(self):
-		return {
-			'id': self.id,
-			'createTime': self.create_time,
-			'lastUpdateTime': self.last_update_time,
-			'defaultGTWMAC': self.default_gtw_mac,
-			'defaultGTWIP': self.default_gtw_ip,
-			'listenerCount': self.listener_count, 
-			'listeners': [lst.serialize() for lst in self.listeners],
-			'deviceCount': self.device_count,
-			'devices': [dev.serialize() for dev in self.devices],
-			'linkCount': self.link_count,
-			'links': [link.serialize() for link in self.links],
-			'packets': [pkt.serialize() for pkt in self.packets],
-			'log': [item.serialize() for item in self.log]
-		}
-		
+		dct =OrderedDict()
+		dct['id'] = self.id
+		dct['createTime'] = self.create_time
+		dct['lastUpdateTime'] = self.last_update_time
+		dct['defaultGTWMAC'] = self.default_gtw_mac
+		dct['defaultGTWIP'] = self.default_gtw_ip
+		dct['listenerCount'] = self.listener_count
+		dct['listeners'] = [lst.serialize() for lst in self.listeners]
+		dct['deviceCount'] = self.device_count
+		dct['devices'] = [dev.serialize() for dev in self.devices]
+		dct['linkCount'] = self.link_count
+		dct['links'] = [link.serialize() for link in self.links]
+		dct['packets'] = [pkt.serialize() for pkt in self.packets]
+		dct['log'] = [item.serialize() for item in self.log]
+		return dct
+
 
 def loadNetwork(network):
 	listeners = []

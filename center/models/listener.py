@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 class Listener:
 	id 			= -1
 	agent_active= False
@@ -26,20 +28,20 @@ class Listener:
 		self.default_gtw = default_gtw
 	
 	def serialize(self):
-		return {
-			'id': self.id,
-			'agentActive': self.agent_active,
-			'agentMAC': self.agent_mac,
-			'agentPort': self.agent_port,
-			'networkId': self.network_id,
-			'mac': self.mac, 
-			'interface': self.interface,
-			'connected': self.connected,
-			'numPackets': self.num_packets,
-			'lastPacketTime': self.last_packet,
-			'lastError': self.last_error,
-			'defaultGTW': self.default_gtw
-		}
+		dct=OrderedDict()
+		dct['id']= self.id
+		dct['agentActive'] = self.agent_active
+		dct['agentMAC'] = self.agent_mac
+		dct['agentPort'] = self.agent_port
+		dct['networkId'] = self.network_id
+		dct['mac'] = self.mac
+		dct['interface'] = self.interface
+		dct['connected'] = self.connected
+		dct['numPackets'] = self.num_packets
+		dct['lastPacketTime'] = self.last_packet
+		dct['lastError'] = self.last_error
+		dct['defaultGTW'] = self.default_gtw
+		return dct
 
 def loadListener(lstr):
 	return Listener(lstr['id'],

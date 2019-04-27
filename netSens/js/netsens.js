@@ -5,7 +5,7 @@ function buildHtmlTable(selector,devices) {
     for (var colIndex = 0; colIndex < columns.length; colIndex++) {
       var cellValue = devices[i][columns[colIndex]];
 	  console.log('in');
-	  if ((colIndex == 5) || (colIndex == columns.length - 1))
+	  if ((colIndex == 3) || (colIndex == 4))
 	  {
 		var date = new Date(cellValue*1000);
 		var minutes = "0" + date.getMinutes();
