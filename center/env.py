@@ -6,7 +6,7 @@ stdout_log_dir      = '/var/log/netsens'
 db_type             = 'json'
 
 # for json
-db_folder           = '../data/db'
+db_folder           = '../netSens/data/db'
 
 # flask
 flask_port          = 9000

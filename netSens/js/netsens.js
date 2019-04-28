@@ -52,9 +52,9 @@ function loadJSON(file,callback) {
     };
     xobj.send(null);
  }
-loadJSON('devices.json',function(response) {
+loadJSON('data/db/devices.json',function(response) {
     var devices = JSON.parse(response);
-    loadJSON('links.json',function(response) {
+    loadJSON('data/db/links.json',function(response) {
     var links = JSON.parse(response);
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get('device');
