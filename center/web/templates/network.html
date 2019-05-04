@@ -123,7 +123,7 @@
                     <tr ng-repeat="arp in analysisDevice.arps">
                         <td>{{arp.eventId}}</td>
                         <td>{{arp.time}}</td>
-                        <td>{{arp.sourceDeviceId === analysisId ? 'From':'To'}}</td>
+                        <td>{{arp.source === analysisId ? 'From':'To'}}</td>
                         <td>{{arp.sourceIP + ';' + arp.sourceMAC}}</td>
                         <td>{{arp.targetIP}}</td>
                     </tr>
@@ -153,10 +153,10 @@
                 <tr ng-repeat="link in network.links">
                     <td>{{link.id}}</td>
                     <td ng-style="trackIds[0] === link.id && {'background-color': 'blue'}">
-                        {{link.sourceDeviceId}}
+                        {{link.source}}
                     </td>
                     <td ng-style="trackIds[0] === link.id && {'background-color': 'red'}">
-                        {{link.targetDeviceId}}
+                        {{link.target}}
                     </td>
                     <td>{{link.numHits}}</td>
                     <td>{{timeConverter(link.lastTimeSeen)}}</td>

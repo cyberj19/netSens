@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 def loadLink(link):
 	return Link(link['id'],link['networkId'],link['firstTimeSeen'],link['lastTimeSeen'],
-				link['sourceDeviceId'],link['targetDeviceId'],link['hits'])
+				link['source'],link['target'],link['hits'])
 class Link:
 	id					= -1
 	network_id			= -1
