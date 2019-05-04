@@ -19,3 +19,6 @@ echo "run center"
 cd ../sensor
 python sensor.py >> /var/log/netsens/sensor.log 2>&1 &
 echo "run sensor"
+cd ../netSens
+python -m SimpleHTTPServer 2000 >> /var/log/netsens/bootstrap.log 2>&1 &
+echo "run graph"
