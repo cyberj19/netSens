@@ -121,7 +121,7 @@ function loadJSON(file,callback) {
  }
 var devices="";
 var selectedDevice ="";
-loadJSON('devices1.json',function(response) {
+loadJSON('devices.json',function(response) {
     devices = JSON.parse(response);
 	console.log(devices);
     loadJSON('links.json',function(response) {
