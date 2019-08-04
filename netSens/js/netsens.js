@@ -158,9 +158,9 @@ var svg = d3.select("#devicesGraph")
             .enter()
             .append("circle")
               .attr("id", function(d){return d.id})
-			  .attr("r", function(d) {return Math.max(6,Math.min(d.hits, 500/devices.length))})
+			  .attr("r", function(d) {return Math.max(4,Math.min(d.hits, 500/devices.length,20))})
               .style("stroke", "#25a9af")
-			  .style("stroke-width",function(d) {return Math.max(1,d.hits/20)})
+			  .style("stroke-width",function(d) {return Math.max(1,Math.min(d.hits/50,3))})
 			  .style("fill","#ffffff")
 			  .style("cursor","pointer")
               .on("mouseover", function(d) {
@@ -190,9 +190,9 @@ var svg = d3.select("#devicesGraph")
                     .id(function(d) {return d.id; })                     // This provide  the id of a node
                     .links(links)                                    // and this the list of links
               )
-              //.force("charge", d3.forceManyBody().strength(function(d){return 0}))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
-              .force("center", d3.forceCenter((screen.width-300) / 2 - 20, (screen.height-280) /2))     // This force attracts nodes to the center of the svg area
-              .force("Collide", d3.forceCollide(function(d) {return Math.max(10,Math.min(d.hits, 1000/devices.length)) + 20}))
+              .force("charge", d3.forceManyBody().strength(function(d){return -10}))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
+			  .force("center", d3.forceCenter((screen.width-300) / 2 - 20, (screen.height-280) /2))     // This force attracts nodes to the center of the svg area
+              .force("Collide", d3.forceCollide(function(d) {return Math.max(6,Math.min(d.hits, 500/devices.length)) + 20}))
               .nodes(devices)
               .on("tick", ticked);
 
