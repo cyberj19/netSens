@@ -39,7 +39,7 @@ class GTW:
 		else:
 			raise Exception('Unknown sensor with this mac')
 	
-	def disconnectInterface(self, smac, guid):
+	def disconnectSSource(self, smac, guid):
 		if smac in self.agents:
 			logger.info('Disconnecting agent %s on source %s', smac, guid)
 			self.agents[smac].disconnect(guid)
