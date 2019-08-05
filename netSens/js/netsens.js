@@ -139,6 +139,20 @@ var svg = d3.select("#devicesGraph")
 .append("svg")
   .attr("width", screen.width - 300)
   .attr("height", screen.height - 280);
+var dragDrop = d3.drag().on('start', function (node) {
+		  node.fx = node.x
+		  node.fy = node.y
+		}).on('drag', function (node) {
+		  simulation.alphaTarget(0.7).restart()
+		  node.fx = d3.event.x
+		  node.fy = d3.event.y
+		}).on('end', function (node) {
+		  if (!d3.event.active) {
+			simulation.alphaTarget(0)
+		  }
+		  node.fx = null
+		  node.fy = null
+		})  
 
           // Initialize the links
           var link = svg
@@ -159,7 +173,8 @@ var svg = d3.select("#devicesGraph")
             .append("circle")
               .attr("id", function(d){return d.id})
 			  .attr("r", function(d) {return Math.max(4,Math.min(d.hits, 500/devices.length,20))})
-              .style("stroke", "#25a9af")
+          .call(dragDrop)    
+	  .style("stroke", "#25a9af")
 			  .style("stroke-width",function(d) {return Math.max(1,Math.min(d.hits/50,3))})
 			  .style("fill","#ffffff")
 			  .style("cursor","pointer")
