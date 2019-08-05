@@ -37,7 +37,29 @@ function findElement(arr, propName, propValue) {
   // will return undefined if not found; you could return a default instead
 }
 
-
+function isNeighborLink(node, link) {
+  return link.target.id === node.id || link.source.id === node.id
+}
+function getNodeColor(node, neighbors) {
+  if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+	return 'red'
+  }
+  return 'green';
+}
+function getLinkColor(node, link) {return isNeighborLink(node, link) ? 'green' : 'yellow'
+}
+function getNeighbors(node) {
+  return links.reduce(function (neighbors, link) {
+      if (link.target.id === node.id) {
+        neighbors.push(link.source.id)
+      } else if (link.source.id === node.id) {
+        neighbors.push(link.target.id)
+      }
+      return neighbors
+    },
+    [node.id]
+  )
+}
 function buildHtmlTable(selector,devices) {
   var columns = addAllColumnHeaders(devices, selector);
   for (var i = 0; i < devices.length; i++) {
@@ -107,6 +129,17 @@ function addAllColumnHeaders(devices, selector) {
   $(selector).append(headerTr$);
   return columnSet;
 }
+
+function test(d) {
+				//	//$("#"+d.id).css('fill','#25a9af');
+                    div	.transition()
+						.duration(200)
+						.style("opacity", .9)
+                    div	.html(d.mac)
+						.style("left", (d.x + d.hits) + "px")
+						.style("top", (d.y + d.hits) + "px");		
+                    };
+
 function loadJSON(file,callback) {
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
@@ -121,11 +154,12 @@ function loadJSON(file,callback) {
  }
 var devices="";
 var selectedDevice ="";
-loadJSON('data/db/devices.json',function(response) {
+var links = "";
+loadJSON('js/data/db/devices.json',function(response) {
     devices = JSON.parse(response);
 	console.log(devices);
-    loadJSON('data/db/links.json',function(response) {
-    var links = JSON.parse(response);
+    loadJSON('js/data/db/links.json',function(response) {
+    links = JSON.parse(response);
 	console.log(links);
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get('device');
@@ -139,6 +173,7 @@ var svg = d3.select("#devicesGraph")
 .append("svg")
   .attr("width", screen.width - 300)
   .attr("height", screen.height - 280);
+
 var dragDrop = d3.drag().on('start', function (node) {
 		  node.fx = node.x
 		  node.fy = node.y
@@ -153,7 +188,7 @@ var dragDrop = d3.drag().on('start', function (node) {
 		  node.fx = null
 		  node.fy = null
 		})  
-
+  
           // Initialize the links
           var link = svg
             .selectAll("line")
@@ -173,31 +208,22 @@ var dragDrop = d3.drag().on('start', function (node) {
             .append("circle")
               .attr("id", function(d){return d.id})
 			  .attr("r", function(d) {return Math.max(4,Math.min(d.hits, 500/devices.length,20))})
-          .call(dragDrop)    
-	  .style("stroke", "#25a9af")
+   			  .call(dragDrop)
+			  .style("stroke", "#25a9af")
 			  .style("stroke-width",function(d) {return Math.max(1,Math.min(d.hits/50,3))})
 			  .style("fill","#ffffff")
 			  .style("cursor","pointer")
-              .on("mouseover", function(d) {
-					$("#"+d.id).css('fill','#25a9af');
-                    div.transition()
-                        .duration(200)
-                        .style("opacity", .9)
-                    div	.html(d.mac)
-                        .style("left", (d.x + d.hits) + "px")
-                        .style("top", (d.y + d.hits) + "px");
-						
-                    })
-                .on("mouseout", function(d) {
-					$("#"+d.id).css('fill','#ffffff');
+			  .on("mouseover", test)
+			  .on("mouseout", function(d) {
                     div.transition()
                         .duration(500)
                         .style("opacity", 0);
                 })
-                .on("click",function(d) {
-				selectedDevice = findElement(devices,"mac",d.mac);
-				$("#btnt").click();
-                });
+				.on("click",selectNode);
+                //.on("click",function(d) {
+				//selectedDevice = findElement(devices,"mac",d.mac);
+				//$("#btnt").click();
+                //});
 
           // Let's list the force we wanna apply on the network
           var simulation = d3.forceSimulation(devices)                 // Force algorithm is applied to data.nodes
@@ -209,9 +235,16 @@ var dragDrop = d3.drag().on('start', function (node) {
 			  .force("center", d3.forceCenter((screen.width-300) / 2 - 20, (screen.height-280) /2))     // This force attracts nodes to the center of the svg area
               .force("Collide", d3.forceCollide(function(d) {return Math.max(6,Math.min(d.hits, 500/devices.length)) + 20}))
               .nodes(devices)
-              .on("tick", ticked);
-
-
+              .on("tick", ticked);		
+function selectNode(selectedNode) {
+  var neighbors = getNeighbors(selectedNode)
+  console.log(neighbors);
+  // we modify the styles to highlight selected nodes
+  console.log(node);
+  console.log(getNodeColor(selectedNode, neighbors));
+  node.style('fill', function (n) { return getNodeColor(n, neighbors) })
+  link.style('stroke', function (l) { return getLinkColor(selectedNode, l) })
+}
           // This function is run at each iteration of the force algorithm, updating the nodes position.
           function ticked() {
             link
