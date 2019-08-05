@@ -36,7 +36,7 @@ def createLogger(name):
     logger.setLevel(logging.DEBUG)
 
 
-logs = ['db','processor','main','gtw','web']
+logs = ['db','processor','main','gtw','web', 'api']
 
 for log in logs:
     createLogger(log)

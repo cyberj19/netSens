@@ -2,7 +2,7 @@ import json
 import threading
 import os
 import logging
-from collections import OrderedDict
+
 logger = logging.getLogger('db')
 
 class JsonAdapter:
@@ -79,6 +79,20 @@ class Table:
             docs = self.table
         return docs
 
+    def delete(self, filter=None):
+        with self.lock:
+            if self.closed:
+                logger.warning('Data was not updated in DB')
+                return
+            self.get()
+            if filter:
+                for i, doc in enumerate(self.table):
+                    if _match_filter(doc, filter):
+                        del self.table[i]
+            else:
+                self.table = []
+            self.save()
+
     def upsert(self, filter, newDoc):
         with self.lock:
             if self.closed:
@@ -97,12 +111,8 @@ class Table:
         if not os.path.exists(self.file):
             self.table = []
             return
-	try:
-		with open(self.file,'r') as fp:
-    			self.table = json.load(fp, object_pairs_hook=OrderedDict)
-	except Exception, e:
-		logger.warn('unable to load db file: %s', str(e))
-		self.table = []
+        with open(self.file,'r') as fp:
+            self.table = json.load(fp)
     
     def save(self):
         with open(self.file,'w') as fp:

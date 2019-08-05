@@ -1,4 +1,4 @@
-from listener import loadListener
+from source import loadSource
 from device import loadDevice
 from link import loadLink
 from packet import loadPacket
@@ -11,8 +11,9 @@ class Network:
 	default_gtw_mac 	= None
 	default_gtw_ip  	= None
 	
-	listener_count 		= 0
-	listeners 			= []
+	source_mode			= ''
+	source_count 		= 0
+	sources 			= []
 	device_count		= 0
 	devices				= []
 	link_count			= 0
@@ -24,7 +25,7 @@ class Network:
 	def __init__(self, id, 
 				create_time, last_update_time, 
 				default_gtw_mac, default_gtw_ip, 
-				listener_count, listeners, 
+				source_mode, source_count, sources, 
 				device_count, devices, 
 				link_count, links, packets, log):
 		self.id = id
@@ -32,8 +33,9 @@ class Network:
 		self.last_update_time = last_update_time
 		self.default_gtw_mac = default_gtw_mac
 		self.default_gtw_ip = default_gtw_ip
-		self.listener_count = listener_count
-		self.listeners = listeners
+		self.source_mode = source_mode
+		self.source_count = source_count
+		self.sources = sources
 		self.device_count = device_count
 		self.devices = devices
 		self.link_count = link_count
@@ -48,8 +50,9 @@ class Network:
 		dct['lastUpdateTime'] = self.last_update_time
 		dct['defaultGTWMAC'] = self.default_gtw_mac
 		dct['defaultGTWIP'] = self.default_gtw_ip
-		dct['listenerCount'] = self.listener_count
-		dct['listeners'] = [lst.serialize() for lst in self.listeners]
+		dct['sourceMode'] = self.source_mode
+		dct['sourceCount'] = self.source_count
+		dct['sources'] = [src.serialize() for src in self.sources]
 		dct['deviceCount'] = self.device_count
 		dct['devices'] = [dev.serialize() for dev in self.devices]
 		dct['linkCount'] = self.link_count
@@ -60,9 +63,9 @@ class Network:
 
 
 def loadNetwork(network):
-	listeners = []
-	for lst in network['listeners']:
-		listeners.append(loadListener(lst))
+	sources = []
+	for src in network['sources']:
+		sources.append(loadSource(src))
 	
 	devices = []
 	for dev in network['devices']:
@@ -81,6 +84,8 @@ def loadNetwork(network):
 		for item in network['log']:
 			log.append(loadLogItem(item))
 
+	if not 'sourceMode' in network:
+		network['sourceMode'] = 'live'
 	if not 'createTime' in network:
 		network['createTime'] = 0
 	if not 'lastUpdateTime' in network:
@@ -90,7 +95,7 @@ def loadNetwork(network):
 					network['lastUpdateTime'],
 					network['defaultGTWMAC'], 
 					network['defaultGTWIP'], 
-					network['listenerCount'], listeners, 
+					network['sourceMode'], network['sourceCount'], sources, 
 					network['deviceCount'], devices, 
 					network['linkCount'], links, packets,
 					log)

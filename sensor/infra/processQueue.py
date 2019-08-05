@@ -3,7 +3,8 @@ import time
 
 class ProcessQueue:
     def __init__(self, name, procFunc,
-                preFunc=None, 
+                preFunc=None,
+                maxCapacity=-1, 
                 errorFunc=None, 
                 bulkMode=False,
                 requeueOnFail=False,
@@ -11,6 +12,7 @@ class ProcessQueue:
                 topic=None,
                 interval=-1):
         self.procFunc = procFunc
+        self.maxCapacity = maxCapacity
         self.preFunc = preFunc
         self.errorFunc = errorFunc
         self.bulkMode = bulkMode
@@ -38,6 +40,10 @@ class ProcessQueue:
                 if self.errorFunc:
                     self.errorFunc(e)
                 return
+        if self.maxCapacity > 0:
+            if len(self.queue) == self.maxCapacity:
+                self.queue.pop(0)
+                
         with self.lock:
             self.queue.append(data)
     
@@ -52,7 +58,7 @@ class ProcessQueue:
                 else:
                     data = self.queue[0]
                     self.queue = self.queue[1:]
-            
+
             try:
                 self.procFunc(data)
             except Exception, e:

@@ -61,7 +61,7 @@ class MainProcessor:
 		elif oper['type'] == 'clearNetwork':
 			ntw.clearNetwork()
 		elif oper['type'] == 'addDeviceData':
-			logger.debug('add data: %s to device %s', str(oper['data']), str(oper['deviceId']))
+			logger.debug('add data: %s to device %d', str(oper['data']), oper['deviceId'])
 			ntw.addDeviceData(oper['deviceId'], oper['data'])
 		elif oper['type'] == 'fingerBankRequest':
 			logger.debug('fingerBankAnalysis')
@@ -73,25 +73,25 @@ class MainProcessor:
 			self.broker.emit('macVendorsLookup', dev)
 			
 	def processAgentStatus(self, agent):
-		for lstr in agent.listeners:
-			self.processListener(lstr, agent.time)
-
-	def processListener(self, lstr, time):
+		logger.debug('Processing agent status')
+		logger.debug('agent: %s' % agent.serialize())
+		for src in agent.sources:
+			self.processSource(src, agent.time)
+		
+	def processSource(self, source, time):
 		for ntwProc in self.networkProcs:
-			if ntwProc.matchListener(lstr):
-				logger.info('Matched listener to network %d', ntwProc.network.id)
-				lstr.network_id = ntwProc.network.id
-				self.broker.emit('listenerUpdate', lstr)
+			if ntwProc.matchSource(source):
+				logger.info('Matched source to network %d', ntwProc.network.id)
+				source.network_id = ntwProc.network.id
+				self.broker.emit('listenerUpdate', source)
 				break
 		else:
 			with self.serializeLock:
-				network = self.createNewNetwork(time, lstr)
+				network = self.createNewNetwork(time, source)
 			logger.info('Created new network %d', network.id)
 
 	def processPacket(self, packet):
 		logger.debug('Matching packet %s', packet.type)
-		if packet.type =='dhcp':
-			logger.debug('paga DHCP: %s', packet.dhcp_fp)
 		for ntwProcessor in self.networkProcs:
 			logger.debug('Matching packet %s to network %d', packet.type, ntwProcessor.network.id)
 			if ntwProcessor.matchPacket(packet):
@@ -99,25 +99,24 @@ class MainProcessor:
 				with self.serializeLock:
 					ntwProcessor.processPacket(packet)
 	
-	def createNewNetwork(self, time, listener):
+	def createNewNetwork(self, time, source):
 		nid = self.network_count
 		self.network_count += 1
 		network = Network(id=nid, 
 						  create_time=time, 
 						  last_update_time=time, 
 						  default_gtw_mac=None, 
-						  default_gtw_ip=listener.default_gtw, 
-						  listener_count=1, listeners=[listener], 
+						  default_gtw_ip=None, 
+						  source_mode=source.mode, source_count=1, sources=[source], 
 						  device_count=0, devices=[], 
 						  link_count=0, links=[], 
 						  packets=[],
 						  log=[])
-		
 		self.networkProcs.append(NetworkProcessor(network, self.broker))
 		self.broker.emit('networkUpdate', network)
 
-		listener.network_id = nid
-		self.broker.emit('listenerUpdate', listener)
+		source.network_id = nid
+		self.broker.emit('listenerUpdate', source)
 		return network
 	
 	def processMajorChange(self, network):

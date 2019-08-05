@@ -1,4 +1,6 @@
-<h1 style="background-color: green">
+<h1 
+    ng-style="{'background-color': network.sourceMode == 'live' ? 'green':'purple'">
+    
     Network {{network.id}}
     <a href="#" ng-click="exitNetwork();">X</a>
 </h1>
@@ -123,9 +125,9 @@
                     <tr ng-repeat="arp in analysisDevice.arps">
                         <td>{{arp.eventId}}</td>
                         <td>{{arp.time}}</td>
-                        <td>{{arp.source === analysisId ? 'From':'To'}}</td>
-                        <td>{{arp.sourceIP + ';' + arp.sourceMAC}}</td>
-                        <td>{{arp.targetIP}}</td>
+                        <td>{{arp.sourceDeviceId === analysisId ? 'From':'To'}}</td>
+                        <td>{{arp.sourceDeviceIP + ';' + arp.sourceDeviceMAC}}</td>
+                        <td>{{arp.targetDeviceIP}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -153,10 +155,10 @@
                 <tr ng-repeat="link in network.links">
                     <td>{{link.id}}</td>
                     <td ng-style="trackIds[0] === link.id && {'background-color': 'blue'}">
-                        {{link.source}}
+                        {{link.sourceDeviceId}}
                     </td>
                     <td ng-style="trackIds[0] === link.id && {'background-color': 'red'}">
-                        {{link.target}}
+                        {{link.targetDeviceId}}
                     </td>
                     <td>{{link.numHits}}</td>
                     <td>{{timeConverter(link.lastTimeSeen)}}</td>

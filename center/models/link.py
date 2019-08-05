@@ -1,8 +1,6 @@
-from collections import OrderedDict
-
 def loadLink(link):
 	return Link(link['id'],link['networkId'],link['firstTimeSeen'],link['lastTimeSeen'],
-				link['source'],link['target'],link['hits'])
+				link['sourceDeviceId'],link['targetDeviceId'],link['hits'])
 class Link:
 	id					= -1
 	network_id			= -1
@@ -27,7 +25,7 @@ class Link:
 		dct['networkId'] = self.network_id
 		dct['firstTimeSeen'] = self.first_time
 		dct['lastTimeSeen'] = self.last_time
-		dct['source'] = self.source_device_id
-		dct['target'] = self.target_device_id
+		dct['sourceDeviceId'] = self.source_device_id
+		dct['targetDeviceId'] = self.target_device_id
 		dct['hits'] = self.hits
 		return dct

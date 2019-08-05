@@ -1,9 +1,21 @@
 oraApp.controller(
     'overviewController',
-    ['$scope', '$rootScope', function($scope, $rootScope) {
+    ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
         $scope.networks = [];
         $scope.listeners = [];
         $scope.view = true;
+
+        $scope.uploadFile = function() {
+            var f = document.getElementById('file').files[0];
+            var fd = new FormData();
+            fd.append("file", f);
+            var config = { headers: { 'Content-Type': undefined },
+                           transformResponse: angular.identity
+                         };
+            $http.post('/playback', fd, config).success(() => {
+
+            });
+        }
         $scope.filterListeners = function(listeners) {
             let flisteners = [];
             for (let lstr of listeners) {
@@ -12,21 +24,6 @@ oraApp.controller(
             }
             return flisteners;
         }
-        // $scope.getListeners = function(sensors) {
-        //     let listeners = [];
-        //     for (let sensor of sensors) {
-        //         for (let lstr of sensor.listeners) {
-        //             listeners.push({
-        //                 'sensorMac': sensor.mac,
-        //                 'sensorPort': sensor.port,
-        //                 'interface': lstr.interface,
-        //                 'lastPacketTime': lstr.lastPacketTime,
-        //                 'connected': lstr.connected
-        //             })
-        //         }
-        //     }
-        //     return listeners;
-        // }
 
         setInterval(() => {
             if (!$scope.view) return;
@@ -52,10 +49,11 @@ oraApp.controller(
             $scope.view = false;
         };
 
-        $scope.connectListener = function(mac, iface) {
-            let url = '/api/sensors/<mac>/<iface>/connect';
+        $scope.connectListener = function(mac, guid) {
+            let url = '/api/sensors/<mac>/<guid>/connect';
             url = url.replace('<mac>', mac);
-            url = url.replace('<iface>', iface)
+            url = url.replace('<guid>', guid)
+            console.log(url);
 
             axios.post(url).then(
                 function(response) {
@@ -68,10 +66,10 @@ oraApp.controller(
         }
 
         
-        $scope.disconnectListener = function(mac, iface) {
-            let url = '/api/sensors/<mac>/<iface>/disconnect';
+        $scope.disconnectListener = function(mac, guid) {
+            let url = '/api/sensors/<mac>/<guid>/disconnect';
             url = url.replace('<mac>', mac);
-            url = url.replace('<iface>', iface)
+            url = url.replace('<guid>', guid)
 
             axios.post(url).then(
                 function(response) {

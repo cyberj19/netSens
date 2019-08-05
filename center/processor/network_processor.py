@@ -42,20 +42,11 @@ class NetworkProcessor:
 	
 	def addDeviceData(self, deviceId, data):
 		with self.lock:
-			for d in self.network.devices:
-				logger.debug("FYG %s:%s",d.id,d.extra_data)
 			for device in self.network.devices:
 				if device.id == deviceId:
-					if 'Vendor' in data:
-						device.vendor=data['Vendor']
-					else:
-						#device.extra_data.update(data)
-						temp_dict=dict(device.extra_data)
-						temp_dict.update(data)
-						device.extra_data=temp_dict
-						for d in self.network.devices:
-							logger.debug("FYG %s:%s",d.id,d.extra_data)
-					logger.debug("gaga %s to device %s", data, device.id)
+					temp_dict = dict(device.extra_data)
+					temp_dict.update(data)
+					device.extra_data = temp_dict
 					self.broker.emit('deviceUpdate', device)
 					break
 
@@ -74,15 +65,18 @@ class NetworkProcessor:
 		logger.debug('User added comment to device %d/%d', self.network.id, deviceId)
 		self.addDeviceData(deviceId, {'comment': comment})
 
-	def matchListener(self, listener):
-		for lstr in self.network.listeners:
-			if lstr.mac == listener.mac and lstr.interface == listener.interface:
+	def matchSource(self, source):
+		for src in self.network.sources:
+			if src.guid == source.guid:
 				return True
 		return False
 		
+	def matchPlaybackSource(self, source):
+		return self.matchSource(source)
+
 	def matchPacket(self, packet):
-		for lstr in self.network.listeners:
-			if lstr.mac == packet.listener_mac and lstr.interface == packet.listener_iface:
+		for src in self.network.sources:
+			if src.guid == packet.source_guid:
 				return True
 		return False
 	
@@ -96,14 +90,17 @@ class NetworkProcessor:
 		self.broker.emit('packetProcessed', packet)
 			
 	def processDHCPPacket(self, packet):
+		logger.debug('processing dhcp packet: %s', packet.serialize())
 		source_match = self.devProc.findDHCPMatch(packet)
-		logger.debug("paga packet ntwproc %s",packet.dhcp_fp)
+		
 		if source_match:
+			logger.debug('found source match: %s', source_match.serialize())
 			source_dev_id = source_match.id
-			self.devProc.updateDevice(source_match, 'dhcp', packet.time, None, packet.source_mac, packet.dhcp_fp)
+			self.devProc.updateDevice(source_match, 'dhcp', packet.time, None, packet.source_device_mac, packet.dhcp_fp)
 		else:
+			logger.debug('no source match found. creating new device')
 			source_dev_id = self.getDeviceId()
-			dev = self.devProc.createDevice(source_dev_id, self.network.id, 'dhcp', packet.time, None, packet.source_mac, packet.dhcp_fp)
+			dev = self.devProc.createDevice(source_dev_id, self.network.id, 'dhcp', packet.time, None, packet.source_device_mac, packet.dhcp_fp)
 			self.network.devices.append(dev)
 
 		packet.update_match(self.network.id, source_dev_id)
@@ -116,31 +113,27 @@ class NetworkProcessor:
 		self.updateLinksARP(packet)
 		self.network.packets.append(packet)
 		self.network.last_update_time = packet.time
-		if self.network.default_gtw_ip == packet.source_ip:
-			self.network.default_gtw_mac = packet.source_mac
+		if self.network.default_gtw_ip == packet.source_device_ip:
+			self.network.default_gtw_mac = packet.source_device_mac
 			self.broker.emit('networkMajorChange', self)
 		
 	def updateDevicesARP(self, packet):
 		source_match, target_match = self.devProc.findARPMatch(packet)
-		logger.debug('naga src_m: %s tar_m: %s', packet.source_ip, packet.target_ip)
+		
 		if source_match:
-			logger.debug('naga source match %s %s %s %d',source_match.id, source_match.vendor, source_match.extra_data,packet.time)
 			source_dev_id = source_match.id
-			self.devProc.updateDevice(source_match, 'arp', packet.time, packet.source_ip, packet.source_mac)
+			self.devProc.updateDevice(source_match, 'arp', packet.time, packet.source_device_ip, packet.source_device_mac)
 		else:
-			logger.debug("naga arp ELSE SOURCE MATCH sdi")
 			source_dev_id = self.getDeviceId()
-			dev = self.devProc.createDevice(source_dev_id, self.network.id, 'arp', packet.time, packet.source_ip, packet.source_mac)
+			dev = self.devProc.createDevice(source_dev_id, self.network.id, 'arp', packet.time, packet.source_device_ip, packet.source_device_mac)
 			self.network.devices.append(dev)
 		if target_match:
-			logger.debug("naga TARGET MATCH %s",target_match.id)
 			target_dev_id = target_match.id
-			self.devProc.updateDevice(target_match, 'arp', packet.time, packet.target_ip)
+			self.devProc.updateDevice(target_match, 'arp', packet.time, packet.target_device_ip, None)
 		else:
-			logger.debug("naga ELSE TARGET MATCH")
-			target_dev_id = source_dev_id #  self.getDeviceId()
-			#dev = self.devProc.createDevice(target_dev_id, self.network.id, 'arp', packet.time, packet.target_ip)
-			#self.network.devices.append(dev)
+			target_dev_id = self.getDeviceId()
+			dev = self.devProc.createDevice(target_dev_id, self.network.id, 'arp', packet.time, packet.target_device_ip, None)
+			self.network.devices.append(dev)
 		
 		packet.update_match(self.network.id, source_dev_id, target_dev_id)
 	

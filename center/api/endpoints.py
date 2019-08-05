@@ -5,17 +5,34 @@ import os
 
 logger = logging.getLogger('api')
 
-def create_blue_print(broker, db, gtw):
+def create_blue_print(env, broker, db, gtw):
     app = Blueprint('netSens_api', __name__)
 
+    @app.route('/playback', methods=['POST'])
+    def play():
+        logger.debug('%s', dir(request.files))
+        logger.debug('%s', dir(request))
+        if 'file' not in request.files:
+            logger.error('No file in request')
+            return json.dumps({'success': False, 'error': 'No file selected'}), 400
+        file = request.files['file']
+        if file.filename == '':
+            logger.error('No file in request')
+            return json.dumps({'success': False, 'error': 'No file selected'}), 400
+        logger.info('Playing file: %s', file.filename)
+        file.save(os.path.join(env.pbak_folder, file.filename))
+        gtw.startPlayback(file.filename)
+        return json.dumps({'success': True}), 200
     @app.route('/api/overview', methods=['GET'])
     def getOverview():
         networks = db.getNetworks(detailed=False)
         listeners = db.getListeners()
+        agents = db.getAgents()
         return json.dumps({
             'success': True,
             'networks': networks,
-            'listeners': listeners
+            'listeners': listeners,
+            'agents': agents
             })
         
     @app.route('/api/networks/<netId>', methods=['GET'])
@@ -43,18 +60,6 @@ def create_blue_print(broker, db, gtw):
             'manualOper',
             {
                 'type': 'fingerBankRequest',
-                'networkId': int(netId),
-                'deviceId': int(devId)
-            }
-        )
-        return json.dumps({'success': True}), 200
-
-    @app.route('/api/networks/<netId>/devices/<devId>/macVendors', methods=['POST'])
-    def macVendors(netId, devId):
-        broker.emit(
-            'manualOper',
-            {
-                'type': 'macVendorsRequest',
                 'networkId': int(netId),
                 'deviceId': int(devId)
             }
@@ -100,18 +105,18 @@ def create_blue_print(broker, db, gtw):
     #     req = json.loads(request.data)
     #     return json.dumps({'success': True})
 		
-    @app.route('/api/sensors/<smac>/<intr>/connect', methods=['POST'])
-    def connectSensor(smac, intr):
+    @app.route('/api/sensors/<smac>/<guid>/connect', methods=['POST'])
+    def connectSensor(smac, guid):
         try:
-			gtw.connectInterface(smac, intr)
+			gtw.connectSource(smac, guid)
 			return json.dumps({'success':True}), 200
         except Exception, e:
 			return json.dumps({'success':False,'error':str(e)})
 
-    @app.route('/api/sensors/<smac>/<intr>/disconnect', methods=['POST'])
-    def disconnectSensor(smac, intr):
+    @app.route('/api/sensors/<smac>/<guid>/disconnect', methods=['POST'])
+    def disconnectSensor(smac, guid):
         try:
-			gtw.disconnectInterface(smac, intr)
+			gtw.disconnectSource(smac, guid)
 			return json.dumps({'success':True}), 200
         except Exception, e:
             return json.dumps({'success':False,'error':str(e)})

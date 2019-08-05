@@ -1,0 +1,17 @@
+<html ng-app="OraApp">
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script>
+
+        <script src="app.js"></script>
+        <script src="controllers/network.js"></script>
+        <script src="controllers/overview.js"></script>
+        <script src="controllers/main.js"></script>
+    </head>
+    <body ng-controller='mainController'>
+        <div ng-include="'templates/overview.html'" ng-controller="overviewController" ng-show="overview"></div>
+        <div ng-include="'templates/network.html'" ng-controller="networkController" ng-show="!overview"></div>
+    </body>
+</html>

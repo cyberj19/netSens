@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     {
         output = stdout;
     }
-    fprintf(output, "INIT %s\n", argv[1]);
+    fprintf(output, "INIT SIM %s\n", argv[1]);
     fflush(output);
 	
 	while (1) {

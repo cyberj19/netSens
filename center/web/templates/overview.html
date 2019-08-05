@@ -31,16 +31,47 @@
     No networks to show
 </div>
 
-<h1>
+<!-- <h1>
     Agents
 </h1>
 
+<div ng-show='pbakAgents.length > 0'>
+    <table>
+        <thead>
+            <tr>
+                <th>MAC</th>
+                <th>Port</th>
+                <th>Mode</th>
+                <th>Catalogue</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='agn in pbakAgents'>
+                <td>agn.mac</td>
+                <td>agn.port</td>
+                <td>agn.mode</td>
+                <td>
+                    
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div> -->
+<h1>
+    Sources
+</h1>
+
+<input type="file" id="file" name="file">
+<button ng-click="uploadFile();">Upload</button>
 <div ng-show='listeners.length > 0'>
     <table>
         <thead>
             <tr>
                 <th>Agent MAC</th>
                 <th>Agent Port</th>
+                <th>Agent Mode</th>
                 <th>Interface</th>
                 <th>Network Id</th>
                 <th>Last Packet Time</th>
@@ -52,13 +83,14 @@
             <tr ng-repeat='lstr in listeners'>
                     <td>{{lstr.agentMAC}}</td>
                     <td>{{lstr.agentPort}}</td>
+                    <td>{{lstr.mode}}</td>
                     <td>{{lstr.interface}}</td>
                     <td>{{lstr.networkId}}</td>
                     <td>{{lstr.lastPacketTime}}</td>
                     <td ng-style="{'background-color': lstr.connected ? 'green':'red'}"></td>
                     <td>
-                        <button ng-click="connectListener(lstr.agentMAC, lstr.interface)" ng-show="!lstr.connected">Connect</button>
-                        <button ng-click="disconnectListener(lstr.agentMAC, lstr.interface)" ng-show="lstr.connected">Disconnect</button>
+                        <button ng-click="connectListener(lstr.agentMAC, lstr.guid)" ng-show="!lstr.connected">Connect</button>
+                        <button ng-click="disconnectListener(lstr.agentMAC, lstr.guid)" ng-show="lstr.connected">Disconnect</button>
                     </td>
             </tr>
         </tbody>
@@ -67,3 +99,4 @@
 <div ng-show='listeners.length===0'>
     No agents to show
 </div>
+

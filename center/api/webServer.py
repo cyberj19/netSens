@@ -3,12 +3,12 @@ import endpoints
 import os
 
 class WebServer:
-    def __init__(self, port, db, gtw, broker):
+    def __init__(self, env, db, gtw, broker):
         self.app = flask.Flask('NetSens',
                                static_url_path='/', 
                                static_folder='/web')
         
-
+        port = env.flask_port
         @self.app.route('/', methods=['GET'], defaults={'file':'index.html'})
         @self.app.route('/<file>', methods=['GET'])
         def getFile(file):
@@ -21,7 +21,7 @@ class WebServer:
         def getTemplate(file):
             return flask.send_from_directory('web/templates',file)
 
-        blueprint = endpoints.create_blue_print(broker, db, gtw)
+        blueprint = endpoints.create_blue_print(env, broker, db, gtw)
         self.app.register_blueprint(blueprint)
         self.port = port
         self.app.run(host='0.0.0.0', port=self.port)

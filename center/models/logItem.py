@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 class LogItem:
     network_id  = -1
     time        = 0

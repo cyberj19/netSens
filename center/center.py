@@ -15,17 +15,19 @@ import logging
 import traceback
 logger = logging.getLogger('main')
 
+env.mode = sys.argv[1]
+
 try:
 	broker = Broker()
 	fbank.setup(broker)
 	macv.setup(broker)
-	db = DB(broker)
+	db = DB(env, broker)
 	gtw = GTW(env, broker)
 	networkFile = db.getNetworks()
 	networks = [loadNetwork(ntw) for ntw in networkFile]
 	logger.info('Loaded %d networks from DB', len(networks))
 	proc = MainProcessor(networks, broker)
-	web = WebServer(env.flask_port, db, gtw, broker)
+	web = WebServer(env, db, gtw, broker)
 except Exception, e:
 	logger.fatal('Fatal error: %s', str(e))
 	traceback.print_exc()

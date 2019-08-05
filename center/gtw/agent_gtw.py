@@ -12,6 +12,7 @@ class GTW:
 		self.broker = broker
 		self.env = env
 		self.agents = {}
+		self.playback_agent = None
 		self.http = flask.Flask('SensorGTW')
 		self._setupAPI()
 
@@ -24,17 +25,24 @@ class GTW:
 		agent_thread.setDaemon(True)
 		agent_thread.start()
 		
-	def connectInterface(self, smac, sintr):
+	def startPlayback(self, filename):
+		logger.debug(self.agents)
+		for smac in self.agents:
+			logger.info('Start playback %s on agent %s', filename, smac)
+			self.agents[smac].startPlayback(filename)
+			break
+		
+	def connectSource(self, smac, guid):
 		if smac in self.agents:
-			logger.info('Connecting sensor on %s to interface %s', smac, sintr)
-			self.agents[smac].connect(sintr)
+			logger.info('Connecting agent %s on source %s', smac, guid)
+			self.agents[smac].connect(guid)
 		else:
 			raise Exception('Unknown sensor with this mac')
 	
-	def disconnectInterface(self, smac, sintr):
+	def disconnectInterface(self, smac, guid):
 		if smac in self.agents:
-			logger.info('Disconnecting sensor on %s from interface %s', smac, sintr)
-			self.agents[smac].disconnect(sintr)
+			logger.info('Disconnecting agent %s on source %s', smac, guid)
+			self.agents[smac].disconnect(guid)
 		else:
 			raise Exception('Unknown sensor with this mac')
 		
@@ -56,8 +64,8 @@ class GTW:
 				self.agents[smac].update(data)
 			else:
 				logger.info('New agent detected from ip %s', data['ip'])
-				if data['mode'] == 'simulation' and not self.env.enable_sim_sensors:
-					logger.warning('Connection from agent in simulation mode dropped')
+				if data['mode'] != self.env.mode:
+					logger.warning('Connection from agent in %s mode dropped', data['mode'])
 					return json.dumps({'success': False, 'error': 'Illegal environment'}), 404
 				self.agents[smac] = Connection(data, self.broker)
 			return json.dumps({'success':True}),200
@@ -72,4 +80,4 @@ class GTW:
 				logger.warning('Received packets from unknown agent %s', smac)
 			return json.dumps({'success':True}),200		
 if __name__ == '__main__':
-	gtw = GTW(7000,None)
+	gtw = GTW(7000, None)

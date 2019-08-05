@@ -4,6 +4,7 @@ rec_folder          = '../data/sensor'
 logs_folder         = '../data/logs'
 stdout_log_dir      = '/var/log/netsens'
 db_type             = 'json'
+pbak_folder         = '../sensor_data/playback'
 
 # for json
 db_folder           = '../netSens/js/data/db'

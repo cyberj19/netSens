@@ -1,0 +1,11 @@
+id 			        = 0
+logs_folder         = '../sensor_data/logs'
+recs_folder         = '../sensor_data/records'
+debug_mode 	        = True
+sim_mode			= False
+center_ip 	        = '127.0.0.1'
+center_port         = 7000
+local_port 	        = 8000
+comm_iface 	        = 'ens33'
+comm_mac 	        = '00:0c:29:49:1c:f1'
+queue_max_packets   = 100

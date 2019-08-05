@@ -1,11 +1,15 @@
 id 			        = 0
 logs_folder         = '../sensor_data/logs'
 recs_folder         = '../sensor_data/records'
+pbak_folder         = '../sensor_data/playback'
+pbak_file           = 'example.pcap'
+pbak_smac           = 'xxx'
+pbak_sifc           = 'xxx'
 debug_mode 	        = True
 sim_mode			= False
 center_ip 	        = '127.0.0.1'
 center_port         = 7000
 local_port 	        = 8000
-comm_iface 	        = 'ens33'
-comm_mac 	        = '00:0c:29:49:1c:f1'
+comm_iface 	        = 'wlan0' #'ens33'
+comm_mac 	        = 'b8:27:eb:39:36:6f' #'00:0c:29:49:1c:f1'
 queue_max_packets   = 100

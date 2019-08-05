@@ -1,4 +1,3 @@
-
 import httplib
 
 host = 'api.macvendors.com'
@@ -13,4 +12,3 @@ def interrogate(device_mac):
     return data
 
 #interrogate("00:21:6A:C0:38:F2")
-

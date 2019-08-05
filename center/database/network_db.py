@@ -7,13 +7,14 @@ class NetworkDB:
 		self.deviceDB = deviceDB
 		self.linkDB = linkDB
 		self.packetDB = packetDB
-		self.listenerDB = listenerDB
+		self.sourceDB = listenerDB
 		self.broker = broker
 
 		ProcessQueue('NetworkUpdate', 
 			procFunc=self.writeNetwork, 
 			requeueOnFail=True,
 			preFunc=self.serializeNetwork,
+			errorFunc=lambda e: logger.error(str(e)),
 			broker=self.broker,
 			topic='networkUpdate')		
 		
@@ -23,7 +24,7 @@ class NetworkDB:
 			return None
 		network['devices'] = self.deviceDB.getByNetworkId(network_id)
 		network['links'] = self.linkDB.getByNetworkId(network_id)
-		network['listeners'] = self.listenerDB.getByNetworkId(network_id)
+		network['listeners'] = self.sourceDB.getByNetworkId(network_id)
 		if with_packets:
 			network['packets'] = self.packetDB.getByNetworkId(network_id)
 		return network
@@ -35,13 +36,13 @@ class NetworkDB:
 			devices = self.deviceDB.get()
 			links = self.linkDB.getLinks()
 			packets = self.packetDB.getPackets()
-			listeners = self.listenerDB.get()
+			sources = self.sourceDB.get()
 
 			for ntw in networks:
 				ntw['devices'] = [dev for dev in devices if dev['networkId'] == ntw['id']]
 				ntw['links'] = [link for link in links if link['networkId'] == ntw['id']]
 				ntw['packets'] = [pkt for pkt in packets if pkt['networkId'] == ntw['id']]
-				ntw['listeners'] = [lstr for lstr in listeners if lstr['networkId'] == ntw['id']]
+				ntw['sources'] = [src for src in sources if src['networkId'] == ntw['id']]
 		return networks
 
 	def serializeNetwork(self, network):
@@ -49,9 +50,11 @@ class NetworkDB:
 		del network['devices']
 		del network['links']
 		del network['packets']
-		del network['listeners']
+		del network['sources']
+		logger.debug(network)
 		return network
 		
 	def writeNetwork(self, network):
+		logger.debug('network update: %s', network)
 		self.db['networks'].upsert({'id': network['id']}, network)
 	

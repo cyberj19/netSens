@@ -27,19 +27,23 @@ class Connection:
 		if self.agent.active and \
 						self.agent.time < time.time() - 10:
 			self.agent.active = False
-			for lstr in self.agent.listeners:
-				lstr.agent_active = False
-				lstr.connected = False
+			for src in self.agent.sources:
+				src.agent_active = False
+				src.connected = False
 			self.sendUpdate()
+
+	def startPlayback(self, filename):
+		logger.debug('start playback: %s', filename)
+		self.sendJson('/playback/%s' % filename, {})
 
 	def create(self, intr):
 		self.sendJson('/%s/create' % intr, {})
 	
-	def connect(self, intr):
-		self.sendJson('/%s/connect' % intr, {})
+	def connect(self, guid):
+		self.sendJson('/%s/connect' % guid, {})
 		
-	def disconnect(self, intr):
-		self.sendJson('/%s/disconnect' % intr, {})
+	def disconnect(self, guid):
+		self.sendJson('/%s/disconnect' % guid, {})
 		
 	def handlePackets(self, data):
 		self.agent.time = data['time']
@@ -57,7 +61,7 @@ class Connection:
 
 def patchAgent(agent):
 	agent['active'] = True
-	for lstr in agent['listeners']:
-		lstr['networkId'] = -1
-		lstr['agentActive'] = True
+	for src in agent['sources']:
+		src['networkId'] = -1
+		src['agentActive'] = True
 	return agent

@@ -79,7 +79,7 @@ oraApp.controller('networkController', [
                 'closeDevice': '/api/networks/' + networkId + '/devices/<devId>/close',
                 'clearNetwork': '/api/networks/' + networkId + '/clear',
                 'fingerBank': '/api/networks/' + networkId + '/devices/<devId>/fingerBank',
-		'macVendors': '/api/networks/' + networkId + '/devices/<devId>/macVendors',
+             		'macVendors': '/api/networks/' + networkId + '/devices/<devId>/macVendors',
                 // 'devAnalysis': '/api/networks/' + networkId + '/devices/<devId>/analyze'
             };
             console.log('network loaded');

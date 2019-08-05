@@ -3,15 +3,13 @@ class Packet(object):
 	id 				= -1
 	time			= 0
 	type 			= ''
-	listener_mac 		= ''
-	listener_iface 	= ''
+	source_guid		= ''
 	network_id		= -1
-	def __init__(self, id, time, type, listener_mac, listener_iface, network_id):
+	def __init__(self, id, time, type, source_guid, network_id):
 		self.id = id
 		self.time = time
 		self.type = type
-		self.listener_mac = listener_mac
-		self.listener_iface = listener_iface
+		self.source_guid = source_guid
 		self.network_id = network_id
 		
 	def serialize(self):
@@ -19,28 +17,26 @@ class Packet(object):
 		dct['id'] = self.id
 		dct['time'] = self.time
 		dct['type'] = self.type
-		dct['listenerMAC'] = self.listener_mac
-		dct['listenerInterface'] = self.listener_iface
+		dct['sourceGUID'] = self.source_guid
 		dct['networkId'] = self.network_id
 		return dct
 
 		
 class ARPPacket(Packet):
 	source_device_id 	= -1
-	source_ip			= ''
-	source_mac			= ''
+	source_device_ip			= ''
+	source_device_mac			= ''
 	target_device_id	= -1
-	target_ip			= ''
+	target_device_ip			= ''
 	
-	def __init__(self, id, time, listener_mac, listener_iface, network_id, source_device_id,
-				source_ip, source_mac, target_device_id, target_ip, dhcp_finger_print=None):
-		super(ARPPacket, self).__init__(id, time, 'arp', listener_mac, listener_iface, network_id)
+	def __init__(self, id, time, source_guid, network_id, source_device_id,
+				source_device_ip, source_device_mac, target_device_id, target_device_ip):
+		super(ARPPacket, self).__init__(id, time, 'arp', source_guid, network_id)
 		self.source_device_id = source_device_id
-		self.source_ip = source_ip
-		self.source_mac = source_mac
+		self.source_device_ip = source_device_ip
+		self.source_device_mac = source_device_mac
 		self.target_device_id = target_device_id
-		self.target_ip = target_ip
-		self.dhcp_fp = dhcp_finger_print
+		self.target_device_ip = target_device_ip
 	
 	def update_match(self, network_id, source_device_id, target_device_id):
 		self.network_id = network_id
@@ -50,22 +46,23 @@ class ARPPacket(Packet):
 	def serialize(self):
 		packet = super(ARPPacket, self).serialize()
 		packet['sourceDeviceId'] = self.source_device_id
-		packet['sourceIP'] = self.source_ip
-		packet['sourceMAC'] = self.source_mac
+		packet['sourceDeviceIP'] = self.source_device_ip
+		packet['sourceDeviceMAC'] = self.source_device_mac
 		packet['targetDeviceId'] = self.target_device_id
-		packet['targetIP'] = self.target_ip
+		packet['targetDeviceIP'] = self.target_device_ip
 		return packet
 		
 	
 class DHCPPacket(Packet):
 	source_device_id	= -1
-	source_mac			= ''
-		
-	def __init__(self, id, time, listener_mac, listener_iface, network_id, source_device_id, source_mac, dhcp_fp=None):
-		super(DHCPPacket, self).__init__(id, time, 'dhcp', listener_mac, listener_iface, network_id)
+	source_device_mac	= ''
+	dhcp_fp = None
+	def __init__(self, id, time, source_guid, network_id, source_device_id, source_device_mac, dhcp_fp):
+		super(DHCPPacket, self).__init__(id, time, 'dhcp', source_guid, network_id)
 		self.source_device_id = source_device_id
-		self.source_mac = source_mac
-		self.dhcp_fp=dhcp_fp
+		self.source_device_mac = source_device_mac
+		self.source_device_mac = source_device_mac
+		self.dhcp_fp = dhcp_fp
 		
 	def update_match(self, network_id, source_device_id):
 		self.network_id = network_id
@@ -73,7 +70,7 @@ class DHCPPacket(Packet):
 		
 	def serialize(self):
 		packet = super(DHCPPacket, self).serialize()
-		packet['sourceMAC'] = self.source_mac
+		packet['sourceDeviceMAC'] = self.source_device_mac
 		packet['sourceDeviceId'] = self.source_device_id
 		packet['dhcpFingerPrint'] = self.dhcp_fp
 		return packet
@@ -81,14 +78,15 @@ class DHCPPacket(Packet):
 def loadARPPacket(packet):
 	if not 'targetDeviceId' in packet:
 		packet['targetDeviceId'] = -1
-	return ARPPacket(packet['id'],packet['time'],packet['listenerMAC'],packet['listenerInterface'],
-						packet['networkId'],packet['sourceDeviceId'],packet['sourceIP'],packet['sourceMAC'],
-						packet['targetDeviceId'],packet['targetIP'])
+	return ARPPacket(packet['id'],packet['time'],packet['sourceGUID'],
+						packet['networkId'],
+						packet['sourceDeviceId'],packet['sourceDeviceIP'],packet['sourceDeviceMAC'],
+						packet['targetDeviceId'],packet['targetDeviceIP'])
 						
 def loadDHCPPacket(packet):
-	dhcp_fp=packet['dhcpFingerPrint'] if 'dhcpFingerPrint' in packet else None
-	return DHCPPacket(packet['id'],packet['time'],packet['listenerMAC'],packet['listenerInterface'],
-						packet['networkId'], packet['sourceDeviceId'], packet['sourceMAC'], dhcp_fp)
+	return DHCPPacket(packet['id'],packet['time'],packet['sourceGUID'],
+						packet['networkId'], 
+						packet['sourceDeviceId'], packet['sourceDeviceMAC'], packet['dhcpFingerPrint'])
 		
 def loadPacket(packet):
 	# set defaults
