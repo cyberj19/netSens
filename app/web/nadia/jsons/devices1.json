@@ -1,0 +1,474 @@
+[
+  {
+    "networkId": 1,
+    "id": 0,
+    "isClosed": false,
+    "firstTimeSeen": 1556388377.406207,
+    "lastTimeSeen": 1556389823.29746,
+    "ip": "10.100.102.1",
+    "mac": "8C:59:C3:F0:BF:2D",
+    "vendor": "ADB Italia",
+    "hits": 51,
+    "arpHits": 50,
+    "dhcpHits": 1,
+    "extraData": {
+      "VCI": "KOKO",
+      "Hostname": "jacob-ThinkPad-X200"
+    },
+    "dhcpFingerPrint": [
+      [],
+      "",
+      "jacob-ThinkPad-X200"
+    ]
+  },
+  {
+    "networkId": 1,
+    "id": 1,
+    "isClosed": false,
+    "firstTimeSeen": 1556388377.406228,
+    "lastTimeSeen": 1556389821.9829,
+    "ip": "10.100.102.17",
+    "mac": "00:21:6A:C0:38:F2",
+    "vendor": "Intel Corporate",
+    "hits": 38,
+    "arpHits": 37,
+    "dhcpHits": 1,
+    "extraData": {
+      "VCI": "",
+      "Hostname": "jacob-ThinkPad-X200"
+    },
+    "dhcpFingerPrint": [
+      [
+        1,
+        28,
+        2,
+        3,
+        15,
+        6,
+        119,
+        12,
+        44,
+        47,
+        26,
+        121,
+        42,
+        249,
+        33,
+        252
+      ],
+      "",
+      "jacob-ThinkPad-X200"
+    ]
+  },
+  {
+    "networkId": 1,
+    "id": 2,
+    "isClosed": false,
+    "firstTimeSeen": 1556388490.988324,
+    "lastTimeSeen": 1556389823.29746,
+    "ip": "10.100.102.14",
+    "mac": "F4:60:E2:B1:9A:9E",
+    "vendor": null,
+    "hits": 22,
+    "arpHits": 18,
+    "dhcpHits": 4,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": [
+      [
+        1,
+        3,
+        6,
+        15,
+        26,
+        28,
+        51,
+        58,
+        59,
+        43
+      ],
+      "android-dhcp-9",
+      "POCOPHONEF1-POCOPHON"
+    ]
+  },
+  {
+    "networkId": 1,
+    "id": 3,
+    "isClosed": false,
+    "firstTimeSeen": 1556389017.70424,
+    "lastTimeSeen": 1556389214.491194,
+    "ip": "10.100.102.26",
+    "mac": "C4:54:44:83:34:70",
+    "vendor": "QUANTA COMPUTER INC.",
+    "hits": 5,
+    "arpHits": 5,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 4,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.166",
+    "mac": "F8:59:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 5,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.169",
+    "mac": "F9:59:71:37:D4:01",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 6,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.88",
+    "mac": "F1:59:71:37:D4:02",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 7,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.94",
+    "mac": "F2:59:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 8,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.83",
+    "mac": "F3:59:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 9,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.82",
+    "mac": "F4:59:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 10,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.57",
+    "mac": "F5:59:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 11,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.55",
+    "mac": "F6:59:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 12,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.52",
+    "mac": "F7:59:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 13,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.51",
+    "mac": "F8:69:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 14,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.50",
+    "mac": "F8:79:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 15,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.49",
+    "mac": "F8:89:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 16,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.48",
+    "mac": "F8:99:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 17,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.47",
+    "mac": "F8:19:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 18,
+    "isClosed": false,
+    "firstTimeSeen": 155638916.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.46",
+    "mac": "F8:29:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 19,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.45",
+    "mac": "F8:39:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 20,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.44",
+    "mac": "F8:49:71:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 21,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.43",
+    "mac": "F8:59:72:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 21,
+    "isClosed": false,
+    "firstTimeSeen": 155638916.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.42",
+    "mac": "F8:59:73:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  },
+  {
+    "networkId": 1,
+    "id": 22,
+    "isClosed": false,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389428.568798,
+    "ip": "10.100.102.41",
+    "mac": "F8:59:74:37:D4:E9",
+    "vendor": "Intel Corporate",
+    "hits": 10,
+    "arpHits": 10,
+    "dhcpHits": 0,
+    "extraData": {
+      "VCI": "android-dhcp-9",
+      "Hostname": "POCOPHONEF1-POCOPHON"
+    },
+    "dhcpFingerPrint": null
+  }
+]

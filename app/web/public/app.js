@@ -1,0 +1,1 @@
+oraApp = angular.module('OraApp', []);

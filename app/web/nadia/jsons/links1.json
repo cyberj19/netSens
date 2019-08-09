@@ -1,0 +1,255 @@
+[
+  {
+    "networkId": 1,
+    "id": 0,
+    "firstTimeSeen": 1556388377.406207,
+    "lastTimeSeen": 1556388904.216126,
+    "hits": 1,
+    "source": 0,
+    "target": 0
+  },
+  {
+    "networkId": 1,
+    "id": 1,
+    "firstTimeSeen": 1556388377.406228,
+    "lastTimeSeen": 1556389821.9829,
+    "hits": 1,
+    "source": 1,
+    "target": 0
+  },
+  {
+    "networkId": 1,
+    "id": 2,
+    "firstTimeSeen": 1556388377.499697,
+    "lastTimeSeen": 1556389821.982878,
+    "hits": 1,
+    "source": 0,
+    "target": 1
+  },
+  {
+    "networkId": 1,
+    "id": 3,
+    "firstTimeSeen": 1556388492.156895,
+    "lastTimeSeen": 1556388492.156895,
+    "hits": 1,
+    "source": 2,
+    "target": 0
+  },
+  {
+    "networkId": 1,
+    "id": 4,
+    "firstTimeSeen": 1556388553.801932,
+    "lastTimeSeen": 1556388558.49431,
+    "hits": 1,
+    "source": 2,
+    "target": 1
+  },
+  {
+    "networkId": 1,
+    "id": 5,
+    "firstTimeSeen": 1556388553.801958,
+    "lastTimeSeen": 1556388558.488816,
+    "hits": 1,
+    "source": 22,
+    "target": 12
+  },
+  {
+    "networkId": 1,
+    "id": 6,
+    "firstTimeSeen": 1556388591.894875,
+    "lastTimeSeen": 1556389823.29746,
+    "hits": 1,
+    "source": 10,
+    "target": 12
+  },
+  {
+    "networkId": 1,
+    "id": 7,
+    "firstTimeSeen": 1556389017.700371,
+    "lastTimeSeen": 1556389017.700371,
+    "hits": 1,
+    "source": 11,
+    "target": 21
+  },
+  {
+    "networkId": 1,
+    "id": 8,
+    "firstTimeSeen": 1556389017.70424,
+    "lastTimeSeen": 1556389022.848638,
+    "hits": 1,
+    "source": 13,
+    "target": 10
+  },
+  {
+    "networkId": 1,
+    "id": 9,
+    "firstTimeSeen": 1556389022.84865,
+    "lastTimeSeen": 1556389022.84865,
+    "hits": 1,
+    "source": 16,
+    "target": 3
+  },
+  {
+    "networkId": 1,
+    "id": 10,
+    "firstTimeSeen": 1556389186.023651,
+    "lastTimeSeen": 1556389186.023651,
+    "hits": 1,
+    "source": 4,
+    "target": 13
+  },
+  {
+    "networkId": 1,
+    "id": 11,
+    "firstTimeSeen": 1556389209.575984,
+    "lastTimeSeen": 1556389209.575984,
+    "hits": 1,
+    "source": 0,
+    "target": 14
+  },
+  {
+    "networkId": 1,
+    "id": 12,
+    "firstTimeSeen": 1556389214.491194,
+    "lastTimeSeen": 1556389214.491194,
+    "hits": 1,
+    "source": 0,
+    "target": 13
+  },
+  {
+    "networkId": 1,
+    "id": 13,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 4,
+    "target": 18
+  },
+    {
+    "networkId": 1,
+    "id": 14,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 4,
+    "target": 15
+  },
+    {
+    "networkId": 1,
+    "id": 15,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 14,
+    "target": 18
+  },
+    {
+    "networkId": 1,
+    "id": 16,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 15,
+    "target": 18
+  },
+    {
+    "networkId": 1,
+    "id": 17,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 4,
+    "target": 9
+  },
+    {
+    "networkId": 1,
+    "id": 18,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 8,
+    "target": 11
+  },
+    {
+    "networkId": 1,
+    "id": 19,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 11,
+    "target": 12
+  },
+    {
+    "networkId": 1,
+    "id": 20,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 4,
+    "target": 21
+  },
+    {
+    "networkId": 1,
+    "id": 21,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 4,
+    "target": 17
+  },
+    {
+    "networkId": 1,
+    "id": 22,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 17,
+    "target": 18
+  },
+    {
+    "networkId": 1,
+    "id": 23,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 14,
+    "target": 13
+  },
+    {
+    "networkId": 1,
+    "id": 24,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 15,
+    "target": 7
+  },
+    {
+    "networkId": 1,
+    "id": 25,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 6,
+    "target": 5
+  },
+    {
+    "networkId": 1,
+    "id": 26,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 5,
+    "target": 21
+  },
+    {
+    "networkId": 1,
+    "id": 27,
+    "firstTimeSeen": 1556389240.091517,
+    "lastTimeSeen": 1556389244.699546,
+    "hits": 1,
+    "source": 21,
+    "target": 20
+  }
+
+]

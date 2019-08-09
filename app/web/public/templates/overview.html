@@ -1,0 +1,86 @@
+<h1>NetSens NG {{timeConverter(unixTime(),true)}}</h1>
+<h1>Networks</h1>
+<div ng-show='networks.length > 0'>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Create Time</th>
+                <th>GTW MAC</th>
+                <th>#Devices</th>
+                <th>#Links</th>
+                <th>#Packets</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='network in networks'>
+                <td>{{network.name}}</td>
+                <td>{{timeConverter(network.createTime)}}</td>
+                <td>{{network.defaultGTWMAC}}</td>
+                <td>{{network.devices.length}}</td>
+                <td>{{network.links.length}}</td>
+                <td>{{network.packetCounter.total}}</td>
+                <td>
+                    <button ng-click='loadNetwork(network.uuid);'>
+                        View
+                    </button>
+                    <button ng-click='renameNetwork(network.uuid, network.name);'>
+                        Rename
+                    </button>
+                    <button ng-click='clearNetwork(network.uuid);'>
+                        Clear
+                    </button>
+                    <button ng-click='removeNetwork(network.uuid);'>
+                        Remove
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-show='networks.length==0'>
+    No networks to show
+</div>
+
+<h1>Jobs</h1>
+<table ng-show='jobs.length > 0'>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>LTS</th>
+            <th>Progress</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat='job in jobs'>
+            <td>{{job.name}}</td>
+            <td>{{timeConverter(job.lts,true)}}</td>
+            <td>{{job.progress}}%</td>
+        </tr>
+    </tbody>
+</table>
+<h1>
+    Sources
+</h1>
+
+<input type="file" id="file" name="file">
+<button ng-click="uploadFile();">Upload</button>
+
+<h1>Services</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>LTS</th>
+            <th>Alive</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="comp in monitor">
+            <td>{{comp.name}}</td>
+            <td>{{timeConverter(comp.lts, true)}}</td>
+            <td ng-style = "comp.lts > unixTime() - 20 && {'background-color': 'green'} || {'background-color': 'red'}"></td>
+        </tr>
+    </tbody>
+</table>
