@@ -1,0 +1,202 @@
+<h1 
+    style="background-color: green;">
+    
+    {{network.name}}
+    <a href="#" ng-click="rename();">R</a>
+    <a href="#" ng-click="exitNetwork();">X</a>
+</h1>
+<button ng-click='clearNetwork();'>
+    Clear
+</button>
+<button ng-click='removeNetwork();'>
+    Remove
+</button>
+<br>
+<input type="file" id="network_file" name="network_file">
+<button ng-click="uploadFile();">Upload</button>
+<div id="entities" style="float: left bottom; width: 50%; height: 50%;">
+    <!-- <button ng-click="setCurrentTab('listeners');">
+        Listeners ({{network.listeners.length}})
+    </button> -->
+    <button ng-click="setCurrentTab('devices');">
+        Devices ({{network.devices.length}})
+    </button>
+    <button ng-click="setCurrentTab('links');">
+        Links ({{network.links.length}})
+    </button>
+    <button ng-click="setCurrentTab('packets');">
+        Packets ({{network.packets.length}})
+    </button>
+    <!-- <div id="listeners" ng-show="currentTab == 'listeners'">
+        <table style="float: top; overflow-x: auto;" cellspacing="0" border="1">
+            <thead style="background-color:darkgray; border: 1;">
+                <tr>
+                    <th>GUID</th>
+                    <th>#Packets</th>
+                    <th>Last Packet Time</th>
+                    <th>Error</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="listener in network.listeners" 
+                    ng-style="{'background-color': listener.agentActive ? 'white':'pink'}">
+                    <td>{{listener.guid}}</td>
+                    <td>{{listener.numPackets}}</td>
+                    <td>{{timeConverter(listener.lastPacketTime)}}</td>
+                    <td>{{listener.lastError}}</td>
+                    <td>{{listener.status}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div> -->
+    <div id="devices" ng-show="currentTab == 'devices'">
+        <table style="float: top; overflow-x: auto;" cellspacing="0" border="1">
+            <thead style="background-color:darkgray; border: 1;">
+                <tr>
+                    <th colspan="10">Devices ({{network.devices.length}})</th>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <th>Closed</th>
+                    <th>IP</th>
+                    <th>MAC</th>
+                    <th>Vendor</th>
+                    <th>#Hits</th>
+                    <th>#ARPS</th>
+                    <th>#DHCPS</th>
+                    <th>LTS</th>
+                    <th>FTS</th>
+                    <th>Extra Data</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="device in network.devices" ng-style="device.idx == trackIdxs[1] && {'background-color': 'blue'} ||
+                              device.idx == trackIdxs[2] && {'background-color': 'red'}">
+                    <td>{{device.idx}}</td>
+                    <td>{{device.isClosed}}</td>
+                    <td>{{device.ip || 'Unknown'}}</td>
+                    <td>{{device.mac || 'Unknown'}}</td>
+                    <td>{{device.vendor || 'Unknown'}}
+			<button ng-click="macVendors(device.idx)" ng-show="isNoVendorPresent(device.vendor)">
+                            MacVendors
+                        </button>
+			</td>
+                    <td>{{device.hits}}</td>
+                    <td>{{device.arpHits}}</td>
+                    <td>{{device.dhcpHits}}</td>
+                    <td>{{timeConverter(device.lastTimeSeen)}}</td>
+                    <td>{{timeConverter(device.firstTimeSeen)}}</td>
+                    <td>
+                        <table>
+                            <tr ng-repeat='(key,value) in device.extraData'>
+                                <td>{{key}}</td>
+                                <td>{{value}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <button ng-click="addComment(device.idx,device.comment);">
+                            Comment
+                        </button>
+                        <button ng-click="closeDevice(device.idx);">
+                            Close
+                        </button>
+                        <button ng-click="fingerBankAnalyze(device.idx)" ng-show="dhcpFpPresent(device.dhcpFingerPrint)">
+                            FingerBank
+                        </button>
+                        <button
+                            ng-click="getAnalysisData(device.idx);">
+                            Analyze
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="deviceAnalysis" ng-show="analysisIdx >= 0">
+            <table cellspacing="0" border="1">
+                <thead style="background-color: darkgrey;">
+                    <tr>
+                        <th colspan="5">Device {{analysisIdx}} Packet Analysis</th>
+                    </tr>
+                    <tr>
+                        <th>Idx</th>
+                        <th>Type</th>
+                        <th>Timestamp</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="pkt in analysisPackets">
+                        <td>{{pkt.idx}}</td>
+                        <td>{{pkt.type}}</td>
+                        <td>{{pkt.time}}</td>
+                        <td ng-show="pkt.type=='arp'">
+                            FROM
+                            {{pkt.sourceDeviceIP + ';' + pkt.sourceDeviceMAC}}
+                            TO
+                            {{pkt.targetDeviceIP}}
+                        </td>
+                        <td ng-show="pkt.type=='dhcp'">
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="links" ng-show="currentTab == 'links'">
+        <table style="float:bottom;" cellspacing="0" border="1">
+            <thead style="background-color:darkgrey;">
+                <tr>
+                    <th colspan="7">
+                        Links ({{network.links.length}})
+                    </th>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <th>S. Id</th>
+                    <th>T. Id</th>
+                    <th>#Hits</th>
+                    <th>LTS</th>
+                    <th>FTS</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="link in network.links">
+                    <td>{{link.id}}</td>
+                    <td ng-style="trackIdxs[0] === link.idx && {'background-color': 'blue'}">
+                        {{link.sourceDeviceIdx}}
+                    </td>
+                    <td ng-style="trackIdxs[0] === link.idx && {'background-color': 'red'}">
+                        {{link.targetDeviceIdx}}
+                    </td>
+                    <td>{{link.numHits}}</td>
+                    <td>{{timeConverter(link.lastTimeSeen)}}</td>
+                    <td>{{timeConverter(link.firstTimeSeen)}}</td>
+                    <td>
+                        <span ng-show="trackIdxs[0] === link.idx">
+                            <a href="#" ng-click="untrack()">Untrack</a>
+                        </span>
+                        <span ng-show="trackIdxs[0] !== link.idx">
+                            <a href="#" ng-click="track(link.idx, link.sourceDeviceIdx, link.targetDeviceIdx);">
+                                Track
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="log" style="float: right bottom; width: 50%; height:50%;">
+    <h2>Log</h2>
+    <div ng-repeat='for item in network.log'>
+        {{timeConverter(item.time): item.msg}}
+        <br>
+    </div>
+</div>

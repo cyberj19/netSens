@@ -1,0 +1,76 @@
+<h1>Networks</h1>
+<div ng-show='networks.length > 0'>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Create Time</th>
+                <th>#Devices</th>
+                <th>#Links</th>
+                <th>#Packets</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='network in networks'>
+                <td>{{network.name}}</td>
+                <td>{{network.createTime}}</td>
+                <td>{{network.devices.length}}</td>
+                <td>{{network.links.length}}</td>
+                <td>{{network.packets.length}}</td>
+                <td>
+                    <button ng-click='loadNetwork(network.uuid);'>
+                        View
+                    </button>
+                    <button ng-click='clearNetwork(network.uuid);'>
+                        Clear
+                    </button>
+                    <button ng-click='removeNetwork(network.uuid);'>
+                        Remove
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-show='networks.length==0'>
+    No networks to show
+</div>
+
+<h1>
+    Sources
+</h1>
+
+<input type="file" id="file" name="file">
+<button ng-click="uploadFile();">Upload</button>
+<!-- <div ng-show='listeners.length > 0'>
+    <table>
+        <thead>
+            <tr>
+                <th>GUID</th>
+                <th>Network Id</th>
+                <th>Last Packet Time</th>
+                <th>Status</th>
+                <th>Error</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='lstr in listeners'>
+                    <td>{{lstr.guid}}</td>
+                    <td>{{lstr.networkId}}</td>
+                    <td>{{lstr.lastPacketTime}}</td>
+                    <td>{{lstr.status}}</td>
+                    <td>{{lstr.lastError}}</td>
+                    <td>
+                        <button ng-click="connectListener(lstr.agentMAC, lstr.guid)" ng-show="lstr.status == 'idle'">Connect</button>
+                        <button ng-click="disconnectListener(lstr.agentMAC, lstr.guid)" ng-show="lstr.status == 'connected'">Disconnect</button>
+                    </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-show='listeners.length===0'>
+    No agents to show
+</div>
+ -->
