@@ -34,8 +34,19 @@ class DBClient:
         }])
         
     def getNetwork(self, uuid):
-        return self.db.networks.find_one({'uuid': uuid})
-
+        return self.db.networks.find_one({'uuid': uuid},{'packets':0})
+    def getDevicePackets(self, netUUID, devUUID):
+        network = self.getNetwork(netUUID)
+        if not network:
+            return []
+        packets = []
+        for packet in network['packets']:
+            for aspect in packet['aspects']:
+                if 'source' in aspect and aspect['source']['uuid'] == devUUID:
+                    packets.append(aspect)
+                if 'target' in aspect and aspect['target']['uuid'] == devUUID:
+                    packets.append(aspect)
+        return packets
     def saveNetwork(self, network):
         self.db.networks.update(
             {'uuid': network['uuid']},

@@ -18,24 +18,15 @@ oraApp.controller('networkController', [
         }
         $scope.analysisIdx = -1;
         $scope.analysisPackets = null;
-        $scope.getAnalysisData = function(idx) {
-            console.log(idx);
-            $scope.analysisIdx = idx;
-            $scope.analysisPackets = [];
-            for (let pkt of $scope.network.packets) {
-                if (pkt.type === 'arp') {
-                    if (pkt.sourceDeviceIdx === idx) {
-                        $scope.analysisPackets.push(pkt);
-                    } else if (pkt.targetDeviceIdx === idx) {
-                        $scope.analysisPackets.push(pkt);
-                    }
-                } else if (pkt.type == 'dhcp') {
-                    if (pkt.sourceDeviceIdx === idx) {
-                        $scope.analysisPackets.push(pkt);
-                    }
-                }
-            }
-            console.log($scope.analysisPackets);
+
+        $scope.getAnalysisData = function(device) {
+            console.log(device.uuid);
+            let url = $scope.apis['devAnalysis'].replace('<devUUID>', device.uuid);
+            axios.get(url).then((response)=> {
+                if (!response.success) return;
+                $scope.analysisIdx = device.idx;
+                $scope.analysisPackets = response.packets;
+            });
         }
         $scope.setCurrentTab = function (tab) {
             if ($scope.currentTab === tab) {
@@ -101,7 +92,7 @@ oraApp.controller('networkController', [
                 'clearNetwork': '/api/networks/' + networkId + '/clear',
                 'fingerBank': '/api/networks/' + networkId + '/devices/<devIdx>/fingerBank',
                 'macVendors': '/api/networks/' + networkId + '/devices/<devIdx>/macVendors',
-                'devAnalysis': '/api/networks/' + networkId + '/devices/<devIdx>/analyze',
+                'devAnalysis': '/api/networks/' + networkId + '/devices/<devUUID>/analyze',
                 'renameNetwork': '/api/networks/' + networkId + '/rename/<name>',
                 'removeNetwork': '/api/networks/' + networkId + '/remove'
             };

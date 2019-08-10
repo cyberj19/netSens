@@ -72,14 +72,15 @@ def createTempNetwork(packets):
     return net
 
 def findNetworkMatch(net):
-    if net.default_gtw_mac == None:
+    if not net.gateways:
         return None
-    networks = mongo.db.networks.find({}, {'uuid': 1, 'defaultGTWMAC': 1})
+    networks = mongo.db.networks.find({}, {'uuid': 1, 'gateways': 1})
     for cand_net in networks:
         if cand_net['uuid'] == net.uuid:
             continue
-        if cand_net['defaultGTWMAC'] == net.default_gtw_mac:
-            return cand_net
+        cand_gtw = cand_net['gateways']
+        if not set(cand_gtw).isdisjoint(set(net.gateways)):
+            return cand_net['uuid']
     return None
 
 def processPacketsBuffer(packets_buffer):
@@ -88,9 +89,9 @@ def processPacketsBuffer(packets_buffer):
     temp_net = createTempNetwork(packets_buffer['packets'])
     mqtt.publish('job', {'name': origin, 'progress': 70, 'finished': False})
 
-    merge_net = findNetworkMatch(temp_net)
-    if merge_net:
-        with NetworkLock(merge_net['uuid']) as net:
+    merge_uuid = findNetworkMatch(temp_net)
+    if merge_uuid:
+        with NetworkLock(merge_uuid) as net:
             net.mergeNetwork(temp_net)
     else:
         mongo.addNetwork(temp_net.serialize())

@@ -6,7 +6,6 @@
             <tr>
                 <th>Name</th>
                 <th>Create Time</th>
-                <th>GTW MAC</th>
                 <th>#Devices</th>
                 <th>#Links</th>
                 <th>#Packets</th>
@@ -17,7 +16,6 @@
             <tr ng-repeat='network in networks'>
                 <td>{{network.name}}</td>
                 <td>{{timeConverter(network.createTime)}}</td>
-                <td>{{network.defaultGTWMAC}}</td>
                 <td>{{network.deviceCount}}</td>
                 <td>{{network.linkCount}}</td>
                 <td>{{network.packetCount}}</td>

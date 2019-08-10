@@ -10,6 +10,6 @@ mqtt_host = 'localhost'
 mqtt_port = 1883
 
 flask_port = 8000
-static_files_folder = 'public'
+static_files_folder = 'debug'
 
 pbak_folder = '../../data/playback'

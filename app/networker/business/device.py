@@ -1,4 +1,3 @@
-import vendors
 import uuid
 import packet_counter
 from collections import OrderedDict
@@ -6,92 +5,89 @@ MATCH_IMPOSSIBLE = 0
 MATCH_POSSIBLE = 1
 MATCH_CERTAIN = 2
 
-def create(net_uuid, pktType, ts, ip=None, mac=None, dhcp_fp=None):
-    if mac:
-        vendor = vendors.getVendor(mac)
-    else:
-        vendor = None
+match_rules = [
+    {
+        'properties': ['mac'],
+        'score': MATCH_CERTAIN
+    },
+    {
+        'properties': ['ip', 'hostname'],
+        'score': MATCH_CERTAIN
+    },
+    {
+        'properties': ['ip'],
+        'score': MATCH_POSSIBLE
+    },
+    {
+        'properties': ['hostname'],
+        'score': MATCH_POSSIBLE
+    }
+]
+def create(networkId, protocol, time, aspectDevice):
     dev = Device({
         'idx': -1,
         'uuid': 'device-%s' % uuid.uuid4().hex,
         'isClosed': False,
-        'networkId': net_uuid,
-        'firstTimeSeen': ts,
-        'lastTimeSeen': ts,
-        'ip': ip,
-        'mac': mac,
-        'vendor': vendor,
+        'networkId': networkId,
+        'firstTimeSeen': time,
+        'lastTimeSeen': time,
+        'ip': aspectDevice.ip,
+        'mac': aspectDevice.mac,
+        'hostname': aspectDevice.hostname,
         'packetCounter': {'total': 0, 'distribution': {}},
-        'dhcpFingerPrint': dhcp_fp
+        'extraData': aspectDevice.extra_data
     })
-    dev.packet_counter.add(pktType)
+    dev.packet_counter.add(protocol)
     return dev
 class Device:
     def __init__(self, dct):
-        if not 'extraData' in dct:
-            dct['extraData'] = {}
-        if not 'dhcpFingerPrint' in dct:
-            dct['dhcpFingerPrint'] = None
-
         self.idx = dct['idx']
         self.uuid = dct['uuid']
         self.is_closed = dct['isClosed']
         self.network_id = dct['networkId']
-        self.first_time = dct['firstTimeSeen']
-        self.last_time = dct['lastTimeSeen']
+        self.first_time_seen = dct['firstTimeSeen']
+        self.last_time_seen = dct['lastTimeSeen']
         self.ip = dct['ip']
         self.mac = dct['mac']
-        self.vendor = dct['vendor']
+        self.hostname = dct['hostname']
         self.packet_counter = packet_counter.PacketCounter(dct['packetCounter'])
-        self.extra_data = dct['extraData']
-        self.dhcp_fp = dct['dhcpFingerPrint']
-        if self.dhcp_fp:
-            self.extra_data.update({"VCI": self.dhcp_fp[1], "Hostname": self.dhcp_fp[2]})
-
+        self.extra_data = dct.get('extraData', {})
+        self.core = {'ip': self.ip, 'mac': self.mac, 'hostname': self.hostname}
         self.reprocess = False
     def __repr__(self):
-        return '%d: mac=%s, ip=%s' % (self.idx, self.mac, self.ip)
+        return '%d: mac=%s, ip=%s, hostname=%s' % (self.idx, self.mac, self.ip, self.hostname)
     
-    def match(self, time, cand_ip=None, cand_mac=None):
+    def match(self, cand):
         if self.is_closed:
             return MATCH_IMPOSSIBLE
-        if not cand_ip and not cand_mac: # nothing is known about candidate
-            return MATCH_IMPOSSIBLE
-        elif not cand_mac: # only candidate ip is known
-            # TODO: add time test
-            if self.ip and self.ip == cand_ip:
-                return MATCH_POSSIBLE
-            else:
-                return MATCH_IMPOSSIBLE
-        elif not cand_ip: # only candidate mac is known
-            if self.mac:
-                if self.mac == cand_mac:
-                    return MATCH_CERTAIN
-                else:
-                    return MATCH_IMPOSSIBLE
-            else:
-                return MATCH_IMPOSSIBLE
-        else: # ip and mac are known
-            if self.mac:
-                if self.mac == cand_mac:
-                    return MATCH_CERTAIN
-                else:
-                    return MATCH_IMPOSSIBLE
-            elif self.ip:
-                if self.ip == cand_ip:
-                    return MATCH_POSSIBLE
-                else:
-                    return MATCH_IMPOSSIBLE
+
+        matches = []
+        for prop in ['mac', 'ip', 'hostname']:
+            my = self.core[prop]
+            other = cand.core[prop]
+            if other and other == my:
+                matches.append(prop)
+        
+        best_score = MATCH_IMPOSSIBLE
+        for rule in match_rules:
+            if set(rule['properties']).issubset(set(matches)):
+                if rule['score'] > best_score:
+                    best_score = rule['score']
+        return best_score
 
     def merge(self, device):
-        self.first_time = min(self.first_time, device.first_time)
-        self.last_time = max(self.last_time, device.last_time)
+        self.first_time_seen = min(self.first_time_seen, device.first_time_seen)
+        self.last_time_seen = max(self.last_time_seen, device.last_time_seen)
         self.packet_counter.merge(device.packet_counter)
         self.extra_data.update(device.extra_data)
         if not self.ip and device.ip:
             self.ip = device.ip
         if not self.mac and device.mac:
             self.mac = device.mac
+            self.reprocess = True
+        if not self.hostname and device.hostname:
+            self.hostname = device.hostname
+            self.reprocess = True
 
     def serialize(self):
         dct = OrderedDict()
@@ -99,12 +95,11 @@ class Device:
         dct['uuid'] = self.uuid
         dct['networkId'] = self.network_id
         dct['isClosed'] = self.is_closed
-        dct['firstTimeSeen'] = self.first_time
-        dct['lastTimeSeen'] = self.last_time
+        dct['firstTimeSeen'] = self.first_time_seen
+        dct['lastTimeSeen'] = self.last_time_seen
         dct['ip'] = self.ip
         dct['mac'] = self.mac
-        dct['vendor'] = self.vendor
+        dct['hostname'] = self.hostname
         dct['packetCounter'] = self.packet_counter.serialize()
         dct['extraData'] = self.extra_data
-        dct['dhcpFingerPrint'] = self.dhcp_fp
         return dct

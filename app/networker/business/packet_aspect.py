@@ -4,99 +4,56 @@ class PacketAspect(object):
     def __init__(self, packetAspect):
         self.protocol = packetAspect['protocol']
         self.layer = packetAspect['layer']
-    
+        self.time = packetAspect['time']
+        self.description = packetAspect['description']
+        if 'source' in packetAspect:
+            self.source = AspectDevice(packetAspect['source'])
+        else:
+            self.source = None
+        
+        if 'target' in packetAspect:
+            self.target = AspectDevice(packetAspect['target'])
+        else:
+            self.target = None
+
     def serialize(self):
         packetAspect = OrderedDict()
         packetAspect['protocol'] = self.protocol
         packetAspect['layer'] = self.layer
+        packetAspect['time'] = self.time
+        packetAspect['description'] = self.description
+        if self.source:
+            packetAspect['source'] = self.source.serialize()
+        if self.target:
+            packetAspect['target'] = self.target.serialize()
         return packetAspect
-    
-    @abstractmethod
-    def updateDeviceMerge(self, to, fr):
-        pass
-
-class ARPAspect(PacketAspect):
-    def __init__(self, dct):
-        super(ARPAspect, self).__init__(dct)
-        if not 'sourceDeviceIdx' in dct:
-            dct['sourceDeviceIdx'] = None
-        if not 'targetDeviceIdx' in dct:
-            dct['targetDeviceIdx'] = None
-        if not 'sourceDeviceUUID' in dct:
-            dct['sourceDeviceUUID'] = None
-        if not 'targetDeviceUUID' in dct:
-            dct['targetDeviceUUID'] = None
-        
-        self.source_device_uuid = dct['sourceDeviceUUID']
-        self.source_device_idx = dct['sourceDeviceIdx']
-        self.source_device_ip = dct['sourceDeviceIP']
-        self.source_device_mac = dct['sourceDeviceMAC']
-        self.target_device_uuid = dct['targetDeviceUUID']
-        self.target_device_idx = dct['targetDeviceIdx']
-        self.target_device_ip = dct['targetDeviceIP']
-
-    def serialize(self):
-        dct = super(ARPAspect, self).serialize()
-        dct['sourceDeviceUUID'] = self.source_device_uuid
-        dct['sourceDeviceIdx'] = self.source_device_idx
-        dct['sourceDeviceIP'] = self.source_device_ip
-        dct['sourceDeviceMAC'] = self.source_device_mac
-        dct['targetDeviceUUID'] = self.target_device_uuid
-        dct['targetDeviceIdx'] = self.target_device_idx
-        dct['targetDeviceIP'] = self.target_device_ip
-        return dct
-    
-    def updateDeviceMerge(self, to, fr):
-        if self.source_device_uuid == fr.uuid:
-            self.source_device_uuid = to.uuid
-            self.source_device_idx = to.idx
-        if self.target_device_uuid == fr.uuid:
-            self.target_device_uuid = to.uuid
-            self.target_device_idx = to.idx
-
-class IPAspect(PacketAspect):
-    def __init__(self, dct):
-        super(IPAspect, self).__init__(dct)
-        self.target_device_ip = dct['targetDeviceIP']
-        self.target_device_mac = dct['targetDeviceMAC']
-    
-    def serialize(self):
-        dct = super(IPAspect, self).serialize()
-        dct['targetDeviceMAC'] = self.target_device_mac
-        dct['targetDeviceIP'] = self.target_device_ip
-        return dct
-    
-class DHCPAspect(PacketAspect):
-    def __init__(self, dct):
-        super(DHCPAspect, self).__init__(dct)
-        if not 'sourceDeviceIdx' in dct:
-            dct['sourceDeviceIdx'] = None
-        if not 'sourceDeviceUUID' in dct:
-            dct['sourceDeviceUUID'] = None
-        self.source_device_uuid = dct['sourceDeviceUUID']
-        self.source_device_idx = dct['sourceDeviceIdx']
-        self.source_device_mac = dct['sourceDeviceMAC']
-        self.dhcp_fp = dct['dhcpFingerPrint']
-
-    def serialize(self):
-        dct = super(DHCPAspect, self).serialize()
-        dct['sourceDeviceUUID'] = self.source_device_uuid
-        dct['sourceDeviceIdx'] = self.source_device_idx
-        dct['sourceDeviceMAC'] = self.source_device_mac
-        dct['dhcpFingerPrint'] = self.dhcp_fp
-        return dct
 
     def updateDeviceMerge(self, to, fr):
-        if self.source_device_uuid == fr.uuid:
-            self.source_device_idx = to.idx
-            self.source_device_uuid = to.uuid
+        if self.source:
+            self.source.updateDeviceMerge(to, fr)
+        if self.target:
+            self.target.updateDeviceMerge(to, fr)
+    
+class AspectDevice:
+    def __init__(self, aspectDevice):
+        self.uuid = aspectDevice.get('uuid', None)
+        self.idx = aspectDevice.get('idx', None)
+        self.ip = aspectDevice.get('ip', None)
+        self.mac = aspectDevice.get('mac', None)
+        self.hostname = aspectDevice.get('hostname', None)
+        self.extra_data = aspectDevice.get('extraData', {})
+    
+    def serialize(self):
+        aspectDevice = OrderedDict()
+        aspectDevice['uuid'] = self.uuid
+        aspectDevice['idx'] = self.idx
+        aspectDevice['ip'] = self.ip
+        aspectDevice['mac'] = self.mac
+        aspectDevice['hostname'] = self.hostname
+        aspectDevice['extraData'] = self.extra_data
+        return aspectDevice
 
-def parse(dct):
-    if dct['protocol'] == 'arp':
-        return ARPAspect(dct)
-    elif dct['protocol'] == 'dhcp':
-        return DHCPAspect(dct)
-    elif dct['protocol'] == 'ip':
-        return IPAspect(dct)
-    else:
-        raise Exception('Unknown packet type %s' % dct['type'])
+    def updateDeviceMerge(self, to, fr):
+        if fr.uuid == self.uuid:
+            self.idx = to.idx
+            self.uuid = to.uuid

@@ -1,30 +1,28 @@
 from collections import OrderedDict
-import packet_aspect
+from packet_aspect import PacketAspect
 
 class Packet(object):
-    def __init__(self, dct):
-        if not 'idx' in dct:
-            dct['idx'] = None
-        if not 'networkId' in dct:
-            dct['networkId'] = None
-        self.idx = dct['idx']
-        self.uuid = dct['uuid']
-        self.time = dct['time']
-        self.origin = dct['origin']
-        self.network_id = dct['networkId']
-        self.protocol = dct['protocol']
-        self.aspects = [packet_aspect.parse(aspect) for aspect in dct['aspects']]        
+    def __init__(self, packet):
+        self.idx = packet.get('idx', None)
+        self.uuid = packet['uuid']
+        self.time = packet['time']
+        self.origin = packet['origin']
+        self.network_id = packet.get('networkId', None)
+        self.protocol = packet['protocol']
+        self.layer = packet['layer']
+        self.aspects = [PacketAspect(aspect) for aspect in packet['aspects']]        
     
     def serialize(self):
-        dct = OrderedDict()
-        dct['idx'] = self.idx
-        dct['uuid'] = self.uuid
-        dct['time'] = self.time
-        dct['origin'] = self.origin
-        dct['networkId'] = self.network_id
-        dct['protocol'] = self.protocol
-        dct['aspects'] = [aspect.serialize() for aspect in self.aspects]
-        return dct
+        packet = OrderedDict()
+        packet['idx'] = self.idx
+        packet['uuid'] = self.uuid
+        packet['time'] = self.time
+        packet['origin'] = self.origin
+        packet['networkId'] = self.network_id
+        packet['protocol'] = self.protocol
+        packet['layer'] = self.layer
+        packet['aspects'] = [aspect.serialize() for aspect in self.aspects]
+        return packet
 
     def updateDeviceMerge(self, to, fr):
         for aspect in self.aspects:

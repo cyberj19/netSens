@@ -1,6 +1,6 @@
 <h1 
     style="background-color: green;">
-    {{network.name}} - {{network.defaultGTWMAC}}
+    {{network.name}}
 </h1>
 <button ng-click='rename();'>
     Rename
@@ -47,7 +47,7 @@
                     <th>Closed</th>
                     <th>IP</th>
                     <th>MAC</th>
-                    <th>Vendor</th>
+                    <th>Hostname</th>
                     <th>#Packets</th>
                     <th>LTS</th>
                     <th>FTS</th>
@@ -62,11 +62,7 @@
                     <td>{{device.isClosed}}</td>
                     <td>{{device.ip || 'Unknown'}}</td>
                     <td>{{device.mac || 'Unknown'}}</td>
-                    <td>{{device.vendor || 'Unknown'}}
-			<button ng-click="macVendors(device.idx)" ng-show="isNoVendorPresent(device.vendor)">
-                            MacVendors
-                        </button>
-			</td>
+                    <td>{{device.hostname || 'Unknown'}}</td>
                     <td>
                         <table>
                             <tr>
@@ -99,8 +95,11 @@
                         <button ng-click="fingerBankAnalyze(device.idx)" ng-show="dhcpFpPresent(device.dhcpFingerPrint)">
                             FingerBank
                         </button>
+                        <button>
+                            MacVendors
+                        </button>
                         <button
-                            ng-click="getAnalysisData(device.idx);">
+                            ng-click="getAnalysisData(device);">
                             Analyze
                         </button>
                     </td>
@@ -115,26 +114,18 @@
                         <th colspan="5">Device {{analysisIdx}} Packet Analysis</th>
                     </tr>
                     <tr>
-                        <th>Idx</th>
-                        <th>Type</th>
                         <th>Timestamp</th>
+                        <th>Protocol</th>
+                        <th>Layer</th>
                         <th>Data</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="pkt in analysisPackets">
-                        <td>{{pkt.idx}}</td>
-                        <td>{{pkt.type}}</td>
                         <td>{{pkt.time}}</td>
-                        <td ng-show="pkt.type=='arp'">
-                            FROM
-                            {{pkt.sourceDeviceIP + ';' + pkt.sourceDeviceMAC}}
-                            TO
-                            {{pkt.targetDeviceIP}}
-                        </td>
-                        <td ng-show="pkt.type=='dhcp'">
-
-                        </td>
+                        <td>{{pkt.protocol}}</td>
+                        <td>{{pkt.layer}}</td>
+                        <td>{{pkt.description}}</td>
                     </tr>
                 </tbody>
             </table>

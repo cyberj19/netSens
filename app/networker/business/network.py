@@ -1,6 +1,5 @@
 from collections import OrderedDict
 import logging
-import vendors
 import time
 import uuid
 import link
@@ -19,7 +18,7 @@ def create():
         'name': uid,
         'createTime': tt,
         'lastUpdateTime': tt,
-        'defaultGTWMAC': None,
+        'gateways': [],
         'deviceIdx': 0,
         'devices': [],
         'linkIdx': 0,
@@ -38,7 +37,7 @@ class Network:
         self.name = dct['name']
         self.create_time = dct['createTime']
         self.last_update_time = dct['lastUpdateTime']
-        self.default_gtw_mac = dct['defaultGTWMAC']
+        self.gateways = dct['gateways']
         
         self.packet_counter = packet_counter.PacketCounter(dct['packetCounter'])
         
@@ -67,7 +66,7 @@ class Network:
         dct['name'] = self.name
         dct['createTime'] = self.create_time
         dct['lastUpdateTime'] = self.last_update_time
-        dct['defaultGTWMAC'] = self.default_gtw_mac
+        dct['gateways'] = self.gateways
         dct['deviceIdx'] = self.device_idx
         dct['devices'] = [dev.serialize() for dev in self.devices]
         dct['linkIdx'] = self.link_idx
@@ -81,13 +80,13 @@ class Network:
         return dct
 
     def clear(self):
+        self.gateways = []
         self.targets = []
         self.alerts = []
         self.packet_counter.clear()
         self.devices = []
         self.links = []
         self.packets = []
-        self.default_gtw_mac = None
 
     def addPacket(self, pkt):
         pkt.network_id = self.uuid
@@ -102,28 +101,26 @@ class Network:
             self.processAspect(aspect, pkt.time)
     
     def processAspect(self, asp, time):
-        if asp.protocol == 'arp':
-            sdev = device.create(self.uuid, 
-                asp.protocol, time, asp.source_device_ip, 
-                asp.source_device_mac)
-            asp.source_device_uuid = sdev.uuid
-            
-            tdev = device.create(self.uuid, asp.protocol, 
-                time, asp.target_device_ip)
-            asp.target_device_uuid = tdev.uuid
-
-            lnk = link.create(self.uuid, time, sdev.uuid, tdev.uuid)
+        has_source = False
+        if asp.source:
+            has_source = True
+            sdev = device.create(self.uuid, asp.protocol, time, asp.source)
+            asp.source.uuid = sdev.uuid
             self.dev_proc_queue.append(sdev)
+        
+        has_target = False
+        if asp.target and asp.protocol != 'ip':
+            has_target = True
+            tdev = device.create(self.uuid, asp.protocol, time, asp.target)
+            asp.target.uuid = tdev.uuid
             self.dev_proc_queue.append(tdev)
+        
+        if has_source and has_target:
+            lnk = link.create(self.uuid, time, sdev.uuid, tdev.uuid)
             self.lnk_proc_queue.append(lnk)
-        elif asp.protocol == 'dhcp':
-            sdev = device.create(self.uuid, asp.protocol, time, 
-                                ip=None, mac=asp.source_device_mac,
-                                dhcp_fp=asp.dhcp_fp)
-            asp.source_device_uuid = sdev.uuid
-            self.dev_proc_queue.append(sdev)
-        elif asp.protocol == 'ip':
-            self.ip_proc_queue.append(asp)
+        
+        if asp.protocol == 'ip':
+            self.ip_proc_queue.append(asp.target)
 
     def mergeNetwork(self, net):
         logger.debug('merging network')
@@ -144,23 +141,22 @@ class Network:
         logger.debug('processing ip queue')
         while self.ip_proc_queue:
             nex = self.ip_proc_queue.pop(0)
-            self.mergeIp(nex)
+            self.mergeTarget(nex)
         self.processTargets()
 
     def processTargets(self):
+        self.reprocess = False
         for mac in self.targets:
             if len(self.targets[mac]) > 1:
                 self.reprocess = True
-                if not self.default_gtw_mac:
-                    self.addAlert('dgw detected: %s' % mac)
-                self.default_gtw_mac = mac
-                break
-    
-    def mergeIp(self, ipp):
-        if ipp.target_device_mac not in self.targets:
-            self.targets[ipp.target_device_mac] = []
-        if ipp.target_device_ip not in self.targets[ipp.target_device_mac]:
-            self.targets[ipp.target_device_mac].append(ipp.target_device_ip)
+                self.gateways.append(mac)
+                self.addAlert('gw detected: %s' % mac)
+
+    def mergeTarget(self, target):
+        if target.mac not in self.targets:
+            self.targets[target.mac] = []
+        if target.ip not in self.targets[target.mac]:
+            self.targets[target.mac].append(target.ip)
 
     def mergeLink(self, lnk):
         for cand_lnk in self.links:
@@ -176,7 +172,7 @@ class Network:
         bestScore = MATCH_IMPOSSIBLE
         bestMatch = None
         for cand_dev in self.devices:
-            score = cand_dev.match(dev.first_time, cand_ip=dev.ip, cand_mac=dev.mac)
+            score = cand_dev.match(dev)
             logger.debug('[%s] matching to %s', self.uuid, cand_dev)
             logger.debug('[%s] score: %d', self.uuid, score)
             if score > bestScore:
@@ -189,7 +185,7 @@ class Network:
             self.updateDeviceMerge(bestMatch, dev)
             if bestMatch.reprocess:
                 logger.debug('[%s] reprocessing', self.uuid)
-                bestMach.reprocess = False
+                bestMatch.reprocess = False
                 self.dev_proc_queue.insert(0, bestMatch)
         else:
             dev.idx = self.device_idx

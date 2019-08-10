@@ -8,13 +8,23 @@ import json
 import os
 import env
 import time
+import vendors
 from parsers import parsers
 
 logger = logging.getLogger('parser')
 
-def parsePacket(eth):
+def addVendor(aspectDevice):
+    mac = aspectDevice.get('mac', None)
+    if mac:
+        vnd = vendors.getVendor(aspectDevice['mac'])
+        if vnd:
+            if not 'extraData' in aspectDevice:
+                aspectDevice['extraData'] = {}
+            aspectDevice['extraData']['vendor'] = vnd
+    
+def parsePacket(ts, eth):
     for parser in parsers:
-        aspect = parser(eth)
+        aspect = parser(ts, eth)
         if aspect:
             yield aspect
 
@@ -30,13 +40,17 @@ def parsePCAP(path, file):
                 'time': ts,
                 'origin': file,
                 'protocol': None,
+                'layer': -1,
                 'aspects': []
             }
-            highest_layer = -1
-            for aspect in parsePacket(eth):
-                if aspect['layer'] > highest_layer:
-                    highest_layer = aspect['layer']
+            for aspect in parsePacket(ts, eth):
+                if aspect['layer'] > packet['layer']:
+                    packet['layer'] = aspect['layer']
                     packet['protocol'] = aspect['protocol'] 
+                if 'source' in aspect:
+                    addVendor(aspect['source'])
+                if 'target' in aspect:
+                    addVendor(aspect['target'])
                 packet['aspects'].append(aspect)
             if packet['aspects']:
                 packets.append(packet)

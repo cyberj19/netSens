@@ -9,7 +9,7 @@ logger = logging.getLogger('api')
 def create(env, mqttClient, dbClient):
     db = dbClient.db
     app = Blueprint('netSensAPI', __name__)
-
+    logger.debug('static folder: %s', env.static_files_folder)
     @app.route('/<path:path>')
     def send(path):
         return send_from_directory(env.static_files_folder, path)
@@ -31,14 +31,9 @@ def create(env, mqttClient, dbClient):
             'jobs': jobs
         }), 200
     
-    @app.route('/api/networks/<net_uuid>/devices/<dev_idx>/analyze')
-    def analyzeDevice(net_uuid, dev_idx):
-        dev_idx = int(dev_idx)
-        packets = db.packets.find({
-            'networkId': net_uuid, 
-            '$or': [{'sourceDeviceIdx': dev_idx},
-                    {'targetDeviceIdx': dev_idx}]
-        })
+    @app.route('/api/networks/<net_uuid>/devices/<dev_uuid>/analyze', methods=['GET'])
+    def analyzeDevice(net_uuid, dev_uuid):
+        packets = db.getDevicePackets(net_uuid, dev_uuid)
         return dumps({'success':True, 'packets': packets})
 
     @app.route('/api/networks/<net_uuid>/devices/<dev_uuid>/comment', methods=['POST'])
