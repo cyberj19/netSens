@@ -21,7 +21,7 @@ def create(env, mqttClient, dbClient):
     
     @app.route('/api/overview', methods=['GET'])
     def getOverview():
-        networks = db.networks.find()
+        networks = dbClient.getNetworksOverview()
         monitor = db.monitor.find()
         jobs = db.jobs.find({'finished':False})
         return dumps({

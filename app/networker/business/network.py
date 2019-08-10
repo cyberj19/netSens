@@ -49,7 +49,7 @@ class Network:
         self.links = [link.Link(lnk) for lnk in dct['links']]
         
         self.packet_idx = dct['packetIdx']
-        self.packets = [packet.parsePacket(pkt) for pkt in dct['packets']]
+        self.packets = [packet.Packet(pkt) for pkt in dct['packets']]
         self.targets = dct['targets']
         
         self.alert_idx = dct['alertIdx']
@@ -94,30 +94,36 @@ class Network:
         pkt.idx = self.packet_idx
         self.packet_idx += 1
         self.packets.append(pkt)
-        self.packet_counter.add(pkt.type)
+        self.packet_counter.add(pkt.protocol)
 
     def processPacket(self, pkt):
         self.addPacket(pkt)
-        if pkt.type == 'arp':
-            sdev = device.create(self.uuid, pkt.type, pkt.time, pkt.source_device_ip, 
-                                pkt.source_device_mac)
-            pkt.source_device_uuid = sdev.uuid
+        for aspect in pkt.aspects:
+            self.processAspect(aspect, pkt.time)
+    
+    def processAspect(self, asp, time):
+        if asp.protocol == 'arp':
+            sdev = device.create(self.uuid, 
+                asp.protocol, time, asp.source_device_ip, 
+                asp.source_device_mac)
+            asp.source_device_uuid = sdev.uuid
             
-            tdev = device.create(self.uuid, pkt.type, pkt.time, pkt.target_device_ip)
-            pkt.target_device_uuid = tdev.uuid
+            tdev = device.create(self.uuid, asp.protocol, 
+                time, asp.target_device_ip)
+            asp.target_device_uuid = tdev.uuid
 
-            lnk = link.create(self.uuid, pkt.time, sdev.uuid, tdev.uuid)
+            lnk = link.create(self.uuid, time, sdev.uuid, tdev.uuid)
             self.dev_proc_queue.append(sdev)
             self.dev_proc_queue.append(tdev)
             self.lnk_proc_queue.append(lnk)
-        elif pkt.type == 'dhcp':
-            sdev = device.create(self.uuid, pkt.type, pkt.time, 
-                                ip=None, mac=pkt.source_device_mac,
-                                dhcp_fp=pkt.dhcp_fp)
-            pkt.source_device_uuid = sdev.uuid
+        elif asp.protocol == 'dhcp':
+            sdev = device.create(self.uuid, asp.protocol, time, 
+                                ip=None, mac=asp.source_device_mac,
+                                dhcp_fp=asp.dhcp_fp)
+            asp.source_device_uuid = sdev.uuid
             self.dev_proc_queue.append(sdev)
-        elif pkt.type == 'ip':
-            self.ip_proc_queue.append(pkt)
+        elif asp.protocol == 'ip':
+            self.ip_proc_queue.append(asp)
 
     def mergeNetwork(self, net):
         logger.debug('merging network')
@@ -146,7 +152,7 @@ class Network:
             if len(self.targets[mac]) > 1:
                 self.reprocess = True
                 if not self.default_gtw_mac:
-                    self.addAlert('dgw detected: %s' % self.default_gtw_mac)
+                    self.addAlert('dgw detected: %s' % mac)
                 self.default_gtw_mac = mac
                 break
     
@@ -166,18 +172,19 @@ class Network:
         self.links.append(lnk)
 
     def mergeDevice(self, dev):
-        logger.debug('[%s] merging %s', self.uuid, dev.uuid)
+        logger.debug('[%s] matching %s', self.uuid, dev)
         bestScore = MATCH_IMPOSSIBLE
         bestMatch = None
         for cand_dev in self.devices:
             score = cand_dev.match(dev.first_time, cand_ip=dev.ip, cand_mac=dev.mac)
-            logger.debug('[%s] matching to %s: %d', self.uuid, cand_dev.uuid, score)
+            logger.debug('[%s] matching to %s', self.uuid, cand_dev)
+            logger.debug('[%s] score: %d', self.uuid, score)
             if score > bestScore:
                 bestScore = score
                 bestMatch = cand_dev
 
         if bestScore > MATCH_IMPOSSIBLE:
-            logger.debug('[%s] found match %d', self.uuid, bestMatch.idx)
+            logger.debug('[%s] found match %s', self.uuid, bestMatch)
             bestMatch.merge(dev)
             self.updateDeviceMerge(bestMatch, dev)
             if bestMatch.reprocess:

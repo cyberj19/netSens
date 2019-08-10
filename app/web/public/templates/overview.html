@@ -18,9 +18,9 @@
                 <td>{{network.name}}</td>
                 <td>{{timeConverter(network.createTime)}}</td>
                 <td>{{network.defaultGTWMAC}}</td>
-                <td>{{network.devices.length}}</td>
-                <td>{{network.links.length}}</td>
-                <td>{{network.packetCounter.total}}</td>
+                <td>{{network.deviceCount}}</td>
+                <td>{{network.linkCount}}</td>
+                <td>{{network.packetCount}}</td>
                 <td>
                     <button ng-click='loadNetwork(network.uuid);'>
                         View

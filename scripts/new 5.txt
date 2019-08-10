@@ -1,0 +1,134 @@
+1. Schemas:
+
+IPPacket:
+	type:String
+	origin:String
+	idx:Integer
+	uuid:String
+	networkId:String
+	time:Double
+	targetDeviceMAC:String
+	targetDeviceIP:String
+
+ARPPacket:
+	type:String
+	origin:String
+	idx:Integer
+	uuid:String
+	networkId:String
+	time:Double
+	targetDeviceIP:String
+	targetDeviceUUID:String
+	sourceDeviceIP:String
+	sourceDeviceMAC:String
+	sourceDeviceUUID:String
+	
+DHCPPacket:
+	type:String
+	origin:String
+	idx:Integer
+	uuid:String
+	networkId:String
+	time:Double
+	sourceDeviceMAC:String
+	sourceDeviceUUID:String
+	dhcpFingerPrint:[Integer[], String, String]
+
+Device:
+	idx:Integer
+	uuid:String
+	networkId:String
+	isClosed:Boolean
+	firstTimeSeen:Double
+	lastTimeSeen:Double
+	ip:String
+	mac:String
+	vendor:String
+	packetCounter:PacketCounter
+	extraData:Dictionary<String,String>
+	dhcpFingerPrint:[Integer[], String, String]
+
+Link:
+	idx:Integer
+	uuid:String
+	networkId:String
+	firstTimeSeen:Double
+	lastTimeSeen:Double
+	hits:Integer
+	sourceDeviceIdx:Integer
+	sourceDeviceUUID:String
+	targetDeviceIdx:Integer
+	targetDeviceUUID:String
+
+Alert:
+	idx:String
+	uuid:String
+	networkId:String
+	time:Double
+	message:String
+
+PacketCounter:
+	total:Integer
+	<packetType>:Integer
+	
+Network:
+	uuid:String
+	name:String
+	createTime:Double
+	lastUpdateTime:Double
+	defaultGTWMAC:String
+	deviceIdx:Integer
+	devices:Device[]
+	linkIdx:Integer
+	links:Link[]
+	packetCounter:PacketCounter
+	packetIdx:Integer
+	packets:[] one of ARPPacket,IPPacket,DHCPPacket
+	alertIdx:Integer
+	alerts:Alert[]
+	targets:Dictionary<String,String[]>	
+
+NetworkOverview:
+	uuid:String
+	name:String
+	createTime:Double
+	lastUpdateTime:Double
+	defaultGTWMAC:String
+	deviceCount:Integer
+	linkCount:Integer
+	packetCount:Integer
+	
+Monitor:
+	name:String
+	lts:Double
+	
+Job:
+	name:String
+	finished:Boolean
+	lts:Double
+	progress:Integer
+	
+2. API Endpoints:
+GET /api/overview
+return JSON with:
+	success:True
+	networks:Network[]
+	jobs:Job[]
+	monitor:Monitor[]
+or
+	success:False
+	error:String
+
+GET /api/overview/networks/<networkId>
+return JSON with:
+	success:True
+	network:Network
+or
+	success:False
+	error:String
+
+POST /api/playback
+PAYLOAD: file in formData
+return JSON with:
+	success:Boolean
+	error?:String

@@ -49,41 +49,21 @@ class Device:
             self.extra_data.update({"VCI": self.dhcp_fp[1], "Hostname": self.dhcp_fp[2]})
 
         self.reprocess = False
-        
-    def addPacket(self, packetType, time, ip=None, mac=None, dhcp_fp=None):
-        self.packet_counter.add(packetType)
-        if time > self.last_time:
-            self.last_time = time
-        
-        self.reprocess = False
-        if mac:
-            if not self.mac:
-                self.reprocess = True
-            vendor = vendors.getVendor(mac)
-            self.mac = mac
-            self.vendor = vendor
-        
-        if ip:
-            self.ip = ip
-        
-        if dhcp_fp:
-            self.dhcp_fp = dhcp_fp
-            temp = dict(self.extra_data)
-            temp.update({'VCI': dhcp_fp[1], 'Hostname': dhcp_fp[2]})
-            self.extra_data = temp
-
+    def __repr__(self):
+        return '%d: mac=%s, ip=%s' % (self.idx, self.mac, self.ip)
+    
     def match(self, time, cand_ip=None, cand_mac=None):
         if self.is_closed:
             return MATCH_IMPOSSIBLE
         if not cand_ip and not cand_mac: # nothing is known about candidate
             return MATCH_IMPOSSIBLE
-        elif cand_ip: # only candidate ip is known
+        elif not cand_mac: # only candidate ip is known
             # TODO: add time test
             if self.ip and self.ip == cand_ip:
                 return MATCH_POSSIBLE
             else:
                 return MATCH_IMPOSSIBLE
-        elif cand_mac: # only candidate mac is known
+        elif not cand_ip: # only candidate mac is known
             if self.mac:
                 if self.mac == cand_mac:
                     return MATCH_CERTAIN
@@ -110,6 +90,8 @@ class Device:
         self.extra_data.update(device.extra_data)
         if not self.ip and device.ip:
             self.ip = device.ip
+        if not self.mac and device.mac:
+            self.mac = device.mac
 
     def serialize(self):
         dct = OrderedDict()

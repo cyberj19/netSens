@@ -9,15 +9,30 @@ class DBClient:
         self.db = self.client[env.mongo_db_name]
         self.lock = threading.Lock()
 
+    def ping(self):
+        try:
+            self.client.server_info()
+            return True
+        except Exception:
+            return False
     def close(self):
         self.client.close()
 
     def getNetworksOverview(self):
-        return self.db.networks.find(
-            {},
-            {'uuid':1, 'defaultGTWMAC':1}
-        )
-    
+        return self.db.networks.aggregate([{
+            '$project': {
+                '_id': 0,
+                'uuid': 1,
+                'name': 1,
+                'createTime': 1,
+                'lastUpdateTime': 1,
+                'defaultGTWMAC': 1,
+                'deviceCount': {'$size': '$devices'},
+                'linkCount': {'$size': '$links'},
+                'packetCount': {'$size': '$packets'}
+            }
+        }])
+        
     def getNetwork(self, uuid):
         return self.db.networks.find_one({'uuid': uuid})
 

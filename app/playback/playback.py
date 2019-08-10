@@ -4,13 +4,14 @@ sys.path.append(env.infra_path)
 import os
 import mlog
 import logging
+mlog.configLoggers(['main', 'mqtt', 'parser'], env.logs_folder, env.debug_mode)
+
 import json
 import time
 from mqtt_client import MQTTClient
 from pcap_parser import parsePCAP
 import keepalive
 
-mlog.configLoggers(['main', 'mqtt', 'parser'], env.logs_folder, env.debug_mode)
 logger = logging.getLogger('main')
 
 def onPlaybackRequest(req):

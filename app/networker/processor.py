@@ -67,14 +67,14 @@ def createTempNetwork(packets):
     logger.info('Processing new packet buffer')
 
     net = network.create()
-    packets = [packet.parsePacket(pkt) for pkt in packets]
+    packets = [packet.Packet(pkt) for pkt in packets]
     net.process(packets)
     return net
 
 def findNetworkMatch(net):
     if net.default_gtw_mac == None:
         return None
-    networks = mongo.getNetworksOverview()
+    networks = mongo.db.networks.find({}, {'uuid': 1, 'defaultGTWMAC': 1})
     for cand_net in networks:
         if cand_net['uuid'] == net.uuid:
             continue
