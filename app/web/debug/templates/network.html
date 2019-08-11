@@ -33,9 +33,14 @@
     <button ng-click="setCurrentTab('links');">
         Links ({{network.links.length}})
     </button>
-    <button ng-click="setCurrentTab('packets');">
-        Packets ({{network.packets.length}})
+    <button ng-click="setCurrentTab('gateways');">
+        Packets ({{network.gateways.length}})
     </button>
+    <div id="gateways" ng-show="currentTab == 'gateways'">
+        <span ng-repeat="gtw in network.gateways">
+            {{gtw}} <br>
+        </span>
+    </div>
     <div id="devices" ng-show="currentTab == 'devices'">
         <table style="float: top; overflow-x: auto;" cellspacing="0" border="1">
             <thead style="background-color:darkgray; border: 1;">

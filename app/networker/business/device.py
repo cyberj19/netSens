@@ -1,28 +1,8 @@
 import uuid
 import packet_counter
 from collections import OrderedDict
-MATCH_IMPOSSIBLE = 0
-MATCH_POSSIBLE = 1
-MATCH_CERTAIN = 2
+from device_match import *
 
-match_rules = [
-    {
-        'properties': ['mac'],
-        'score': MATCH_CERTAIN
-    },
-    {
-        'properties': ['ip', 'hostname'],
-        'score': MATCH_CERTAIN
-    },
-    {
-        'properties': ['ip'],
-        'score': MATCH_POSSIBLE
-    },
-    {
-        'properties': ['hostname'],
-        'score': MATCH_POSSIBLE
-    }
-]
 def create(networkId, protocol, time, aspectDevice):
     dev = Device({
         'idx': -1,
@@ -60,23 +40,8 @@ class Device:
     def match(self, cand):
         if self.is_closed:
             return MATCH_IMPOSSIBLE
-
-        matches = []
-        for prop in ['mac', 'ip', 'hostname']:
-            my = self.core[prop]
-            other = cand.core[prop]
-            if other:
-                if other == my:
-                    matches.append(prop)
-                else:
-                    matches.append('!' + prop)
+        return matchDevices(self.core, cand.core)
         
-        best_score = MATCH_IMPOSSIBLE
-        for rule in match_rules:
-            if set(rule['properties']).issubset(set(matches)):
-                if rule['score'] > best_score:
-                    best_score = rule['score']
-        return best_score
 
     def merge(self, device):
         self.first_time_seen = min(self.first_time_seen, device.first_time_seen)

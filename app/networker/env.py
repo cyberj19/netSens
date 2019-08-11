@@ -4,7 +4,7 @@ output_folder = '../../data/runtime/networker'
 
 vendor_file = '../../data/vendors'
 
-debug_mode  = True
+debug_mode  = False
 
 mqtt_host = "localhost"
 mqtt_port = 1883

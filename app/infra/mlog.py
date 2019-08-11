@@ -18,18 +18,20 @@ def createLogger(name, logs_folder=None, debug_mode=True):
         '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 
 
+    if logs_folder:
+            handler = logging.FileHandler(filename)
+            handler.setFormatter(debugFormatter)
+            handler.setLevel(logging.DEBUG)
+            logger.addHandler(handler)
+
+
+    shandler = logging.StreamHandler()
     if debug_mode:
-        if logs_folder:
-                handler = logging.FileHandler(filename)
-                handler.setFormatter(debugFormatter)
-                handler.setLevel(logging.DEBUG)
-                logger.addHandler(handler)
-
-
-        shandler = logging.StreamHandler()
         shandler.setFormatter(debugFormatter)
-        shandler.setLevel(logging.DEBUG)			
-        logger.addHandler(shandler)
-        
-        logger.setLevel(logging.DEBUG)
-
+        shandler.setLevel(logging.DEBUG)
+    else:
+        shandler.setFormatter(infoFormatter)
+        shandler.setLevel(logging.INFO)			
+    logger.addHandler(shandler)
+	
+    logger.setLevel(logging.DEBUG)

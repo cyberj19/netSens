@@ -124,39 +124,50 @@ class Network:
 
     def mergeNetwork(self, net):
         logger.debug('merging network')
-        self.process(net.packets)
+        for device in net.devices:
+            self.dev_proc_queue.append(device)
+        for link in net.links:
+            self.lnk_proc_queue.append(link)
+        for mac in net.targets:
+            self.mergeTarget(mac, net.targets[mac])
+        self.process_queues()
 
     def process(self, packets):
         logger.debug('creating packet device')
         for pkt in packets:
             self.processPacket(pkt)
+        
+        self.process_queues()
+    
+    def process_queues(self):        
         logger.debug('processing device queue')
         while self.dev_proc_queue:
             nex = self.dev_proc_queue.pop(0)
             self.mergeDevice(nex)
+
         logger.debug('processing link queue')
         while self.lnk_proc_queue:
             nex = self.lnk_proc_queue.pop(0)
             self.mergeLink(nex)
+
         logger.debug('processing ip queue')
         while self.ip_proc_queue:
             nex = self.ip_proc_queue.pop(0)
-            self.mergeTarget(nex)
+            self.mergeTarget(nex.mac, [nex.ip])
         self.processTargets()
 
     def processTargets(self):
         self.reprocess = False
         for mac in self.targets:
             if len(self.targets[mac]) > 1:
-                self.reprocess = True
-                self.gateways.append(mac)
-                self.addAlert('gw detected: %s' % mac)
+                if mac not in self.gateways:
+                    self.reprocess = True
+                    self.gateways.append(mac)
+                    self.addAlert('gw detected: %s' % mac)
 
-    def mergeTarget(self, target):
-        if target.mac not in self.targets:
-            self.targets[target.mac] = []
-        if target.ip not in self.targets[target.mac]:
-            self.targets[target.mac].append(target.ip)
+    def mergeTarget(self, mac, ips):
+        curr = self.targets.get(mac, [])
+        self.targets[mac] = list(set(curr) | set(ips))
 
     def mergeLink(self, lnk):
         for cand_lnk in self.links:
