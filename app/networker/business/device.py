@@ -65,8 +65,11 @@ class Device:
         for prop in ['mac', 'ip', 'hostname']:
             my = self.core[prop]
             other = cand.core[prop]
-            if other and other == my:
-                matches.append(prop)
+            if other:
+                if other == my:
+                    matches.append(prop)
+                else:
+                    matches.append('!' + prop)
         
         best_score = MATCH_IMPOSSIBLE
         for rule in match_rules:
