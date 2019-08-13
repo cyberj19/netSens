@@ -57,6 +57,7 @@
                     <th>LTS</th>
                     <th>FTS</th>
                     <th>Extra Data</th>
+                    <th>Plugins</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -91,17 +92,18 @@
                         </table>
                     </td>
                     <td>
+                        <button ng-repeat="plugin in plugins"
+                                ng-click="usePlugin(device.uuid, plugin.uuid);"
+                        >
+                            {{plugin.name}}
+                        </button>
+                    </td>
+                    <td>
                         <button ng-click="addComment(device.uuid,device.comment);">
                             Comment
                         </button>
                         <button ng-click="closeDevice(device.idx);">
                             Close
-                        </button>
-                        <button ng-click="fingerBankAnalyze(device.idx)" ng-show="dhcpFpPresent(device.dhcpFingerPrint)">
-                            FingerBank
-                        </button>
-                        <button>
-                            MacVendors
                         </button>
                         <button
                             ng-click="getAnalysisData(device);">

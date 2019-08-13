@@ -47,7 +47,13 @@ oraApp.controller('networkController', [
             $scope.analysisIdx = -1;
             $scope.analysisPackets = [];
         }
-
+        $scope.usePlugin = function(dev_uuid, plugin_uuid) {
+            console.log('plugin');
+            let url = $scope.apis['plugins'];
+            url = url.replace('<devUUID>', dev_uuid);
+            url = url.replace('<pluginUUID>', plugin_uuid);
+            axios.post(url).then(()=>{});
+        }
         $scope.fetch = function () {
             let url = $scope.apis['network'];
             axios.get(url).then(
@@ -55,10 +61,8 @@ oraApp.controller('networkController', [
                     if (!response.data.success) return;
                     console.log(response.data);
                     $scope.network = response.data.network;
+                    $scope.plugins = response.data.plugins;
                     currTime = (new Date()).getTime() / 1000;
-                    // $scope.session.alive = $scope.session.endTime > currTime - 10;
-
-                    // $scope.visualize();
 
                     $scope.network.devices.sort((d1, d2) => {
                         return d2.lastTimeSeen - d1.lastTimeSeen;
@@ -71,15 +75,6 @@ oraApp.controller('networkController', [
                 }
             );
         }
-
-        // $scope.getInterfaces = function() {
-        //     axios.get('/api/interfaces').then(
-        //         (resp) => {
-        //             if (!resp.data.success) return;
-        //             $scope.interfaces = resp.data.interfaces;
-        //         }
-        //     );
-        // }
         
         $rootScope.$on('loadNetwork', (event, networkId) => {
             if ($scope.network && networkId !== $scope.network.uuid) $scope.reset();
@@ -90,11 +85,10 @@ oraApp.controller('networkController', [
                 'commentDevice': '/api/networks/' + networkId + '/devices/<devIdx>/comment',
                 'closeDevice': '/api/networks/' + networkId + '/devices/<devIdx>/close',
                 'clearNetwork': '/api/networks/' + networkId + '/clear',
-                'fingerBank': '/api/networks/' + networkId + '/devices/<devIdx>/fingerBank',
-                'macVendors': '/api/networks/' + networkId + '/devices/<devIdx>/macVendors',
                 'devAnalysis': '/api/networks/' + networkId + '/devices/<devUUID>/analyze',
                 'renameNetwork': '/api/networks/' + networkId + '/rename/<name>',
-                'removeNetwork': '/api/networks/' + networkId + '/remove'
+                'removeNetwork': '/api/networks/' + networkId + '/remove',
+                'plugins': '/api/networks/' + networkId + '/devices/<devUUID>/plugins/<pluginUUID>',
             };
             console.log('network loaded');
 

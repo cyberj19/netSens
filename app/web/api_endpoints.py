@@ -31,6 +31,14 @@ def create(env, mqttClient, dbClient):
             'jobs': jobs
         }), 200
     
+    @app.route('/api/networks/<net_uuid>/devices/<dev_uuid>/plugins/<plugin_uuid>', methods=['POST'])
+    def usePlugin(net_uuid, dev_uuid, plugin_uuid):
+        topic = 'plugin-device-%s' % plugin_uuid
+        device = dbClient.getDevice(net_uuid, dev_uuid)
+        if device:
+            mqttClient.publish(topic, device)
+        return dumps({'success':True}), 200
+
     @app.route('/api/networks/<net_uuid>/devices/<dev_uuid>/analyze', methods=['GET'])
     def analyzeDevice(net_uuid, dev_uuid):
         packets = db.getDevicePackets(net_uuid, dev_uuid)
@@ -51,6 +59,7 @@ def create(env, mqttClient, dbClient):
     @app.route('/api/networks/<uuid>')
     def getNetwork(uuid):
         network = db.networks.find_one({'uuid': uuid})
+        plugins = db.plugins.find({})
         if not network:
             return json.dumps({
                 'success': False,
@@ -59,6 +68,7 @@ def create(env, mqttClient, dbClient):
         else:
             return dumps({
                 'success': True,
+                'plugins': plugins,
                 'network': network
             }), 200
 

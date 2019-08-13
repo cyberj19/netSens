@@ -217,9 +217,8 @@ class Network:
         for device in self.devices:
             if device.uuid != devUUID:
                 continue
-            temp = dict(device.extra_data)
-            temp.update(data)
-            device.extra_data = temp
+            for key in data:
+                device.extra_data[key] = data[key]
             break
 
     def commentDevice(self, devUUID, comment):

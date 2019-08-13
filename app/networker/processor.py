@@ -15,7 +15,7 @@ lock = threading.Lock()
 
 @contextlib.contextmanager
 def NetworkLock(uuid):
-    global network_locks
+    global network_locks, lock
     global mongo
     with lock:
         if not uuid in network_locks:
@@ -47,7 +47,8 @@ def removeNetwork(data):
 def clearNetwork(data):
     uuid = data['uuid']
     with NetworkLock(uuid) as net:
-        net.clear()
+        if net:
+            net.clear()
 
 def addDeviceExtraData(data):
     logger.info('add device extra data: %s', str(data))
@@ -56,13 +57,8 @@ def addDeviceExtraData(data):
     dev_uuid = data['deviceUUID']
     ext_data = data['extraData']
     with NetworkLock(net_uuid) as net:
-        net.addDeviceData(dev_uuid, ext_data)
-
-def createTempNetwork(packets):
-    global mqtt, mongo
-    net = network.create()
-    net.process(packets)
-    return net
+        if net:
+            net.addDeviceData(dev_uuid, ext_data)
 
 def findNetworkMatch(net):
     if not net.gateways:
@@ -113,9 +109,15 @@ def processPacketsBuffer(packets_buffer):
         if net.reprocess:
             network_queue.append(net)
             net.reprocess = False
-    processNetworkQueue(network_queue)
+    altered_networks = processNetworkQueue(network_queue)
+    for uuid in altered_networks:
+        network_data = mongo.db.networks.find_one({'uuid': uuid})
+        if network_data:
+            for device in network_data['devices']:
+                mqtt.publish('device', device)
 
 def processNetworkQueue(network_queue):
+    altered_networks = [network_queue[0].uuid]
     while network_queue:
         nex = network_queue.pop(0)
         with NetworkLock(nex.uuid):
@@ -123,15 +125,11 @@ def processNetworkQueue(network_queue):
             if merge_uuid:
                 with NetworkLock(merge_uuid) as merge_net:
                     merge_net.mergeNetwork(nex)
+                    altered_networks.append(merge_uuid)
+                    altered_networks.remove(nex.uuid)
                     mongo.deleteNetwork(nex.uuid)
                     updateOriginNetwork(nex.uuid, merge_uuid)
                     if merge_net.reprocess:
                         network_queue.append(merge_net)
                         merge_net.reprocess = False
-
-if __name__ == '__main__':
-    #inject mode
-    file = sys.argv[1]
-    with open(file, 'r') as fp:
-        data = json.load(fp)
-    net = createTempNetwork(data)
+    return altered_networks

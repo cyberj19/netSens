@@ -19,6 +19,7 @@ dirlist = [
 	'data/logs/monitor',
 	'data/logs/web',
 	'data/logs/networker',
+	'data/logs/thirdpary'
 ]
 
 for d in dirlist:
@@ -41,7 +42,8 @@ services = [
 	['WEB', 'app/web','python', 'web.py'],
 	['PLAYBACK', 'app/playback', 'python', 'playback.py'],
 	['NETWORKER', 'app/networker', 'python', 'networker.py'],
-	['MONITOR', 'app/monitor', 'python', 'monitor.py']
+	['MONITOR', 'app/monitor', 'python', 'monitor.py'],
+	['THIRD_PARTY', 'app/thirdpary', 'python', 'thirdpary.py']
 ]
 
 for service in services:

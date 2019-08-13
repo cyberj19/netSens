@@ -18,6 +18,14 @@ class DBClient:
     def close(self):
         self.client.close()
 
+    def getDevice(self, net_uuid, dev_uuid):
+        net = self.db.networks.find_one({'uuid': net_uuid})
+        if not net:
+            return None
+        for dev in net['devices']:
+            if dev['uuid'] == dev_uuid:
+                return dev
+        return None
     def getNetworksOverview(self):
         return self.db.networks.aggregate([{
             '$project': {

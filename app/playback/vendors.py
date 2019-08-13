@@ -18,4 +18,4 @@ def getVendor(macAddress):
     macAddr_nc = macAddr_nc[:6]
     if not macAddr_nc in vendors:
         return None
-    return vendors[macAddr_nc]
+    return None #vendors[macAddr_nc]
