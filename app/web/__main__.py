@@ -8,7 +8,7 @@ from mqtt_client import MQTTClient
 from api_server import APIServer
 from db import DBClient
 
-mlog.configLoggers(['main', 'mqtt', 'api', 'db'], env.logs_folder, env.debug_mode)
+mlog.configLoggers(['main', 'mqtt', 'api', 'db', 'endpoint'], env.logs_folder, env.debug_mode)
 
 logger = logging.getLogger('main')
 

@@ -19,7 +19,7 @@ dirlist = [
 	'data/logs/monitor',
 	'data/logs/web',
 	'data/logs/networker',
-	'data/logs/thirdpary'
+	'data/logs/thirdparty'
 ]
 
 for d in dirlist:
