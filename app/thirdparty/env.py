@@ -1,6 +1,6 @@
-infra_path = '../infra'
+infra_path = 'infra'
 
-logs_folder = '../../data/logs/thirdparty'
+logs_folder = '../data/logs/thirdparty'
 debug_mode  = True
 
 mqtt_host = "localhost"

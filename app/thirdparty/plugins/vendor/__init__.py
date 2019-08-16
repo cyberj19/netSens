@@ -5,7 +5,7 @@ name = 'Vendor'
 uuid = 'vendor-123'
 level = 'device'
 
-vendor_file = 'plugins/vendor/mac_vendor'
+vendor_file = 'thirdparty/plugins/vendor/mac_vendor'
 with open(vendor_file,'r') as fp:
     vendor_data = fp.readlines()
 vendors = {}

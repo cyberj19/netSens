@@ -1,5 +1,5 @@
-infra_path = '../infra'
-logs_folder = '../../data/logs/web'
+infra_path = 'infra'
+logs_folder = '../data/logs/web'
 debug_mode  = True
 
 mongo_host = 'localhost'
@@ -10,6 +10,6 @@ mqtt_host = 'localhost'
 mqtt_port = 1883
 
 flask_port = 8000
-static_files_folder = 'public'
+static_files_folder = 'web/public'
 
-pbak_folder = '../../data/playback'
+pbak_folder = '../data/playback'

@@ -1,8 +1,6 @@
-infra_path = '../infra'
-logs_folder = '../../data/logs/networker'
-output_folder = '../../data/runtime/networker'
-
-vendor_file = '../../data/vendors'
+infra_path = 'infra'
+logs_folder = '../data/logs/networker'
+output_folder = '../data/runtime/networker'
 
 debug_mode  = False
 

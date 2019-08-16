@@ -17,7 +17,7 @@ logger = logging.getLogger('main')
 try:
     mqtt = MQTTClient(env)
     mongo = DBClient(env)
-    pluginNames = os.listdir('plugins')
+    pluginNames = os.listdir('thirdparty/plugins')
     logger.debug(pluginNames)
     for pluginName in pluginNames:
         if pluginName == '__init__.py' or \

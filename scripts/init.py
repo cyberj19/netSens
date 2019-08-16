@@ -39,11 +39,11 @@ shutil.copyfile('app/web/env_%s.py' % env_file, 'app/web/env.py')
 services = [
 	['MONGO', 'C:\\Program Files\\MongoDB\\Server\\3.6\\bin', 'mongod.exe', '--dbpath', os.path.join(os.getcwd(),'data/mongo')],
 	['MOSQUITTO', 'C:\\Program Files\\mosquitto','mosquitto.exe'],
-	['WEB', 'app/web','python', 'web.py'],
-	['PLAYBACK', 'app/playback', 'python', 'playback.py'],
-	['NETWORKER', 'app/networker', 'python', 'networker.py'],
-	['MONITOR', 'app/monitor', 'python', 'monitor.py'],
-	['THIRD_PARTY', 'app/thirdparty', 'python', 'thirdparty.py']
+	['WEB', 'app','python', 'web'],
+	['PLAYBACK', 'app', 'python', 'playback'],
+	['NETWORKER', 'app', 'python', 'networker'],
+	['MONITOR', 'app', 'python', 'monitor'],
+	['THIRD_PARTY', 'app', 'python', 'thirdparty']
 ]
 
 for service in services:

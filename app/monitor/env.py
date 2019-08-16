@@ -1,6 +1,6 @@
-infra_path = '../infra'
-logs_folder = '../../data/logs/monitor'
-output_folder = '../../data/runtime/monitor'
+infra_path = 'infra'
+logs_folder = '../data/logs/monitor'
+output_folder = '../data/runtime/monitor'
 
 debug_mode  = True
 
