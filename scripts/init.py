@@ -43,7 +43,7 @@ services = [
 	['PLAYBACK', 'app/playback', 'python', 'playback.py'],
 	['NETWORKER', 'app/networker', 'python', 'networker.py'],
 	['MONITOR', 'app/monitor', 'python', 'monitor.py'],
-	['THIRD_PARTY', 'app/thirdpary', 'python', 'thirdpary.py']
+	['THIRD_PARTY', 'app/thirdparty', 'python', 'thirdparty.py']
 ]
 
 for service in services:

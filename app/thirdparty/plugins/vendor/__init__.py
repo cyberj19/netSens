@@ -1,3 +1,5 @@
+import json
+
 logger = None
 name = 'Vendor'
 uuid = 'vendor-123'
@@ -23,6 +25,8 @@ def processDevice(device, manual=False):
             return None
         else:
             vendor = getVendorFromAPI(device['mac'])
+            if not vendor:
+                return None
     
     return {
         'vendor': vendor
@@ -32,13 +36,22 @@ import httplib
 
 host = 'api.macvendors.com'
 
+def isAPIError(data):
+    try:
+        json.loads(data)
+        return True
+    except Exception:
+        return False
+
 def getVendorFromAPI(macAddress):
     api = "/%s" % macAddress
     conn = httplib.HTTPSConnection(host)
     conn.request("GET", api)
     response = conn.getresponse()
     data = response.read()
-    logger.debug(data)
+    if isAPIError(data):
+        logger.error('API ERROR')
+        return None
     return data
 
 def getVendorFromFile(macAddress):
