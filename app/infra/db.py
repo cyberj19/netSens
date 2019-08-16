@@ -4,9 +4,9 @@ import threading
 class DBClient:
     def __init__(self, env):
         self.client = pymongo.MongoClient(
-                env.mongo_host, env.mongo_port
+                env.db_host, env.db_port
             )
-        self.db = self.client[env.mongo_db_name]
+        self.db = self.client[env.db_name]
         self.lock = threading.Lock()
 
     def ping(self):

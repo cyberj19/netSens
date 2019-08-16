@@ -2,25 +2,32 @@ import os
 import importlib
 import logging
 from flask import request
+import mlog
 logger = logging.getLogger('endpoint')
 
-def load(webApp, dbClient, mqClient):
-    enames = os.listdir('web/endpoints')
+def getPackageFiles(dir):
+    enames = os.listdir(dir)
     for ename in enames:
         if ename in ['__init__.py', '__init__.pyc']:
             continue
         ename_parts = os.path.basename(ename).split('.')
-        if ename_parts[1] != 'py':
+        if len(ename_parts) > 1 and ename_parts[1] != 'py':
             continue
-        logger.info('loading endpoint %s', ename_parts[0])
+        yield ename_parts[0]
+
+
+def load(webApp, dbClient, mqClient, env):
+    for ename in getPackageFiles('web/endpoints'):
+        logger.info('loading endpoint %s', ename)
         try:
-            module = importlib.import_module('endpoints.' + ename_parts[0])
-            Endpoint(webApp, dbClient, mqClient, module)
+            module = importlib.import_module('endpoints.' + ename)
+            mlog.configLoggers([module.name], env.logs_folder, env.debug_mode)
+            Endpoint(webApp, dbClient, mqClient, logger, module)
         except Exception as e:
             logger.error('error loading: %s', str(e))
 
 class Endpoint:
-    def __init__(self, webApp, dbClient, mqClient, module):
+    def __init__(self, webApp, dbClient, mqClient, logger, module):
         url = module.url
         methods = module.methods
         handler = module.handle

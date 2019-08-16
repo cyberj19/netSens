@@ -5,20 +5,20 @@ import models.packet as packet
 
 NetworkLock = None
 logger = None
-mongo = None
-mqtt = None
+db_client = None
+mq_client = None
 
-def init(mq, mng, nlock, lgr):
-    global NetworkLock, logger, mongo, mqtt
-    mqtt = mq
-    mongo = mng
+def init(mq, db, nlock, lgr):
+    global NetworkLock, logger, db_client, mq_client
+    mq_client = mq
+    db_client = db
     NetworkLock = nlock
     logger = lgr
 
 def findNetworkMatch(net):
     if not net.gateways:
         return None
-    networks = mongo.db.networks.find({}, {'uuid': 1, 'gateways': 1})
+    networks = db_client.db.networks.find({}, {'uuid': 1, 'gateways': 1})
     for cand_net in networks:
         if cand_net['uuid'] == net.uuid:
             continue
@@ -28,20 +28,20 @@ def findNetworkMatch(net):
     return None
 
 def getNetworkForOrigin(org_uuid):
-    pairs = mongo.db.origins.find({})
+    pairs = db_client.db.origins.find({})
     for pair in pairs:
         if pair['originUUID'] == org_uuid:
             return pair['networkUUID']
     return None
 
 def addOriginNetwork(net_uuid, org_uuid):
-    mongo.db.origins.insert_one({
+    db_client.db.origins.insert_one({
         'originUUID': org_uuid, 
         'networkUUID': net_uuid
         })
 
 def updateOriginNetwork(old_net_uuid, new_net_uuid):
-    mongo.db.origins.update({
+    db_client.db.origins.update({
             'networkUUID': old_net_uuid
         }, {
             '$set': {'networkUUID': new_net_uuid}
@@ -67,22 +67,22 @@ def getDestinationNetwork(org_uuid):
     if not dest_uuid:
         net = network.create()
         dest_uuid = net.uuid
-        mongo.addNetwork(net.serialize())
+        db_client.addNetwork(net.serialize())
         addOriginNetwork(dest_uuid, org_uuid)
     return dest_uuid
-    
+
 def publishAlteredNetworks(altered_networks):
     for uuid in altered_networks:
-        network_data = mongo.db.networks.find_one({'uuid': uuid})
+        network_data = db_client.db.networks.find_one({'uuid': uuid})
         if network_data:
             for device in network_data['devices']:
-                mqtt.publish('device', device)
+                mq_client.publish('device', device)
 
 def mergeNetworks(to, fr, altered_networks):
     to.mergeNetwork(fr)
     altered_networks.append(to.uuid)
     altered_networks.remove(fr.uuid)
-    mongo.deleteNetwork(fr.uuid)
+    db_client.deleteNetwork(fr.uuid)
     updateOriginNetwork(fr.uuid, to.uuid)
 
 def processNetworkQueue(network_queue):

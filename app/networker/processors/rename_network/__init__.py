@@ -4,7 +4,7 @@ topic = 'renameNetwork'
 NetworkLock = None
 logger = None
 
-def init(mq, mng, nlock, lgr):
+def init(mq, db, nlock, lgr):
     global NetworkLock, logger
     NetworkLock = nlock
     logger = lgr

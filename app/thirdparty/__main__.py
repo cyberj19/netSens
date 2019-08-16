@@ -6,31 +6,19 @@ import mlog
 from importlib import import_module
 import os
 import logging
-from mqtt_client import MQTTClient
+from mq import MQClient
 from db import DBClient
-from plugin import Plugin
 import time
 import threading
 import keepalive
-mlog.configLoggers(['main', 'mqtt'], env.logs_folder, env.debug_mode)
+import plugin
+mlog.configLoggers(['main', 'mq', 'plugin', 'db'], env.logs_folder, env.debug_mode)
 logger = logging.getLogger('main')
 try:
-    mqtt = MQTTClient(env)
-    mongo = DBClient(env)
-    pluginNames = os.listdir('thirdparty/plugins')
-    logger.debug(pluginNames)
-    for pluginName in pluginNames:
-        if pluginName == '__init__.py' or \
-            pluginName == '__init__.pyc': 
-            continue
-        try:
-            logger.info('Loading plugin %s', pluginName)
-            mdl = import_module('plugins.' + pluginName)
-            mlog.configLoggers([mdl.name], env.logs_folder, env.debug_mode)
-            Plugin(mdl, mqtt, mongo)
-        except Exception as e:
-            logger.error('Failed to load plugin: %s', str(e))
-    keepalive.start(mqtt, 'thirdpary')
+    mqc = MQClient(env)
+    dbc = DBClient(env)
+    plugin.load(mqc, dbc, env)
+    keepalive.start(mqc, 'thirdpary')
 except KeyboardInterrupt:
     pass    
 except Exception as e:

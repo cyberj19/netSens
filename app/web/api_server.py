@@ -8,7 +8,7 @@ class APIServer:
         self.port = env.flask_port
         self.app = Flask('netSensWeb')
         self.create_static_endpoints(env.static_files_folder)
-        endpoint.load(self.app, dbClient, mqClient)
+        endpoint.load(self.app, dbClient, mqClient, env)
 
     def create_static_endpoints(self, folder):
         @self.app.route('/<path:path>')
