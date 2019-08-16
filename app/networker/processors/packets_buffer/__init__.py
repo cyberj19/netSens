@@ -53,24 +53,37 @@ def process(packets_buffer):
     network_queue = []
     org_uuid = packets_buffer['origin']
     packets = [packet.Packet(pkt) for pkt in packets_buffer['packets']]
-    
-    dest_uuid = getNetworkForOrigin(org_uuid)
-    if not dest_uuid:
-        net = network.create()
-        dest_uuid = net.uuid
-        mongo.addNetwork(net.serialize())
-        addOriginNetwork(dest_uuid, org_uuid)
+    dest_uuid = getDestinationNetwork(org_uuid)
     with NetworkLock(dest_uuid) as net:
         net.process(packets)
         if net.reprocess:
             network_queue.append(net)
             net.reprocess = False
     altered_networks = processNetworkQueue(network_queue)
+    publishAlteredNetworks(altered_networks)
+
+def getDestinationNetwork(org_uuid):
+    dest_uuid = getNetworkForOrigin(org_uuid)
+    if not dest_uuid:
+        net = network.create()
+        dest_uuid = net.uuid
+        mongo.addNetwork(net.serialize())
+        addOriginNetwork(dest_uuid, org_uuid)
+    return dest_uuid
+    
+def publishAlteredNetworks(altered_networks):
     for uuid in altered_networks:
         network_data = mongo.db.networks.find_one({'uuid': uuid})
         if network_data:
             for device in network_data['devices']:
                 mqtt.publish('device', device)
+
+def mergeNetworks(to, fr, altered_networks):
+    to.mergeNetwork(fr)
+    altered_networks.append(to.uuid)
+    altered_networks.remove(fr.uuid)
+    mongo.deleteNetwork(fr.uuid)
+    updateOriginNetwork(fr.uuid, to.uuid)
 
 def processNetworkQueue(network_queue):
     altered_networks = [network_queue[0].uuid]
@@ -80,11 +93,7 @@ def processNetworkQueue(network_queue):
             merge_uuid = findNetworkMatch(nex)
             if merge_uuid:
                 with NetworkLock(merge_uuid) as merge_net:
-                    merge_net.mergeNetwork(nex)
-                    altered_networks.append(merge_uuid)
-                    altered_networks.remove(nex.uuid)
-                    mongo.deleteNetwork(nex.uuid)
-                    updateOriginNetwork(nex.uuid, merge_uuid)
+                    mergeNetworks(merge_net, nex, altered_networks)
                     if merge_net.reprocess:
                         network_queue.append(merge_net)
                         merge_net.reprocess = False
