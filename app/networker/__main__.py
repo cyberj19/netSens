@@ -2,6 +2,7 @@ import env
 import sys
 sys.path.append(env.infra_path)
 sys.path.append('models')
+sys.path.append('entities')
 
 from importlib import import_module
 import logging
@@ -15,7 +16,7 @@ import mlog
 import os
 import processor
 
-mlog.configLoggers(['main', 'network', 'proc', 'mq', 'db'], env.logs_folder, env.debug_mode)
+mlog.configLoggers(['main', 'network', 'proc', 'mq', 'db', 'model'], env.logs_folder, env.debug_mode)
 logger = logging.getLogger('main')
 
 try:

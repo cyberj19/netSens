@@ -34,7 +34,7 @@
         Links ({{network.links.length}})
     </button>
     <button ng-click="setCurrentTab('gateways');">
-        Packets ({{network.gateways.length}})
+        Gateways ({{network.gateways.length}})
     </button>
     <div id="gateways" ng-show="currentTab == 'gateways'">
         <span ng-repeat="gtw in network.gateways">
@@ -56,6 +56,7 @@
                     <th>#Packets</th>
                     <th>LTS</th>
                     <th>FTS</th>
+                    <th>Roles</th>
                     <th>Extra Data</th>
                     <th>Plugins</th>
                     <th>Actions</th>
@@ -83,6 +84,7 @@
                     </td>
                     <td>{{timeConverter(device.lastTimeSeen)}}</td>
                     <td>{{timeConverter(device.firstTimeSeen)}}</td>
+                    <td>{{device.roles.join(';') || 'N/A'}}</td>
                     <td>
                         <table>
                             <tr ng-repeat='(key,value) in device.extraData'>
@@ -158,14 +160,14 @@
             </thead>
             <tbody>
                 <tr ng-repeat="link in network.links">
-                    <td>{{link.id}}</td>
+                    <td>{{link.idx}}</td>
                     <td ng-style="trackIdxs[0] === link.idx && {'background-color': 'blue'}">
                         {{link.sourceDeviceIdx}}
                     </td>
                     <td ng-style="trackIdxs[0] === link.idx && {'background-color': 'red'}">
                         {{link.targetDeviceIdx}}
                     </td>
-                    <td>{{link.numHits}}</td>
+                    <td>{{link.hits}}</td>
                     <td>{{timeConverter(link.lastTimeSeen)}}</td>
                     <td>{{timeConverter(link.firstTimeSeen)}}</td>
                     <td>

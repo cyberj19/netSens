@@ -1,0 +1,17 @@
+{
+    "$name": "PacketAspect",
+    "protocol": {},
+    "layer": {},
+    "time": {},
+    "description": {},
+    "source": {
+        "type": "class",
+        "module": "aspect_device",
+        "class": "AspectDevice"
+    },
+    "target": {
+        "type": "class",
+        "module": "aspect_device",
+        "class": "AspectDevice"
+    }
+}

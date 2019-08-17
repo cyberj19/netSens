@@ -1,0 +1,8 @@
+{
+    "$name": "Alert",
+    "idx": {"default": -1},
+    "uuid": {"preset": "uuid"},
+    "networkId": {},
+    "time": {"preset": "time"},
+    "message": {}
+}

@@ -1,83 +1,31 @@
-from collections import OrderedDict
 import logging
 import time
 import uuid
-import link
-import device
-import packet
-import alert
-import packet_counter
-from device import MATCH_CERTAIN, MATCH_IMPOSSIBLE, MATCH_POSSIBLE
+from link import Link
+from alert import Alert
+from device import *
+import models
+
 logger = logging.getLogger('network')
+class Network(models.Model):
+    @classmethod
+    def create(cls):
+        tt = time.time()
+        uid = 'net-%s' % uuid.uuid4().hex
+        return Network({
+            'uuid': uid,
+            'name': uid,
+            'createTime': tt,
+            'lastUpdateTime': tt,
+            'packetCounter': {'total': 0, 'distribution': {}},
+        })
 
-def create():
-    tt = time.time()
-    uid = 'net-%s' % uuid.uuid4().hex
-    return Network({
-        'uuid': uid,
-        'name': uid,
-        'createTime': tt,
-        'lastUpdateTime': tt,
-        'gateways': [],
-        'deviceIdx': 0,
-        'devices': [],
-        'linkIdx': 0,
-        'links': [],
-        'packetIdx': 0,
-        'packets': [],
-        'packetCounter': {'total': 0, 'distribution': {}},
-        'alertIdx': 0,
-        'alerts': [],
-        'targets': {}
-    })
-
-class Network:
-    def __init__(self, dct):
-        self.uuid = dct['uuid']
-        self.name = dct['name']
-        self.create_time = dct['createTime']
-        self.last_update_time = dct['lastUpdateTime']
-        self.gateways = dct['gateways']
-        
-        self.packet_counter = packet_counter.PacketCounter(dct['packetCounter'])
-        
-        self.device_idx = dct['deviceIdx']
-        self.devices =[device.Device(dev) for dev in dct['devices']]
-        
-        self.link_idx = dct['linkIdx']
-        self.links = [link.Link(lnk) for lnk in dct['links']]
-        
-        self.packet_idx = dct['packetIdx']
-        self.packets = [packet.Packet(pkt) for pkt in dct['packets']]
-        self.targets = dct['targets']
-        
-        self.alert_idx = dct['alertIdx']
-        self.alerts = [alert.Alert(alrt) for alrt in dct['alerts']]
-        
+    def __init__(self, net=None):
+        super(Network, self).__init__(schema_file="network.json", data=net)
         self.dev_proc_queue = []
         self.lnk_proc_queue = []
         self.ip_proc_queue = []
-
         self.reprocess = False
-
-    def serialize(self):
-        dct = OrderedDict()
-        dct['uuid'] = self.uuid
-        dct['name'] = self.name
-        dct['createTime'] = self.create_time
-        dct['lastUpdateTime'] = self.last_update_time
-        dct['gateways'] = self.gateways
-        dct['deviceIdx'] = self.device_idx
-        dct['devices'] = [dev.serialize() for dev in self.devices]
-        dct['linkIdx'] = self.link_idx
-        dct['links'] = [lnk.serialize() for lnk in self.links]
-        dct['packetIdx'] = self.packet_idx
-        dct['packets'] = [pkt.serialize() for pkt in self.packets]
-        dct['packetCounter'] = self.packet_counter.serialize()
-        dct['alertIdx'] = self.alert_idx
-        dct['alerts'] = [alert.serialize() for alert in self.alerts]
-        dct['targets'] = self.targets
-        return dct
 
     def clear(self):
         self.gateways = []
@@ -98,25 +46,26 @@ class Network:
     def processPacket(self, pkt):
         self.addPacket(pkt)
         for aspect in pkt.aspects:
+            logger.debug('aspect: %s', aspect.serialize())
             self.processAspect(aspect, pkt.time)
     
     def processAspect(self, asp, time):
         has_source = False
         if asp.source:
             has_source = True
-            sdev = device.create(self.uuid, asp.protocol, time, asp.source)
+            sdev = Device.create(self.uuid, asp.protocol, time, asp.source)
             asp.source.uuid = sdev.uuid
             self.dev_proc_queue.append(sdev)
         
         has_target = False
         if asp.target and asp.protocol != 'ip':
             has_target = True
-            tdev = device.create(self.uuid, asp.protocol, time, asp.target)
+            tdev = Device.create(self.uuid, asp.protocol, time, asp.target)
             asp.target.uuid = tdev.uuid
             self.dev_proc_queue.append(tdev)
         
         if has_source and has_target:
-            lnk = link.create(self.uuid, time, sdev.uuid, tdev.uuid)
+            lnk = Link.create(self.uuid, time, sdev.uuid, tdev.uuid)
             self.lnk_proc_queue.append(lnk)
         
         if asp.protocol == 'ip':
@@ -164,6 +113,10 @@ class Network:
                     self.reprocess = True
                     self.gateways.append(mac)
                     self.addAlert('gw detected: %s' % mac)
+        for dev in self.devices:
+            if dev.mac in self.gateways:
+                dev.addRole('gateway')
+                    
 
     def mergeTarget(self, mac, ips):
         curr = self.targets.get(mac, [])
@@ -225,6 +178,6 @@ class Network:
         self.addDeviceData(devUUID, {'comment': comment})
     
     def addAlert(self, msg):
-        alrt = alert.create(self.alert_idx, self.uuid, msg)
+        alrt = Alert.create(self.alert_idx, self.uuid, msg)
         self.alert_idx += 1
         self.alerts.append(alrt)

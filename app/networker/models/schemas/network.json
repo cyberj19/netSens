@@ -1,0 +1,42 @@
+{
+    "$name": "Network",
+    "uuid": {"preset": "uuid"},
+    "name": {"preset": "uuid"},
+    "createTime": {"preset": "time"},
+    "lastUpdateTime": {"preset": "time"},
+    "gateways": {"mult": "array", "default": []},
+    "packetCounter": {
+        "type": "class",
+        "module": "packet_counter",
+        "class": "PacketCounter"
+    },
+    "deviceIdx": {"default": 0},
+    "devices": {
+        "mult": "array",
+        "type": "class",
+        "module": "device",
+        "class": "Device"
+    },
+    "linkIdx": {"default": 0},
+    "links": {
+        "mult": "array",
+        "type": "class",
+        "module": "link",
+        "class": "Link"
+    },
+    "packetIdx": {"default": 0},
+    "packets": {
+        "mult": "array",
+        "type": "class",
+        "module": "packet",
+        "class": "Packet"
+    },
+    "alertIdx": {"default": 0},
+    "alerts": {
+        "mult": "array",
+        "type": "class",
+        "module": "alert",
+        "class": "Alert"
+    },
+    "targets": {"default": {}}
+}

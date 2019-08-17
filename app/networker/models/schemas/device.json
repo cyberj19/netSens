@@ -1,0 +1,19 @@
+{
+    "$name": "Device",
+    "idx": { "default": -1},
+    "uuid": {"generator": "uuid"},
+    "isClosed": {"default": false},
+    "networkId": {},
+    "firstTimeSeen": {},
+    "lastTimeSeen": {},
+    "ip": {"default": null},
+    "mac": {"default": null},
+    "hostname": {"default": null},
+    "packetCounter": {
+        "type": "class",
+        "module": "packet_counter",
+        "class": "PacketCounter"
+    },
+    "roles": {"multiplicity": "array", "default": []},
+    "extraData": {"default": {}}
+}

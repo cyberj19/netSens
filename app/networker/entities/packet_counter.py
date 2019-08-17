@@ -1,24 +1,23 @@
 from collections import OrderedDict
+import models
 
-def create():
-    return PacketCounter({
-        'total': 0,
-        'distribution': {}
-    })
-class PacketCounter:
-    def __init__(self, dct):
-        self.total = dct['total']
-        self.distribution = dct['distribution']
+class PacketCounter(models.Model):
+    @classmethod
+    def create(cls):
+        return PacketCounter({
+            'total': 0,
+            'distribution': {}
+        })
+
+    def __init__(self, packetCounter):
+        super(PacketCounter, self).__init__(
+            schema_file='packet_counter.json', 
+            data=packetCounter
+            )
 
     def clear(self):
         self.total = 0
         self.distribution = {}
-
-    def serialize(self):
-        dct = OrderedDict()
-        dct['total'] = self.total
-        dct['distribution'] = self.distribution
-        return dct
 
     def add(self, pkttype, count=1):
         if not pkttype in self.distribution:

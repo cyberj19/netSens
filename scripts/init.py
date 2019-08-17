@@ -41,7 +41,7 @@ services = [
 	['MOSQUITTO', 'C:\\Program Files\\mosquitto','mosquitto.exe'],
 	['WEB', 'app','python', 'web'],
 	['PLAYBACK', 'app', 'python', 'playback'],
-	['NETWORKER', 'app', 'python', 'networker'],
+#	['NETWORKER', 'app', 'python', 'networker'],
 	['MONITOR', 'app', 'python', 'monitor'],
 	['THIRD_PARTY', 'app', 'python', 'thirdparty']
 ]

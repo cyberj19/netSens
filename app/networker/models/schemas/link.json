@@ -1,0 +1,13 @@
+{
+    "$name": "Link",
+    "idx": {"default": -1},
+    "uuid": {"preset": "uuid"},
+    "networkId": {},
+    "firstTimeSeen": {"preset": "time"},
+    "lastTimeSeen": {"preset": "time"},
+    "hits": {"default": 1},
+    "sourceDeviceIdx": {"default": -1},
+    "targetDeviceIdx": {"default": -1},
+    "sourceDeviceUUID": {},
+    "targetDeviceUUID": {}
+}

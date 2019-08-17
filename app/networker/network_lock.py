@@ -1,5 +1,5 @@
 import threading
-from models import network
+from entities import network
 import contextlib
 
 mongo = None

@@ -1,13 +1,21 @@
 import logging
 import os
 from importlib import import_module
-logger = logging.getLogger('processor')
+logger = logging.getLogger('proc')
 
-def load(mqc, dbc, lock):
-    pnames = os.listdir('networker/processors')
-    for pname in pnames:
+def getPackages(dir):
+    for pname in os.listdir(dir):
         if pname in ['__init__.py', '__init__.pyc']:
             continue
+        parts = pname.split('.')
+        if len(parts) == 1:
+            continue
+        if parts[-1] != 'py':
+            continue
+        yield '.'.join(parts[:-1])
+
+def load(mqc, dbc, lock):
+    for pname in getPackages('networker/processors'):
         try:
             logger.info('loading processor %s', pname)
             module = import_module('processors.%s' % pname)

@@ -1,7 +1,7 @@
 name = 'packets_buffer'
 topic = 'packetsBuffer'
-import models.network as network
-import models.packet as packet
+from entities.network import Network
+from entities.packet import Packet
 
 NetworkLock = None
 logger = None
@@ -52,7 +52,7 @@ def process(packets_buffer):
     logger.info('Processing new packet buffer')
     network_queue = []
     org_uuid = packets_buffer['origin']
-    packets = [packet.Packet(pkt) for pkt in packets_buffer['packets']]
+    packets = [Packet(pkt) for pkt in packets_buffer['packets']]
     dest_uuid = getDestinationNetwork(org_uuid)
     with NetworkLock(dest_uuid) as net:
         net.process(packets)
@@ -65,7 +65,7 @@ def process(packets_buffer):
 def getDestinationNetwork(org_uuid):
     dest_uuid = getNetworkForOrigin(org_uuid)
     if not dest_uuid:
-        net = network.create()
+        net = Network.create()
         dest_uuid = net.uuid
         db_client.addNetwork(net.serialize())
         addOriginNetwork(dest_uuid, org_uuid)

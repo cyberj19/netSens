@@ -1,0 +1,16 @@
+{
+    "$name": "Packet",
+    "idx": {"default": null},
+    "uuid": {},
+    "time": {},
+    "origin": {},
+    "networkId": {"default": null},
+    "protocol": {},
+    "layer": {},
+    "aspects": {
+        "mult": "array",
+        "type": "class",
+        "module": "packet_aspect",
+        "class": "PacketAspect"
+    }
+}
