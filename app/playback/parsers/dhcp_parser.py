@@ -14,18 +14,30 @@ def getDHCPOption(dhcp, opt_code):
     for opt in dhcp.opts:
         if opt[0] == opt_code:
             return opt[1]
+    return None
+
 def parseDHCPPacket(ts, eth):
     try:
-        ip = eth.data
+        ip  = eth.data
         udp = ip.data
-        dh = dpkt.dhcp.DHCP(udp.data)
-        src= getMACString(eth.src)
+        dh  = dpkt.dhcp.DHCP(udp.data)
+        src = getMACString(eth.src)
+        dhcp_type = getDHCPOption(dh,53)
         dhcp_fp = [ord(c) for c in getDHCPOption(dh,55)]
+        print dhcp_type
+        if dhcp_type == 1:
+            description = 'dhcp discover from %s' % src
+        elif dhcp_type == 3:
+            req_ip = getDHCPOption(dh, 50)
+            description = 'dhcp request %s from %s' % (req_ip, src)
+        else:
+            return None
+        
         return {
             'protocol': 'dhcp',
             'layer': 7,
             'time': ts,
-            'description': 'dhcp request from %s' % src,
+            'description': description,
             'source': {
                 'mac': src,
                 'hostname': getDHCPOption(dh, 12),

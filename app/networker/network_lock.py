@@ -26,3 +26,12 @@ def lock(uuid):
         yield net
         if net:
             mongo.saveNetwork(net.serialize())
+
+@contextlib.contextmanager
+def device_lock(netUUID, devUUID):
+    with lock(netUUID) as net:
+        if net:
+            dev = net.findDevice(devUUID)
+            if dev:
+                yield dev
+                

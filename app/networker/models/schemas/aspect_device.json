@@ -5,5 +5,6 @@
     "ip": {"default": null}, 
     "mac": {"default": null}, 
     "hostname": {"default": null},
-    "extraData": {"default": {}}
+    "extraData": {"default": {}},
+    "roles": {"mult": "array", "default": []}
 }

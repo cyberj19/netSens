@@ -43,14 +43,15 @@ def parsePCAP(path, file):
     return packets
 
 if __name__ == '__main__':
-    path = sys.argv[1]
-    packets = parsePCAP(path, 'test')
+    inpath = sys.argv[1]
+    packets = parsePCAP(inpath, 'test')
     packetsBuffer = {
         'time': time.time(),
-        'origin': path,
+        'origin': inpath,
         'numPackets': len(packets),
         'packets': packets
     }
-    dmp_file = os.path.join(env.output_folder, 'pb-test.json')
-    with open(dmp_file, 'w') as f:
+    outfile = sys.argv[2]
+    dmp_file = os.path.join(env.output_folder, outfile)
+    with open(dmp_file, 'w+') as f:
         json.dump(packetsBuffer,f,indent=4)

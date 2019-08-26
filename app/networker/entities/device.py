@@ -16,7 +16,8 @@ class Device(models.Model):
             'mac': aspectDevice.mac,
             'hostname': aspectDevice.hostname,
             'packetCounter': {'total': 0, 'distribution': {}},
-            'extraData': aspectDevice.extra_data
+            'extraData': aspectDevice.extra_data,
+            'roles': aspectDevice.roles
         })
         dev.packet_counter.add(protocol)
         return dev
@@ -41,7 +42,7 @@ class Device(models.Model):
         self.last_time_seen = max(self.last_time_seen, device.last_time_seen)
         self.packet_counter.merge(device.packet_counter)
         self.extra_data.update(device.extra_data)
-        self.roles = list(set(self.roles) | set(device.roles))
+        self.addRoles(device.roles)
         if not self.ip and device.ip:
             self.ip = device.ip
         if not self.mac and device.mac:
@@ -51,6 +52,8 @@ class Device(models.Model):
             self.hostname = device.hostname
             self.reprocess = True
     
-    def addRole(self, role):
-        if not role in self.roles:
-            self.roles.append(role)
+    def addRoles(self, roles):
+        self.roles = list(set(self.roles) | set(roles))
+
+    def removeRoles(self, roles):
+        self.roles = list(set(self.roles).difference(set(roles)))

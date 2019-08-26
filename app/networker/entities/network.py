@@ -115,7 +115,7 @@ class Network(models.Model):
                     self.addAlert('gw detected: %s' % mac)
         for dev in self.devices:
             if dev.mac in self.gateways:
-                dev.addRole('gateway')
+                dev.addRoles(['gateway'])
                     
 
     def mergeTarget(self, mac, ips):
@@ -166,13 +166,22 @@ class Network(models.Model):
         for pkt in self.packets:
             pkt.updateDeviceMerge(to, fr)
 
-    def addDeviceData(self, devUUID, data):
+    def findDevice(self, devUUID):
         for device in self.devices:
-            if device.uuid != devUUID:
-                continue
+            if device.uuid == devUUID:
+                return device
+        return None
+
+    def addDeviceRoles(self, devUUID, roles):
+        device = self.findDevice(devUUID)
+        if device:
+            device.addRoles(roles)
+
+    def addDeviceData(self, devUUID, data):
+        device = self.findDevice(devUUID)
+        if device:
             for key in data:
                 device.extra_data[key] = data[key]
-            break
 
     def commentDevice(self, devUUID, comment):
         self.addDeviceData(devUUID, {'comment': comment})

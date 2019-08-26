@@ -84,7 +84,28 @@
                     </td>
                     <td>{{timeConverter(device.lastTimeSeen)}}</td>
                     <td>{{timeConverter(device.firstTimeSeen)}}</td>
-                    <td>{{device.roles.join(';') || 'N/A'}}</td>
+                    <td>
+                        <table>
+                            <tr ng-repeat='role in device.roles'>
+                                <td>
+                                    {{role}}
+                                </td>
+                                <td>
+                                    <button ng-click='removeRole(device, role);'>
+                                        -
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button ng-click='addRole(device.uuid);'>
+                                        +
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
                     <td>
                         <table>
                             <tr ng-repeat='(key,value) in device.extraData'>
@@ -184,4 +205,8 @@
             </tbody>
         </table>
     </div>
+</div>
+
+<div id="graph">
+
 </div>

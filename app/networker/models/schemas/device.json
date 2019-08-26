@@ -14,6 +14,6 @@
         "module": "packet_counter",
         "class": "PacketCounter"
     },
-    "roles": {"multiplicity": "array", "default": []},
+    "roles": {"mult": "array", "default": []},
     "extraData": {"default": {}}
 }

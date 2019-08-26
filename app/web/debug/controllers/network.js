@@ -71,11 +71,40 @@ oraApp.controller('networkController', [
                     $scope.network.links.sort((l1, l2) => {
                         return l2.lastTimeSeen - l1.lastTimeSeen;
                     });
+                    // $scope.buildGraph();
+
                     $scope.$apply();
+
                 }
             );
         }
-        
+        $scope.addRole = function(devUUID) {
+            let role = prompt('Role:');
+            if (!role) return;
+            let url = $scope.apis['addRoles']
+                            .replace('devUUID', devUUID)
+                            .replace('roles', role);
+            axios.post(url).then(()=>{})
+        }
+        $scope.buildGraph = function() {
+            let g = new sigma('graph');
+            for (let dev in $scope.network.devices) {
+                g.graph.addNode({
+                    'id': 'd' + dev.idx,
+                    'label': dev.mac || dev.hostname || dev.ip,
+                })
+            }
+
+            for (let link in $scope.network.links) {
+                g.graph.addEdge({
+                    'id': 'l' + link.idx,
+                    'label': 'link',
+                    'source': 'd' + link.sourceDeviceIdx,
+                    'target': 'd' + link.targetDeviceIdx
+                })
+            }
+            g.refresh();
+        }
         $rootScope.$on('loadNetwork', (event, networkId) => {
             if ($scope.network && networkId !== $scope.network.uuid) $scope.reset();
 
@@ -89,6 +118,7 @@ oraApp.controller('networkController', [
                 'renameNetwork': '/api/networks/' + networkId + '/rename/<name>',
                 'removeNetwork': '/api/networks/' + networkId + '/remove',
                 'plugins': '/api/networks/' + networkId + '/devices/<devUUID>/plugins/<pluginUUID>',
+                'addRoles': '/api/networks/' + networkId + '/devices/<devUUID>/roles/<roles>'
             };
             console.log('network loaded');
 
