@@ -1,8 +1,8 @@
-function httpGet(theUrl)
-{
+function httpReq(theUrl,method,data){
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send(null);
+    xmlHttp.open( method, theUrl, false ); // false for synchronous request
+	xmlHttp.setRequestHeader('Content-Type', 'application/json');
+    xmlHttp.send(data);
     return xmlHttp.responseText;
 }
 
@@ -31,56 +31,57 @@ function uploadFile(){
 	});
 }
 
+function clearNetwork(networkId){
+	var response = httpReq('/api/networks/' + networkId + '/clear',"POST",null);
+	var obj = JSON.parse(response);
+
+}
+
+function removeNetwork(networkId){
+	var response = httpReq('/api/networks/' + networkId + '/remove',"POST",null);
+	var obj = JSON.parse(response);
+
+}
+
+function renameNetwork(networkId){
+	var name= $('#rename').val();
+	var response = httpReq('/api/networks/' + networkId + '/rename/' + name,'POST',"{\"name\":\""+name+"\"}");
+}
 
 function buildHtmlTable(selector,objects) {
-	console.log(objects);
 	var columns = addAllColumnHeaders(objects, selector);
 	for (var i = 0; i < objects.length; i++) {
 		var row$ = $('<tr/>');
-		for (var j =0; j< columns.length -1; j++){
+		for (var j =0; j< columns.length; j++){
 			if (objects[i][columns[j]] != null)
-				var cellValue = objects[i][columns[j]].toString();
+				var cellValue = objects[i][columns[j]];
 			else
-				var cellValue = "";
-			if (columns[j]=="lastPacketTime" || columns[j]=="lastUpdateTime" || columns[j]=="createTime")
+				var cellValue = "-";
+			if (columns[j]=="createTime" || columns[j]=="lastUpdateTime")
 				cellValue=timeConvert(cellValue);
-			row$.append($('<td/>').html(cellValue));
-		}
-		if (selector == '#ListenersTable' && objects[i][columns[6]] == 0){
-			row$.append($('<td/>').html('<button id="Connect_' + objects[i][columns[3]] +'_' +objects[i][columns[8]]+'" onclick="Connect(this)">Connect</button>'));
-		}
-		else if (selector == '#ListenersTable'){
-			row$.append($('<td/>').html('<button id="Disconnect_' + objects[i][columns[3]] +'_' +objects[i][columns[8]]+'" onclick="Disconnect()">Disconnect</button>'));
+			else if (columns[j] == "Actions" ){
+				cellValue = "<div class=\'dropdown\'><button class=\'btn btn-default dropdown-toggle\' type=\'button\' id=\'menu1\' data-toggle=\'dropdown\' style='font-size:11px;font-weight:700;cursor:pointer;padding-top:0px;padding-bottom:0px;padding-left:0px;'>Actions<span class=\'caret\'></span></button><ul class=\'dropdown-menu\' role=\'menu\' aria-labelledby=\'actions\' style='min-width:100px;'><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' data-toggle='modal' data-target='#renameModal' data-networkid=\'" + objects[i]['uuid'] + "\'>Rename</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"clearNetwork(\'" + objects[i]['uuid'] + "\')\">Clear</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"removeNetwork(\'" + objects[i]['uuid'] + "\')\">Remove</label></li></ul></div>";
 
-		}
-		else{
-			console.log(objects[i]);
-			var cellValue = objects[i][columns[columns.length - 1]];
+			}
+			else
+				cellValue = cellValue.toString();
 			row$.append($('<td/>').html(cellValue));
 		}
 		$(selector).append(row$);
 	}
 }
 
-// Adds a header row to the table and returns the set of columns.
 function addAllColumnHeaders(objects, selector) {
 	var columnSet = [];
 	var headerTr$ = $('<thead style="background-color:#25a9af; color:white;"/>');
 	headerTr$.append($('<tr/>'));
-	for (var i = 0; i < objects.length; i++) {
-		var rowHash = objects[i];
-		for (var key in rowHash) {
-			if ($.inArray(key, columnSet) == -1) {
-				columnSet.push(key);
-				headerTr$.append($('<th/>').html(key));
-			}
-		}
+	columnSet=['name','uuid','deviceCount','linkCount','packetCount','createTime','lastUpdateTime','Actions']
+	for (var col in columnSet){
+		headerTr$.append($('<th/>').html(columnSet[col]));
 	}
-	if (selector == '#ListenersTable'){
-		columnSet.push('Actions');
-		headerTr$.append($('<th/>').html('Actions'));
-	}
+
 	$(selector).append(headerTr$);
+	
 	return columnSet;
 }
 
@@ -109,11 +110,9 @@ $(document).ready(function(){
 var listeners="";
 var networks="";
 
-var response = httpGet('/api/overview');
+var response = httpReq('/api/overview',"GET",null);
 var obj = JSON.parse(response);
-console.log('helo');
 networks = obj.networks;
-console.log(networks);
 buildHtmlTable('#NetworksTable',networks);
 
 loadJSON('js/data/db/sources.json',function(response) {
@@ -125,8 +124,15 @@ loadJSON('js/data/db/sources.json',function(response) {
 		});
 });
 
+
+$('#renameModal').on('show.bs.modal', function (event) {
+	var button = $(event.relatedTarget);
+	var modal = $(this);
+	modal.find('.modal-title').text('Network Info ' + button.context.dataset.networkid);
+	modal.find('#renameModalSubmit').attr('onClick','renameNetwork(\'' + button.context.dataset.networkid + '\')');
+	});
+
 function Connect(btn){
-	alert('in');
 	console.log(btn.id);
     $.post("/api/sensors/" + btn.id.substr(8,17) + "/"+btn.id.substr(26)+"/connect",
     {}//,

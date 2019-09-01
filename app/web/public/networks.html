@@ -69,39 +69,50 @@
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
-      <div id="content" style="margin-top:30px;">
+      <div id="content">
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-
+			<svg style="height:0px;">
+			  <defs>
+    <pattern id="desktopImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+      <image x="0%" y="0%" width="512" height="512" xlink:href="http://localhost:8000/img/desktop.png"></image>
+    </pattern>
+	<pattern id="gatewayImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+      <image x="0%" y="0%" width="512" height="512" xlink:href="http://localhost:8000/img/gateway.png"></image>
+    </pattern>
+	<pattern id="gatewaySelectedImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+      <image x="0%" y="0%" width="512" height="512" xlink:href="http://localhost:8000/img/gateway_selected.png"></image>
+    </pattern>
+	<pattern id="desktopSelectedImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+      <image x="0%" y="0%" width="512" height="512" xlink:href="http://localhost:8000/img/desktop_selected.png"></image>
+    </pattern>
+  </defs>
+			</svg>
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Networks</h1>
+            <div class="mb-0 text-gray-800">Networks</div>
           </div>
 		  <div class="row">
 		  <!-- Button trigger modal -->
 <button id="btnt" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="" hidden></button>
 
 		  </div>
-		  <div id="filters" class="row" style="height:150px;">
+		  <div id="filters" class="row">
 			<div class="col-lg-6">
-				<h3>Filters</h3>
-				<input type="text" id="NetworkIds" placeholder="Select"/>
-				<button onclick="applyFilters()">Apply</button>
+				<label style="font-size:11px;font-weight:700;margin-bottom:0px;">Filters</label>
+				<input type="text" id="NetworkIds" style="font-size:11px;" placeholder="All Networks"/>
+			</div>
+			<button onclick="applyFilters()" style="font-size: 11px;font-weight: 700;height: 28px;margin-top: 28px;" class="btn btn-primary">Apply</button>
+		  </div>
+		  <div class="row">
+			<div class="col-lg-12">
+				<div id="devicesGraph"></div>
 			</div>
 		  </div>
 		  <div class="row">
-		  <div class="col-lg-12">
-			<div id="devicesGraph"></div>
-			</div>
-		  </div>
-		  <!--div class="row">
-			Device List
-		  </div>
-			<hr />
-		  <div class="row">
-		  <div class="col-lg-12">
-			<table id="devicesTable" border="1" style="table-layout: fixed;width: 100%;font-size: xx-small;word-break: break-word;"></table>
+			<div class="col-lg-12">
+				<table id="devicesTable" border="1" class="table table-hover table-sm" style="border:0px;width: 100%;word-break: break-word;font-size:10px;"></table>
 			</div>
 		  </div>
 		  <!-- Modal -->
@@ -127,6 +138,26 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="commentModalLabel" style="font-size:14px;"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<label style="font-size:11px;margin-bottom:0px;">Comment </label><br/>
+		<input id="comment"></input>
+      </div>
+      <div class="modal-footer">
+	    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size:11px;">Cancel</button>
+        <button id="modalSubmit" type="button" class="btn btn-primary" style="font-size:11px;">Submit</button>
       </div>
     </div>
   </div>
