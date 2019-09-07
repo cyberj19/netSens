@@ -4,8 +4,8 @@ iface = "6"
 output_folder = "../data/runtime/agent"
 logs_folder = "../data/logs/agent"
 
-gtw_host = "localhost"
-gtw_port = 9000
+mqtt_host = "localhost"
+mqtt_port = 1883
 
 capture_interval = 10
 
