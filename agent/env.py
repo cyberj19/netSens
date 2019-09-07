@@ -1,11 +1,12 @@
-shark_path = "C:\\Program Files\\Wireshark\\tshark.exe"
-iface = "6"
+shark_path = "tcpdump"
+#shark_path = "C:\\Program Files\\Wireshark\\tshark.exe"
+iface = "enxb827eb6c633a"
 
-output_folder = "../data/runtime/agent"
-logs_folder = "../data/logs/agent"
+output_folder = "agent/pcap_files"
+logs_folder = "agent/logs"
 
-mqtt_host = "localhost"
-mqtt_port = 1883
+mq_host = "10.100.102.13"
+mq_port = 1883
 
-capture_interval = 10
+capture_interval = 5
 

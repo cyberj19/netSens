@@ -18,7 +18,7 @@ def parsePacket(ts, eth):
         if aspect:
             yield aspect
 
-def parsePCAP(path, file):
+def parsePCAP(path, origin):
     with open(path, 'rb') as f:
         reader = dpkt.pcap.Reader(f)
         packets = []
@@ -28,7 +28,7 @@ def parsePCAP(path, file):
             packet = {
                 'uuid': 'packet-%s' % uuid.uuid4().hex,
                 'time': ts,
-                'origin': file,
+                'origin': origin,
                 'protocol': None,
                 'layer': -1,
                 'aspects': []
