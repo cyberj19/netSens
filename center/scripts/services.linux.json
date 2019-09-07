@@ -1,0 +1,37 @@
+[
+	{
+		"name": "MONGO",
+		"execPath": ".",
+		"cmd": "mongod --dbpath %cwd%/data/mongo"
+	},
+	{
+		"name": "MOSQUITTO",
+		"execPath": ".",
+		"cmd": "mosquitto"
+	},
+	{
+		"name": "WEB",
+		"execPath": "app",
+		"cmd": "python web"
+	},
+	{
+		"name": "PLAYBACK",
+		"execPath": "app",
+		"cmd": "python playback"
+	},
+	{
+		"name": "NETWORKER",
+		"execPath": "app",
+		"cmd": "python networker"
+	},
+	{
+		"name": "MONITOR",
+		"execPath": "app",
+		"cmd": "python monitor"
+	},
+	{
+		"name": "THIRD_PARTY",
+		"execPath": "app",
+		"cmd": "python thirdparty"
+	}
+]
