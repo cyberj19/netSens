@@ -46,6 +46,6 @@ shutil.copyfile('app/web/env_%s.py' % env_file, 'app/web/env.py')
 for service in services:
 	print 'starting service: %s' % service['name']
 	os.chdir(service['execPath'])
-	cmd = service['cmd'].replace('%cwd%', os.getcwd()).split(' ')
+	cmd = service['cmd'].replace('%rd%', root_dir).split(' ')
 	subprocess.Popen(cmd, shell=True)
 	os.chdir(root_dir)

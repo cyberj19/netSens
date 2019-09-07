@@ -17,7 +17,10 @@ class FileQueue:
     def dequeue(self):
         if self.env.mode == "live":
             with self.lock:
-                return self.queue.pop(0)
+                if self.queue:
+                    return self.queue.pop(0)
+                else:
+                    return None
         elif self.env.mode == "test":
             return {
                 "ts": time.time(),

@@ -1,6 +1,8 @@
 from mq import MQClient
 import threading
 import os
+import time
+import base64
 
 class Sender:
     def __init__(self, env, queue):
@@ -28,7 +30,7 @@ class Sender:
             data = fp.read()
         msg = {
             'time': file['ts'],
-            'origin': env.uuid,
+            'origin': self.env.uuid,
             'data': base64.b64encode(data).decode('utf-8')
         }
         self.mq_client.publish('livePCAP', msg)
