@@ -3,6 +3,8 @@ import time
 import subprocess
 import os
 import platform
+import logging
+logger = logging.getLogger('agent')
 class Recorder:
     def __init__(self, env, queue):
         self.thread = threading.Thread(target=self.record)
@@ -11,9 +13,10 @@ class Recorder:
         self.queue = queue
 
         self.env = env
-
+        logger.info('Recorder is ready')
     def start(self):
         self.thread.start()
+        logger.debug('Recorder has started')
 
     def record(self):
         while True:
