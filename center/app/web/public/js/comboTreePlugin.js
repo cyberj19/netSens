@@ -69,40 +69,44 @@ var lookup = {};
     ComboTree.prototype.removeSourceHTML = function () {
         this._elemDropDownContainer.html('');
     };
+	
+	ComboTree.prototype.resetLookup = function () {
+        lookup= {};
+    };
 
     ComboTree.prototype.createSourceHTML = function () {
-		console.log(this.options.source);
         var htmlText = this.createSourceSubItemsHTML(this.options.source);
         return htmlText;
     };
 
     ComboTree.prototype.createSourceSubItemsHTML = function (subItems) {
-        var subItemsHtml = '<UL>';
+        var subItemsHtml = '<UL style="overflow: auto;height: 68px;">';
         for (var i=0; i<subItems.length; i++){
             subItemsHtml += this.createSourceItemHTML(subItems[i]);
         }
+		
         subItemsHtml += '</UL>'
         return subItemsHtml;
     }
 
     ComboTree.prototype.createSourceItemHTML = function (sourceItem) {
-        var itemHtml = "",
+		var itemHtml = "",
             isThereSubs = sourceItem.hasOwnProperty("subs");
         
         itemHtml = '<LI class="ComboTreeItem' + (isThereSubs?'Parent':'Chlid') + '"> ';
-        
         if (isThereSubs)
             itemHtml += '<span class="comboTreeParentPlus">&minus;</span>';
 
-		var objid = sourceItem.networkId;
+		var objid = sourceItem.name;
 		if (!(objid in lookup)) {
 			lookup[objid] = 1;
 			if (this.options.isMultiple)
-				itemHtml += '<span data-id="' + objid + '" class="comboTreeItemTitle"><input type="checkbox">' + objid + '</span>';
+				itemHtml += '<span data-id="' + objid + '" class="comboTreeItemTitle" style="font-size:12px;"><input type="checkbox">' + objid + '</span>';
 			else
-				itemHtml += '<span data-id="' + objid + '" class="comboTreeItemTitle">' + objid + '</span>';
+				itemHtml += '<span data-id="' + objid + '" class="comboTreeItemTitle" style="font-size:12px;">' + objid + '</span>';
 
 		}
+
         
         if (isThereSubs)
             itemHtml += this.createSourceSubItemsHTML(sourceItem.subs);
