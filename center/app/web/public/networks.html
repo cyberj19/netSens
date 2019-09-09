@@ -17,6 +17,7 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="css/loading.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
 
 </head>
@@ -38,30 +39,16 @@
       </a>
 
       <hr class="sidebar-divider my-0">
-
-      <li class="nav-item">
-        <a class="nav-link" href="index.html" style="padding-bottom:0px;">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+	  <li class="nav-item">
+        <a class="nav-link" href="listeners.html" style="padding-bottom:0px; padding-top:10px;">
+          <i class="fas fa-fw fa-laptop"></i>
+          <span>Sources</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="networks.html" style="padding-bottom:0px; padding-top:10px;">
           <i class="fas fa-fw fa-network-wired"></i>
           <span>Networks</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="devices.html" style="padding-bottom:0px; padding-top:10px;">
-          <i class="fas fa-fw fa-laptop"></i>
-          <span>Devices</span></a>
-        </li>
-	        <li class="nav-item">
-        <a class="nav-link" href="listeners.html" style="padding-bottom:0px; padding-top:10px;">
-          <i class="fas fa-fw fa-laptop"></i>
-          <span>Sources</span></a>
-      </li>
-
-      
- 
     </ul>
     <!-- End of Sidebar -->
 
@@ -98,9 +85,9 @@
 <button id="btnt" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="" hidden></button>
 
 		  </div>
-		  <div id="filters" class="row">
+		  <div id="filters" class="row" style="visibility:hidden; height:123px">
 			<div class="col-lg-6">
-				<label style="font-size:11px;font-weight:700;margin-bottom:0px;">Filters</label>
+				 <label style="font-size:11px;font-weight:700;margin-bottom:0px;">Filters</label>
 				<input type="text" id="NetworkIds" style="font-size:11px;" placeholder="All Networks"/>
 			</div>
 			<button onclick="applyFilters()" style="font-size: 11px;font-weight: 700;height: 28px;margin-top: 28px;" class="btn btn-primary">Apply</button>
@@ -109,6 +96,11 @@
 			<div class="col-lg-12">
 				<div id="devicesGraph"></div>
 			</div>
+		  </div>
+		  <div id="spinner" class="d-flex justify-content-center" style="visibility:visible;">
+			  <div class="spinner-border text-info" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>
 		  </div>
 		  <div class="row">
 			<div class="col-lg-12">
@@ -147,7 +139,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="commentModalLabel" style="font-size:14px;"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button id="commentModalClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -177,7 +169,8 @@
 
   
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <!--<script src="vendor/jquery/jquery.min.js"></script>-->
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom scripts for all pages-->
@@ -185,9 +178,13 @@
   <script src="js/comboTreePlugin.js"  type="text/javascript"></script>
   <script src="js/d3.v4.js"></script>
   <script src="js/netsens.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
   
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
+  <script src="js/jquery.loading.min.js"></script>
+  <script src="js/loading.min.js"></script>
+
   
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
