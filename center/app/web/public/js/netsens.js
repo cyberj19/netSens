@@ -69,23 +69,30 @@ function isNeighborLink(node, link) {
 
 function getNodeColor(node, neighbors) {
 	if (Array.isArray(neighbors) && neighbors.indexOf(node.uuid) > -1) 
-		if (node.role == "gateway")
-			return 'url(#gatewaySelectedImage)'
+		if (node.roles == "gateway")
+		{
+			return 'url(#gatewaySelectedImage)';
+		}
 		else
-			return 'url(#desktopSelectedImage)'
-	if (node.role == "gateway")
+		{
+			return 'url(#desktopSelectedImage)';
+		}
+	if (node.roles == "gateway")
 		return 'url(#gatewayImage)';
 	return 'url(#desktopImage)';
 }
 
+
 function getNodeColor(node) {
-	if (node.role == "gateway")
+	console.log("reset");	
+	console.log(node.roles);
+	if (node.roles == "gateway")
 		return 'url(#gatewayImage)';
 	return 'url(#desktopImage)';
 }
 
 function getNodeSelectedColor(node) {
-	if (node.role == "gateway")
+	if (node.roles == "gateway")
 		return 'url(#gatewaySelectedImage)';
 	return 'url(#desktopSelectedImage)';
 }
@@ -93,7 +100,7 @@ function getNodeSelectedColor(node) {
 function getLinkColor(node, link) {
 	if (node == null)
 		return '#a3b2b8';
-	return isNeighborLink(node, link) ? 'green' : '#a3b2b8';
+	return isNeighborLink(node, link) ? '#4e73df' : '#a3b2b8';
 }
 
 function getNeighbors(node) {
@@ -192,7 +199,9 @@ function buildHtmlTable(selector,objects) {
 				}
 				cellValue=data;
 			}
+
 			else if (columns[j] == "Actions" ){
+				cellValue = "<div class=\'dropdown\'><button class=\'btn btn-default dropdown-toggle\' type=\'button\' id=\'menu1\' data-toggle=\'dropdown\' style='font-size:11px;font-weight:700;cursor:pointer;padding-top:0px;padding-bottom:0px;padding-left:0px;'>Actions<span class=\'caret\'></span></button><ul class=\'dropdown-menu\' role=\'menu\' aria-labelledby=\'actions\' style='min-width:100px;'><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'vendor-123\')\">Get Vendor</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'plugin-fb-123\')\">Verify Fingerprint</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"closeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['idx'] + "\')\">Close</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"analyzeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\')\">Analyze</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' data-toggle='modal' data-target='#commentModal' data-device=\'" + objects[i]['uuid'] + "\'>Comment</label></li></ul></div>";
 				cellValue = "<div class=\'dropdown\'><button class=\'btn btn-default dropdown-toggle\' type=\'button\' id=\'menu1\' data-toggle=\'dropdown\' style='font-size:11px;font-weight:700;cursor:pointer;padding-top:0px;padding-bottom:0px;padding-left:0px;'>Actions<span class=\'caret\'></span></button><ul class=\'dropdown-menu\' role=\'menu\' aria-labelledby=\'actions\' style='min-width:100px;'><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'vendor-123\')\">Get Vendor</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'plugin-fb-123\')\">Verify Fingerprint</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"closeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['idx'] + "\')\">Close</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"analyzeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\')\">Analyze</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' data-toggle='modal' data-target='#commentModal' data-device=\'" + objects[i]['uuid'] + "\'>Comment</label></li></ul></div>";
 			}
 			else
@@ -204,8 +213,6 @@ function buildHtmlTable(selector,objects) {
 }
 
 function goToNode(nodeUUID){
-	console.log('a');
-	console.log(links);
 	//reset colors
 	for (l in links)
 	{
@@ -214,20 +221,20 @@ function goToNode(nodeUUID){
 	for (d in devices)
 	{
 		$("#" + devices[d].uuid).css('fill', function () { return getNodeColor(devices[d]) });
+		$("#" + devices[d].uuid).css('stroke','#25a9af');
+		$("#" + devices[d].uuid).css('stroke-width','1');
 	}
 	console.log('b');
 	$('body,html').animate({scrollTop: 80}, 1000);
 	console.log('c');
 	var device = findElement(devices,"uuid",nodeUUID);
-	console.log('d');
-	console.log(device);
 	$("#" + nodeUUID).css('fill', function (n) { return getNodeSelectedColor(device)});
-	console.log('e');
+	$("#" + nodeUUID).css('stroke','#4e73df');
+	$("#" + nodeUUID).css('stroke-width','2');
 	for (l in links)
 	{
 		$("#" + links[l].uuid).css('stroke', function () { return getLinkColor(device,links[l]) });
 	}
-	console.log('f');
 	
 	//$("#" + aaa).click();
 }
@@ -236,7 +243,7 @@ function addAllColumnHeaders(objects, selector) {
 	var columnSet = [];
 	var headerTr$ = $('<thead style="background-color:#25a9af; color:white;"/>');
 	headerTr$.append($('<tr/>'));
-	columnSet=['mac','ip','firstTimeSeen','lastTimeSeen','packetCounter','role','hostname','extraData','Actions']
+	columnSet=['mac','ip','firstTimeSeen','lastTimeSeen','packetCounter','roles','hostname','extraData','Actions']
 	for (var col in columnSet){
 		headerTr$.append($('<th/>').html(columnSet[col]));
 	}
@@ -334,11 +341,25 @@ function printGraph(networksFilter){
 			  .attr("fill",function (n) { return getNodeColor(n) })
 			  .style("cursor","pointer")
 			  .on ("mouseover", function(d){
+				  	var str="";
+					if (d.hostname != null)
+						str+= ' Hostname: '+d.hostname;
+					else
+						str+= ' Hostname: - '
+					if (d.ip != null)
+						str+= ' <br>IP: '+d.ip;
+					else
+						str+= ' <br>IP: - '
+					if (d.mac != null)
+						str+= ' <br>MAC: '+d.mac;
+					else 
+						str+= ' <br>MAC: - '
                     div	.transition()
 						.duration(200)
 						.style("opacity", .9)
-                    div	.html(d.mac + " " +d.ip +" "+d.hostname)
-						.style("left", (d.x + d.packetCounter.total) + "px")
+                    //div	.html("Hostname: "+d.hostname + " IP: "+ d.ip + " MAC:" +d.mac)
+					div .html(str)
+					.style("left", (d.x + d.packetCounter.total) + "px")
 					.style("top", (d.y + d.packetCounter.total) + "px");	})
 			  .on("mouseout", function(d) {
                     div.transition()
@@ -359,9 +380,17 @@ function printGraph(networksFilter){
 			  .nodes(devices)
               .on("tick", ticked);
 			  function selectNode(selectedNode) {
-				node.style('fill',function (n) { return getNodeColor(selectNode) });
+				//node.style('fill',function (n) { return getNodeColor(node) });
+				for (d in devices)
+					$("#" + devices[d].uuid).css('fill', function () { return getNodeColor(devices[d]) });
+				//4e73df
+				node.style("stroke", "#25a9af");
+				node.style("stroke-width", '1');
+
 				var neighbors = getNeighbors(selectedNode);
-				$("#" + selectedNode.uuid).css('fill', function (n) { return getNodeSelectedColor(selectNode) });
+				$("#" + selectedNode.uuid).css('fill', function (n) { return getNodeSelectedColor(selectedNode) });
+				$("#" + selectedNode.uuid).css('stroke','#4e73df');
+				$("#" + selectedNode.uuid).css('stroke-width','2');
 				link.style('stroke', function (l) { return getLinkColor(selectedNode, l) });
 			  }
 			
@@ -382,7 +411,6 @@ function printGraph(networksFilter){
 			foreignObject.setAttribute('width', '100%');
 			
 			filtersName = "All Networks";
-			console.log(networksFilter);
 			if (networksFilter)
 			{
 				filtersName = [];
