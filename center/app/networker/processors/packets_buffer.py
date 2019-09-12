@@ -86,6 +86,8 @@ def mergeNetworks(to, fr, altered_networks):
     updateOriginNetwork(fr.uuid, to.uuid)
 
 def processNetworkQueue(network_queue):
+    if not network_queue:
+        return []
     altered_networks = [network_queue[0].uuid]
     while network_queue:
         nex = network_queue.pop(0)
