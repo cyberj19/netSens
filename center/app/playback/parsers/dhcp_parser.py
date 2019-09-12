@@ -12,7 +12,6 @@ def parseFunc(ts, eth):
                 
 def getDHCPOption(dhcp, opt_code):
     for opt in dhcp.opts:
-        #print opt[0], opt[1]
         if opt[0] == opt_code:
             return opt[1]
     return None
