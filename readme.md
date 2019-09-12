@@ -9,25 +9,19 @@ netSens is a system for collecting, processing and presenting network informatio
 * Generic and modular-oriented development - an infrastructure that allows easy integration of new capabilities within the product and interfaces with external services.
 <img src="https://github.com/cyberj19/netsens/blob/master/netsens.jpg" alt="Screenshot of netsens" width="560"/>
 
-## Features
+## ⭐️ Features
+- Cross-Platform (Linux, Windows)
+- Event-oriented Pub / Sub architecture
+- Web-based UI
+- Agent for online data collection
+- Pcap upload system for offline data analysis
+- Plugin engine: easy to add new protocols and external service providers
 
-⭐️ Cross-Platform (Linux, Windows)
-
-⭐️ Event-oriented Pub / Sub architecture
-
-⭐️ Web-based UI
-
-⭐️ Agent for online data collection
-
-⭐️ Pcap upload system for offline data analysis
-
-⭐️ Plugin engine: easy to add new protocols and external service providers
-
-## Services:
+## 💻 Services:
 - mongo db server
 - mosquitto server
 
-## Python Dependencies:
+## ✨ Python Dependencies:
 - dpkt
 - flask
 - pymongo
