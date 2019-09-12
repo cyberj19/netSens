@@ -18,23 +18,21 @@ netSens is a system for collecting, processing and presenting network informatio
 - Plugin engine: easy to add new protocols and external service providers
 
 ## 💻 Services:
-- mongo db server
-- mosquitto server
+- [MongoDB](https://github.com/mongodb/mongo) server
+- [Mosquitto](https://github.com/eclipse/mosquitto) server
 
 ## ✨ Python Dependencies:
-- dpkt
-- flask
-- pymongo
-- paho
+- [dpkt](https://github.com/kbandla/dpkt)
+- [flask](https://github.com/pallets/flask)
+- [pymongo](https://github.com/mongodb/mongo-python-driver)
+- [paho](https://github.com/eclipse/paho.mqtt.python)
 
 ## 🚀 Basic usage:
 * Windows:
   - use run_public.bat file to start up the system
 * Linux:
   - execute init.py file (in center/scripts) to start up the system
-
 - app will be available on port 8000
-
 - goto localhost:8000
 - upload a pcap file on the main page
 - explore the created network by going to networks tab. use filter if needed.
