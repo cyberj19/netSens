@@ -22,9 +22,10 @@ def parseDHCPPacket(ts, eth):
         udp = ip.data
         dh  = dpkt.dhcp.DHCP(udp.data)
         src = getMACString(eth.src)
-        dhcp_type = getDHCPOption(dh,53)
+        dhcp_type = ord(getDHCPOption(dh,53))
         dhcp_fp = [ord(c) for c in getDHCPOption(dh,55)]
-        print dhcp_type
+        hostname = getDHCPOption(dh,12)
+        VCI = getDHCPOption(dh, 60)
         if dhcp_type == 1:
             description = 'dhcp discover from %s' % src
         elif dhcp_type == 3:
@@ -40,12 +41,12 @@ def parseDHCPPacket(ts, eth):
             'description': description,
             'source': {
                 'mac': src,
-                'hostname': getDHCPOption(dh, 12),
+                'hostname': hostname,
                 'extraData': {
                     'dhcpFingerPrint': dhcp_fp,
-                    'VCI': getDHCPOption(dh, 60)
+                    'VCI': VCI
                 }
             }
         }
-    except Exception:
+    except Exception as e:
         return None
