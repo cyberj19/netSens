@@ -32,8 +32,8 @@ netSens is a system for collecting, processing and presenting network informatio
 - pymongo
 - paho
 
-## how to run in localhost:
-- use run_XX.bat file to start up the system
+## how to run in localhost (Windows):
+- use run_public.bat file to start up the system
 - app will be available on port 8000
 
 ## basic usage:
