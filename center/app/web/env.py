@@ -10,6 +10,6 @@ mq_host = 'localhost'
 mq_port = 1883
 
 flask_port = 8000
-static_files_folder = 'web/debug'
+static_files_folder = 'web/public'
 
 pbak_folder = '../data/playback'
