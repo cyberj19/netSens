@@ -37,5 +37,6 @@ class Recorder:
         elif platform.system() == "Windows":
             return [self.env.shark_path,
                     "-i", self.env.iface,
+                    "-F", "pcap",
                     "-w", filepath,
                     "-a", "duration:%d" % self.env.capture_interval]
