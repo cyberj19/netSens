@@ -2,7 +2,7 @@
 	{
 		"name": "MONGO",
 		"execPath": "C:\\Program Files\\MongoDB\\Server\\3.6\\bin",
-		"cmd": "mongod.exe --dbpath %cwd%\\data\\mongo"
+		"cmd": "mongod.exe --dbpath %rd%\\data\\mongo"
 	},
 	{
 		"name": "MOSQUITTO",

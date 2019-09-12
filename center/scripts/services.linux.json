@@ -2,7 +2,7 @@
 	{
 		"name": "MONGO",
 		"execPath": ".",
-		"cmd": "mongod --dbpath %cwd%/data/mongo"
+		"cmd": "mongod --dbpath %rd%/data/mongo"
 	},
 	{
 		"name": "MOSQUITTO",
