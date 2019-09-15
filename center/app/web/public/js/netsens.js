@@ -9,7 +9,7 @@ function timeConvert(time){
 	var date = new Date(time*1000);
 	var minutes = "0" + date.getMinutes();
 	var seconds = "0" + date.getSeconds();
-	var newTime = date.getDate() + '/' + date.getMonth()+'/' + date.getYear().toString().substr(-2) + ' ' + date.getHours() + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+	var newTime = date.getDate() + '/' + (date.getMonth()+1)+'/' + date. getFullYear().toString()+ ' ' + date.getHours() + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 	return newTime;
 }
 
