@@ -31,11 +31,10 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html" style="padding-right: 100px;">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <img src="/img/logo.png" width="75%"/>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div>
+          <img src="/img/logo.png" width="100%"/>
         </div>
-        <div class="sidebar-brand-text" style="padding-right: 0px;padding-left: 00px;">NetSens</div>
       </a>
 
       <hr class="sidebar-divider my-0">
@@ -48,6 +47,11 @@
         <a class="nav-link" href="networks.html" style="padding-bottom:0px; padding-top:10px;">
           <i class="fas fa-fw fa-network-wired"></i>
           <span>Networks</span></a>
+      </li>
+	  <li class="nav-item">
+        <a class="nav-link" href="monitor.html" style="padding-bottom:0px; padding-top:10px;">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Monitor</span></a>
       </li>
     </ul>
     <!-- End of Sidebar -->
@@ -63,16 +67,28 @@
 			<svg style="height:0px;">
 			  <defs>
     <pattern id="desktopImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
-      <image x="0%" y="0%" width="512" height="512" xlink:href="http://localhost:8000/img/desktop.png"></image>
+      <image x="0%" y="0%" width="512" height="512" xlink:href="img/desktop.png"></image>
     </pattern>
 	<pattern id="gatewayImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
-      <image x="0%" y="0%" width="512" height="512" xlink:href="http://localhost:8000/img/gateway.png"></image>
+      <image x="0%" y="0%" width="512" height="512" xlink:href="img/gateway.png"></image>
+    </pattern>
+	<pattern id="androidImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+      <image x="0%" y="0%" width="512" height="512" xlink:href="img/android.png"></image>
+    </pattern>
+	<pattern id="appleImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+      <image x="0%" y="0%" width="512" height="512" xlink:href="img/apple.png"></image>
     </pattern>
 	<pattern id="gatewaySelectedImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
-      <image x="0%" y="0%" width="512" height="512" xlink:href="http://localhost:8000/img/gateway_selected.png"></image>
+      <image x="0%" y="0%" width="512" height="512" xlink:href="img/gateway_selected.png"></image>
     </pattern>
 	<pattern id="desktopSelectedImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
-      <image x="0%" y="0%" width="512" height="512" xlink:href="http://localhost:8000/img/desktop_selected.png"></image>
+      <image x="0%" y="0%" width="512" height="512" xlink:href="img/desktop_selected.png"></image>
+    </pattern>
+	<pattern id="androidSelectedImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+      <image x="0%" y="0%" width="512" height="512" xlink:href="img/android_selected.png"></image>
+    </pattern>
+	<pattern id="appleSelectedImage" x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+      <image x="0%" y="0%" width="512" height="512" xlink:href="img/apple_selected.png"></image>
     </pattern>
   </defs>
 			</svg>
@@ -90,7 +106,8 @@
 				 <label style="font-size:11px;font-weight:700;margin-bottom:0px;">Filters</label>
 				<input type="text" id="NetworkIds" style="font-size:11px;" placeholder="All Networks"/>
 			</div>
-			<button onclick="applyFilters()" style="font-size: 11px;font-weight: 700;height: 28px;margin-top: 28px;" class="btn btn-primary">Apply</button>
+			<div class="col-lg-1"><button onclick="applyFilters()" style="font-size: 11px;font-weight: 700;height: 28px;margin-top: 28px;" class="btn btn-primary">Apply</button></div>
+			 <button onclick="applyFilters('true')" style="font-size: 11px;font-weight: 700;height: 28px;margin-top: 28px;" class="btn btn-secondary">Reset</button>
 		  </div>
 		  <div class="row">
 			<div class="col-lg-12">
