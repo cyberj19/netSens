@@ -101,7 +101,7 @@ var lookup = {};
 		if (!(objid in lookup)) {
 			lookup[objid] = 1;
 			if (this.options.isMultiple)
-				itemHtml += '<span data-id="' + objid + '" class="comboTreeItemTitle" style="font-size:12px;"><input type="checkbox">' + objid + '</span>';
+				itemHtml += '<span data-id="' + objid + '" class="comboTreeItemTitle" style="font-size:12px;"><input type="checkbox" id="chb' + objid + '">' + objid + '</span>';
 			else
 				itemHtml += '<span data-id="' + objid + '" class="comboTreeItemTitle" style="font-size:12px;">' + objid + '</span>';
 
@@ -269,6 +269,10 @@ var lookup = {};
         this.refreshInputVal();
     };
 
+	ComboTree.prototype.resetSelection = function () {
+		this._selectedItem = {};
+        this._selectedItems = [];
+	};
     ComboTree.prototype.isItemInArray = function (item, arr) {
 
         for (var i=0; i<arr.length; i++)

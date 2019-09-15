@@ -49,7 +49,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 
 $('#commentModal').on('show.bs.modal', function (event) {
 	var button = $(event.relatedTarget);
-	selectedDevice = findElement(devices,"uuid",button.context.dataset.device);
+	selectedDevice = findElement(devices,"uuid",button[0].dataset.device);
 	var modal = $(this);
 	modal.find('.modal-title').text('Device Info ' + selectedDevice.uuid);
 	modal.find('#modalSubmit').attr('onClick','deviceComment(\'' + selectedDevice.networkId + '\',\'' +selectedDevice.uuid + '\')');
@@ -75,25 +75,39 @@ function getNodeColor(node, neighbors) {
 		}
 		else
 		{
+			if (JSON.stringify(node.extraData).includes('android'))
+				return 'url(#androidSelectedImage)';
+			else if ((JSON.stringify(node.extraData).includes('apple'))||(JSON.stringify(node.extraData).includes('Apple')))
+				return 'url(#appleSelectedImage)';
 			return 'url(#desktopSelectedImage)';
 		}
 	if (node.roles == "gateway")
 		return 'url(#gatewayImage)';
+	else if (JSON.stringify(node.extraData).includes('android'))
+		return 'url(#androidImage)';
+	else if ((JSON.stringify(node.extraData).includes('apple'))||(JSON.stringify(node.extraData).includes('Apple')))
+		return 'url(#appleImage)';
 	return 'url(#desktopImage)';
 }
 
 
 function getNodeColor(node) {
-	console.log("reset");	
-	console.log(node.roles);
 	if (node.roles == "gateway")
 		return 'url(#gatewayImage)';
+	else if (JSON.stringify(node.extraData).includes('android'))
+		return 'url(#androidImage)';
+	else if ((JSON.stringify(node.extraData).includes('apple'))||(JSON.stringify(node.extraData).includes('Apple')))
+		return 'url(#appleImage)';
 	return 'url(#desktopImage)';
 }
 
 function getNodeSelectedColor(node) {
 	if (node.roles == "gateway")
 		return 'url(#gatewaySelectedImage)';
+	else if (JSON.stringify(node.extraData).includes('android'))
+		return 'url(#androidSelectedImage)';
+	else if ((JSON.stringify(node.extraData).includes('apple'))||(JSON.stringify(node.extraData).includes('Apple')))
+		return 'url(#appleSelectedImage)';
 	return 'url(#desktopSelectedImage)';
 }
 
@@ -124,30 +138,27 @@ function runPlugin(networkId,devUUID,pluginUUID){
 	var obj = JSON.parse(response);
 	if (JSON.stringify(obj) == "{\"success\":true}")
 	{
-		sleep(5000).then(() => {
+		sleep(7000).then(() => {
 			reloadTable();
 		});
 	}
 	else
-		alert('b');
+		alert('Failed to get data from plugin');
 }
 
-function analyzeDevice(){
-	alert('analyzeDevice - GET');
-}
 
 function closeDevice(networkId,idx){
 	var response = httpReq('/api/networks/' + networkId + '/devices/' + idx + '/close',"POST",null);
 	var obj = JSON.parse(response);
 	if (JSON.stringify(obj) == "{\"success\":true}")
 	{
-		sleep(5000).then(() => {
+		sleep(7000).then(() => {
 			loadData(networksFilter,false);
 		});
-		alert('s');
+		
 	}
 	else
-		alert('b');
+		alert('Failed to close device');
 }
 
 function deviceComment(networkId,uuid){
@@ -161,13 +172,13 @@ function deviceComment(networkId,uuid){
 		$("#spinner").css("visibility","visible");
 		$("#devicesTable").css("visibility","hidden");
 		$('#commentModalClose').click();
-		sleep(5000).then(() => {
+		sleep(7000).then(() => {
 			loadData(networksFilter,false);
 		});
 		
 	}
 	else
-		alert('b');
+		alert('Failed to apply comment');
 }
 
 function buildHtmlTable(selector,objects) {
@@ -201,8 +212,7 @@ function buildHtmlTable(selector,objects) {
 			}
 
 			else if (columns[j] == "Actions" ){
-				cellValue = "<div class=\'dropdown\'><button class=\'btn btn-default dropdown-toggle\' type=\'button\' id=\'menu1\' data-toggle=\'dropdown\' style='font-size:11px;font-weight:700;cursor:pointer;padding-top:0px;padding-bottom:0px;padding-left:0px;'>Actions<span class=\'caret\'></span></button><ul class=\'dropdown-menu\' role=\'menu\' aria-labelledby=\'actions\' style='min-width:100px;'><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'vendor-123\')\">Get Vendor</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'plugin-fb-123\')\">Verify Fingerprint</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"closeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['idx'] + "\')\">Close</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"analyzeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\')\">Analyze</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' data-toggle='modal' data-target='#commentModal' data-device=\'" + objects[i]['uuid'] + "\'>Comment</label></li></ul></div>";
-				cellValue = "<div class=\'dropdown\'><button class=\'btn btn-default dropdown-toggle\' type=\'button\' id=\'menu1\' data-toggle=\'dropdown\' style='font-size:11px;font-weight:700;cursor:pointer;padding-top:0px;padding-bottom:0px;padding-left:0px;'>Actions<span class=\'caret\'></span></button><ul class=\'dropdown-menu\' role=\'menu\' aria-labelledby=\'actions\' style='min-width:100px;'><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'vendor-123\')\">Get Vendor</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'plugin-fb-123\')\">Verify Fingerprint</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"closeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['idx'] + "\')\">Close</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"analyzeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\')\">Analyze</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' data-toggle='modal' data-target='#commentModal' data-device=\'" + objects[i]['uuid'] + "\'>Comment</label></li></ul></div>";
+				cellValue = "<div class=\'dropdown\'><button class=\'btn btn-default dropdown-toggle\' type=\'button\' id=\'menu1\' data-toggle=\'dropdown\' style='font-size:11px;font-weight:700;cursor:pointer;padding-top:0px;padding-bottom:0px;padding-left:0px;'>Actions<span class=\'caret\'></span></button><ul class=\'dropdown-menu\' role=\'menu\' aria-labelledby=\'actions\' style='min-width:100px;'><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'vendor-123\')\">Get Vendor</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"runPlugin(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['uuid'] + "\',\'plugin-fb-123\')\">Verify Fingerprint</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' onclick=\"closeDevice(\'" + objects[i]['networkId'] + "\',\'" + objects[i]['idx'] + "\')\">Close</label></li><li role=\'presentation\'><label style='font-size:11px;cursor:pointer;margin-left:10px;' data-toggle='modal' data-target='#commentModal' data-device=\'" + objects[i]['uuid'] + "\'>Comment</label></li></ul></div>";
 			}
 			else
 				cellValue = cellValue.toString();
@@ -224,9 +234,7 @@ function goToNode(nodeUUID){
 		$("#" + devices[d].uuid).css('stroke','#25a9af');
 		$("#" + devices[d].uuid).css('stroke-width','1');
 	}
-	console.log('b');
 	$('body,html').animate({scrollTop: 80}, 1000);
-	console.log('c');
 	var device = findElement(devices,"uuid",nodeUUID);
 	$("#" + nodeUUID).css('fill', function (n) { return getNodeSelectedColor(device)});
 	$("#" + nodeUUID).css('stroke','#4e73df');
@@ -276,21 +284,42 @@ function loadJSON(file,callback) {
     xobj.send(null);
  }
  
-function applyFilters(){
-	var networksFilter = [];
-	var networksNames = $("#NetworkIds").val().replace(' ','').split(',');
-	for (netN in networksNames)
+function applyFilters(resetFilter = 'false'){
+	if (resetFilter == 'true')
 	{
-		for (net in networks)
+		for (net in networkNames)
+			document.getElementById("chb" + networkNames[net]).checked = false;
+		document.getElementById("NetworkIds").value = "";
+		$("#svg").empty();
+		devices = "";
+		links = "";
+		loadData(null);
+		networksFilter = [];
+		comboTree1.resetSelection();
+		comboTree1.resetLookup();
+	}
+	else
+	{
+		networksFilter = [];
+		var networksNames = $("#NetworkIds").val().replace(/\s/g, '').split(',');
+		for (netN in networksNames)
+			for (net in networks)
+				if (networksNames[netN] == networks[net]["name"])
+					networksFilter.push(networks[net]["uuid"])
+		$("#svg").empty();
+		devices = "";
+		links = "";
+		loadData(networksFilter);
+		if (networksFilter.length == networks.length)
 		{
-			if (networksNames[netN] == networks[net]["name"])
-				networksFilter.push(networks[net]["uuid"])
+			for (net in networkNames)
+				document.getElementById("chb" + networkNames[net]).checked = false;
+			document.getElementById("NetworkIds").value = "";
+			networksFilter = [];
+			comboTree1.resetLookup();
+			comboTree1.resetSelection();
 		}
 	}
-	$("#svg").empty();
-	devices = "";
-	links = "";
-	loadData(networksFilter);
 }
 
 function printGraph(networksFilter){
@@ -359,8 +388,8 @@ function printGraph(networksFilter){
 						.style("opacity", .9)
                     //div	.html("Hostname: "+d.hostname + " IP: "+ d.ip + " MAC:" +d.mac)
 					div .html(str)
-					.style("left", (d.x + d.packetCounter.total) + "px")
-					.style("top", (d.y + d.packetCounter.total) + "px");	})
+					.style("left", (d.x + Math.max(8,Math.min(d.packetCounter.total, 450/devices.length,14))) + "px")
+					.style("top", (d.y + Math.max(8,Math.min(d.packetCounter.total, 450/devices.length,14))) + "px");	})
 			  .on("mouseout", function(d) {
                     div.transition()
                         .duration(500)
@@ -462,6 +491,7 @@ function sleep (time) {
 }
 
 function loadData(networksFilter,updateGraph = true){
+	
 	networkIds=[];
 	networkNames=[];
 	devices=[];
