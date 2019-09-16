@@ -38,7 +38,6 @@ function buildHtmlTable(selector,objects) {
 			{
 				var d =  Date.now();
 				var millis = parseInt(d) / 1000 - parseInt(objects[i]['lts']);
-				console.log(d + "---" + objects[i]['lts']);
 				if (millis<10000)
 					cellValue='<img src="img/ok.png" style="height: 20px;">'
 				else 
